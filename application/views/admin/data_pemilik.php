@@ -49,16 +49,26 @@ foreach ($result as $r): ?>
                              <td>
                                  <?php if ($r->status_aktif_pemilik == 0): ?>
                                  Belum Aktif (Req Aktivasi)
+                                 <?php elseif ($r->status_aktif_pemilik == 1): ?>
+                                 <a class="badge badge-success text-white">Aktif</a>
                                  <?php else: ?>
-                                 Aktif
+                                 <a class="badge badge-danger text-white">Ditolak</a>
                                  <?php endif;?>
 
                              </td>
                              <td>
 
                                  <!-- <button class="btn btn-primary mt-1"></button> -->
+                                 <?php if ($r->status_aktif_pemilik == 1): ?>
 
-                                 <button type="button" class="btn btn-primary" data-toggle="modal"
+                                 <a href="<?=base_url('admin/list_kosan_pemilik/') . $r->id_pemilik?>"
+                                     class="btn btn-info mt-1">
+                                     <i class="fas fa-info-circle"></i> Info Kosan
+                                 </a>
+
+                                 <?php endif;?>
+
+                                 <button type="button" class="btn btn-primary mt-1" data-toggle="modal"
                                      data-target="#detail<?=$r->id_user?>">
                                      <i class="fas fa-info-circle"></i> Detail
                                  </button>
@@ -70,6 +80,12 @@ foreach ($result as $r): ?>
 
                                      <button class="btn btn-success mt-1"><i class="fas fa-check-circle"></i>
                                          Terima</button>
+                                 </a>
+
+                                 <a href="<?=base_url('admin/tolak_pendaftaran/') . $r->id_user?>">
+
+                                     <button class="btn btn-danger mt-1"><i class="fas fa-ban"></i>
+                                         Tolak</button>
                                  </a>
 
                                  <?php endif;?>

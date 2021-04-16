@@ -2,13 +2,52 @@
  <?php if ($_GET['print'] == 2) {echo "<script>print();</script>";}?>
  <div class="container-fluid">
 
+     <form action="<?=base_url('admin/data_kos')?>" method="POST">
+         <label for="exampleInputEmail1" class="form-label">Cari Bedasarkan</label>
+         <div class="row mb-2">
+
+             <div class="col-2">
+                 <div class="input-group mb-3">
+
+                     <select class="custom-select rounded-left" id="inputGroupSelect01" name="tipe_kos">
+                         <option value="" selected>Tipe Kosan</option>
+                         <option value="Putra">Laki-laki</option>
+                         <option value="Putri">Perempuan</option>
+                         <option value="Campur">Campur</option>
+                     </select>
+                 </div>
+             </div>
+
+             <div class="col-2">
+                 <div class="input-group mb-3">
+
+                     <select class="custom-select rounded-left" id="inputGroupSelect01" name="bulan">
+                         <option value="" selected>Bulan Daftar</option>
+                         <?php
+$no = 1;
+foreach ($bulan as $b): ?>
+                         <option value="<?=$no++?>"><?=$b?></option>
+                         <?php endforeach;?>
+                     </select>
+                 </div>
+             </div>
+
+             <div class="col-2">
+                 <button class="btn btn-success" type="submit">Cari</button>
+             </div>
+
+
+         </div>
+     </form>
+     <!-- <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
+
      <!-- DataTales Example -->
      <div class="card shadow mb-4">
          <div class="card-header py-3">
-             <h6 class="m-0 font-weight-bold text-primary">Data Kost Bulan <?=$nama_bulan?></h6>
+             <h6 class="m-0 font-weight-bold text-primary">Data Kost</h6>
 
              <!-- Example single danger button -->
-             <div class="btn-group float-right" style="margin-top: -20px;">
+             <!-- <div class="btn-group float-right" style="margin-top: -20px;">
                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
                      Pilih Bulan
@@ -23,7 +62,7 @@ foreach ($bulan as $b): ?>
                      <?php endforeach;?>
 
                  </div>
-             </div>
+             </div> -->
 
 
          </div>
@@ -63,7 +102,8 @@ foreach ($bulan as $b): ?>
                              <td><?php echo $r->nama_kos ?></td>
                              <td><?php echo $r->alamat ?></td>
                              <td><?php echo $r->deskripsi ?></td>
-                             <td><img src="<?=base_url('asset_admin/upload_kos/') . $r->foto?>" alt="" width="250"></td>
+                             <td><img src="<?=base_url('asset_admin/upload_kos/') . $r->foto?>" alt="" width="250">
+                             </td>
                              <td><?php echo $r->jenis_kosan ?></td>
                              <td><?php echo $r->saldo_kos ?></td>
                              <td><?php echo $r->id_pemilik ?></td>

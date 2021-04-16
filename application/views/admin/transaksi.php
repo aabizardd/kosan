@@ -159,33 +159,36 @@ foreach ($result as $r): ?>
                 </button>
             </div>
             <div class="modal-body">
-
-                <div class="card bg-dark text-black h-75 mt-2">
-                    <img src="<?=base_url('asset_admin/upload_kos/') . $r->ksFoto?>" class="card-img" alt="..."
-                        height="100%">
-                    <div class="card-img-overlay">
-                        <h5 class="card-title font-weight-bold">Detail Kosan</h5>
-                        <p class="card-text font-weight-bold">
-                            <?="Kosan " . $r->nama_kos . " yang ber-alamat di " . $r->alamat?>
-                        </p>
-                        <p class="card-text">Tipe kos <b> <?=$r->jenis_kosan?></b></p>
+                <a href="<?=base_url('asset_admin/upload_kos/') . $r->ksFoto?>" target="_blank">
+                    <div class="card bg-dark text-black h-75 mt-2">
+                        <img src="<?=base_url('asset_admin/upload_kos/') . $r->ksFoto?>" class="card-img" alt="..."
+                            height="100%">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title font-weight-bold">Detail Kosan</h5>
+                            <p class="card-text font-weight-bold">
+                                <?="Kosan " . $r->nama_kos . " yang ber-alamat di " . $r->alamat?>
+                            </p>
+                            <p class="card-text">Tipe kos <b> <?=$r->jenis_kosan?></b></p>
+                        </div>
                     </div>
-                </div>
+                </a>
 
-                <div class="card  text-black h-75 mt-5">
-                    <img src="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" class="card-img" alt="..."
-                        height="100%">
-                    <div class="card-img-overlay">
-                        <h5 class="card-title font-weight-bold">Detail Kamar</h5>
-                        <p class="card-text font-weight-bold">
-                            <?="Kode Kamar " . $r->kode_kamar . " dengan " . $r->kDesc?>
-                        </p>
-                        <?php $harga_kamar = "Rp " . number_format($r->harga, 2, ',', '.');?>
-                        <p class="card-text">Harga mulai dari <b> <?=$harga_kamar?></b></p>
+                <a href="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" target="_blank">
+
+                    <div class="card  text-black h-75 mt-5">
+                        <img src="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" class="card-img" alt="..."
+                            height="100%">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title font-weight-bold">Detail Kamar</h5>
+                            <p class="card-text font-weight-bold">
+                                <?="Kode Kamar " . $r->kode_kamar . " dengan " . $r->kDesc?>
+                            </p>
+                            <?php $harga_kamar = "Rp " . number_format($r->harga, 2, ',', '.');?>
+                            <p class="card-text">Harga mulai dari <b> <?=$harga_kamar?></b></p>
+                        </div>
                     </div>
-                </div>
 
-
+                </a>
 
 
 

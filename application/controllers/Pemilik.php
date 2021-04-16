@@ -437,7 +437,9 @@ class Pemilik extends CI_Controller
 
     public function hapus_kos($id)
     {
+
         $where = array('kode_kos' => $id);
+
         $this->M_All->delete($where, 'kosan');
         redirect('pemilik/view_data_kos');
     }

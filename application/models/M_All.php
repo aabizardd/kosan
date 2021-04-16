@@ -258,9 +258,10 @@ class M_All extends CI_Model
         $this->db->from('pemesanan p');
         $this->db->join('kamar k', 'p.id_kamar = k.id_kamar');
         $this->db->join('kosan ks', 'k.kode_kos = ks.kode_kos');
-        $this->db->where('id_pemilik =', 4);
+        $this->db->where('id_pemilik =', $id_pemilik);
         $this->db->limit(1);
         return $this->db->get();
+
     }
 
     public function getPemasukanPerBulan($id_kos)
@@ -330,6 +331,7 @@ class M_All extends CI_Model
         $this->db->select('*');
         $this->db->from('pemilik_kos p');
         $this->db->join('user u', 'p.id_user = u.id_user');
+        // $this->db->join('kosan k', 'p.id_pemilik = k.id_pemilik');
         return $this->db->get();
     }
 }

@@ -32,7 +32,7 @@ class Admin extends CI_Controller
             'yang_belum' => $yang_belum,
         );
         $data['jumlah_pemilik'] = $this->M_All->count('pemilik_kos');
-        $data['jumlah_pencari'] = $this->M_All->count('pemilik_kos');
+        $data['jumlah_pencari'] = $this->M_All->count('pencari_kos');
         $data['jumlah_kosan'] = $this->M_All->count('kosan');
         // $data['jumlah_kamar'] = $this->M_All->count('kosan');
         $data['jumlah_kamar'] = $this->M_All->count('kamar');
@@ -128,8 +128,12 @@ class Admin extends CI_Controller
     //     $this->load->view('admin/foot_admin');
     // }
 
-    public function data_kos($bulan = 0)
+    public function data_kos()
     {
+
+        $tipe_kos = $this->input->post('tipe_kos');
+        $bulan = $this->input->post('bulan');
+
         $idadmin = $this->session->userdata('id_admin');
         $where = array('id_admin' => $idadmin);
         $data['nama'] = $this->M_All->view_where('admin', $where)->row();
@@ -141,18 +145,49 @@ class Admin extends CI_Controller
 
         $data['bulan'] = $months;
 
-        // $data['nama_bulan'] = "";
-        if ($bulan == 0) {
-            $bulan = date('m');
+        // // $data['nama_bulan'] = "";
+        // if ($bulan == 0) {
+        //     $bulan = date('m');
 
+        // } else {
+        //     $bulan = $bulan;
+        //     // $data['nama_bulan'] = $months[$bulan - 1];
+        // }
+
+        // $data['nama_bulan'] = $months[$bulan - 1];
+
+        //
+
+        // $data['result'] = "";
+
+        $where = [];
+        $data['result'] = "";
+
+        if (is_null($bulan) && is_null($tipe_kos) || $bulan == "" && $tipe_kos == "") {
+            $data['result'] = $this->db->get('kosan')->result();
+        } elseif (!is_null($tipe_kos) && $bulan == "") {
+
+            $where = [
+                'jenis_kosan' => $tipe_kos,
+            ];
+
+            $data['result'] = $this->db->get_where('kosan', $where)->result();
+        } elseif ($tipe_kos == "" && !is_null($bulan)) {
+            // var_dump($bulan);die();
+
+            $where = [
+                'MONTH(tanggal_daftar)' => $bulan,
+            ];
+
+            $data['result'] = $this->db->get_where('kosan', $where)->result();
         } else {
-            $bulan = $bulan;
-            // $data['nama_bulan'] = $months[$bulan - 1];
+            $where = [
+                'MONTH(tanggal_daftar)' => $bulan,
+                'jenis_kosan' => $tipe_kos,
+            ];
+
+            $data['result'] = $this->db->get_where('kosan', $where)->result();
         }
-
-        $data['nama_bulan'] = $months[$bulan - 1];
-
-        $data['result'] = $this->M_All->get_where('kosan', array('MONTH(tanggal_daftar) =' => $bulan))->result();
 
         $this->load->view('admin/sidebar_admin');
         $this->load->view('admin/header_admin', $data);
@@ -179,6 +214,24 @@ class Admin extends CI_Controller
 
             $this->load->view('admin/data_pemilik', $data);
         }
+    }
+
+    public function list_kosan_pemilik($id_pemilik)
+    {
+
+        $idadmin = $this->session->userdata('id_admin');
+        $where = array('id_admin' => $idadmin);
+        $data['nama'] = $this->M_All->view_where('admin', $where)->row();
+
+        // $data['result'] = $this->M_All->join_pemilik_user()->result();
+
+        $data['kosan'] = $this->db->get_where('kosan', ['id_pemilik' => $id_pemilik])->result();
+        $data['data_pemilik'] = $this->db->get_where('pemilik_kos', ['id_pemilik' => $id_pemilik])->row_array();
+
+        $this->load->view('admin/sidebar_admin');
+        $this->load->view('admin/header_admin', $data);
+        $this->load->view('admin/list_kosan_pemilik', $data);
+        $this->load->view('admin/foot_admin');
     }
 
     public function edit_pemilik($id = '')
@@ -422,6 +475,23 @@ class Admin extends CI_Controller
         $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
 
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun Pemilik!', 'fas fa-check-circle');
+
+        $this->session->set_flashdata('alert', $alert);
+
+        redirect('admin/data_pemilik/');
+
+    }
+
+    public function tolak_pendaftaran($id_pemilik)
+    {
+
+        $data = [
+            'status_aktif_pemilik' => 2,
+        ];
+
+        $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
+
+        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik!', 'fas fa-check-circle');
 
         $this->session->set_flashdata('alert', $alert);
 
