@@ -90,7 +90,7 @@ class Pencari extends CI_Controller
         $id_pencari = $this->session->userdata('id_pencari');
         $where = array('id_pencari' => $id_pencari);
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-        $data['kos'] = $this->M_All->view_where('kosan', $where_)->row();
+        $data['kos'] = $this->M_All->view_where_join($id)->row();
         $data['result'] = $this->M_All->view_where('kamar', $where_kosan)->result();
 
         $this->load->view('pencari/sidebar_pencari');
@@ -153,86 +153,105 @@ class Pencari extends CI_Controller
     public function pesan_kamar()
     {
         // $id_transaksi = $this->M_All->count('pemesanan')+1;
-        $uang_muka = 0;
-        $harga = 0;
-        $kode_kamar = $this->input->post('kode_kamar');
-        $id_pencari = $this->input->post('id_pencari');
-        $tgl_masuk = date('Y-m-d', strtotime($this->input->post('tgl_masuk')));
-        $nama_penghuni = $this->input->post('nama_penghuni');
-        $jangka_waktu = $this->input->post('jangka_waktu');
+        $id_pencari = $this->session->userdata('id_pencari');
 
-        // $tgl_keluar = $this->input->post('tgl_keluar');
-        // $tgl_keluar = strtotime(date("Y-m-d",strtotime($tgl_masuk)).'1');
-        // $tgl_keluar = date($tgl_masuk . " +1year");
-        $tgl_keluar = "";
+        $getCountBooking = $this->M_All->getCountBooking($id_pencari);
 
-        $get_harga = $this->db
-            ->get_where('kamar', [
-                'id_kamar' => $kode_kamar,
-            ])
-            ->row_array();
+        if ($getCountBooking['ct'] >= 2) {
 
-        if ($jangka_waktu == "1 Tahun") {
-            $waktu = "1 year";
-            $harga = $get_harga['harga'];
+            redirect('pencari');
+
         } else {
-            $waktu = "6 month";
-            $harga = $get_harga['harga_smesteran'];
+
+            $uang_muka = 0;
+            $harga = 0;
+            $kode_kamar = $this->input->post('kode_kamar');
+            $id_pencari = $this->input->post('id_pencari');
+            $tgl_masuk = date('Y-m-d', strtotime($this->input->post('tgl_masuk')));
+
+            // var_dump($tgl_masuk);die();
+
+            $nama_penghuni = $this->input->post('nama_penghuni');
+            $jangka_waktu = $this->input->post('jangka_waktu');
+
+            // $tgl_keluar = $this->input->post('tgl_keluar');
+            // $tgl_keluar = strtotime(date("Y-m-d",strtotime($tgl_masuk)).'1');
+            // $tgl_keluar = date($tgl_masuk . " +1year");
+            $tgl_keluar = "";
+
+            $get_harga = $this->db
+                ->get_where('kamar', [
+                    'id_kamar' => $kode_kamar,
+                ])
+                ->row_array();
+
+            if ($jangka_waktu == "1 Tahun") {
+                $waktu = "1 year";
+                $harga = $get_harga['harga'];
+            } else {
+                $waktu = "6 month";
+                $harga = $get_harga['harga_smesteran'];
+            }
+
+            $tgl_keluar = date('Y-m-d', strtotime($tgl_masuk . ' + ' . $waktu));
+
+            // $selisih =  strtotime($tgl_keluar) - strtotime($tgl_masuk);
+
+            // $selisih_tahun = ceil($selisih / (60 * 60 * 24 * 365));
+
+            $total_bayar = $harga;
+            $sisa_bayar = $total_bayar - $uang_muka;
+
+            $data = array(
+                // 'id_transaksi' => 'trx00'.$id_transaksi,
+                'id_kamar' => $kode_kamar,
+                'id_pencari' => $id_pencari,
+                'nama_penghuni' => $nama_penghuni,
+                'tanggal_masuk' => $tgl_masuk,
+                'tanggal_keluar' => $tgl_keluar,
+                'jumlah_dp' => $total_bayar - $sisa_bayar,
+                'jangka_waktu' => $jangka_waktu,
+                'sisa_pembayaran' => $sisa_bayar,
+                'status_transaksi' => 5,
+            );
+            // print_r($data);
+
+            $this->M_All->insert('pemesanan', $data);
+
+            // $data_upd = array(
+            //     'status' => "Booked",
+            // );
+
+            // $where_upd = array('id_kamar' => $kode_kamar);
+
+            // $this->M_All->update('kamar', $where_upd, $data_upd);
+
+            // $data_pemilik = $this->M_All->getPemilikByKamar($kode_kamar)->row_array();
+
+            // $id_pemilik = $data_pemilik['id_user'];
+
+            // $wherePencari = [
+            //     'id_pencari' => $this->session->userdata('id_pencari'),
+            // ];
+
+            // $data_pencari = $this->M_All->get_where('pencari_kos', $wherePencari)->row_array();
+
+            // $id_pencari = $data_pencari['id_user'];
+
+            // $data_notif = [
+
+            //     'isi_pesan' => 'Ada Pesanan Baru Nih!',
+            //     'dari' => $id_pencari,
+            //     'untuk' => $id_pemilik,
+            //     'status_baca' => 0,
+            // ];
+
+            // $this->M_All->insert('notifikasi', $data_notif);
+
+            $this->session->set_flashdata('alert', true);
+
+            redirect('pencari');
         }
-
-        $tgl_keluar = date('Y-m-d', strtotime($tgl_masuk . ' + ' . $waktu));
-
-        // $selisih =  strtotime($tgl_keluar) - strtotime($tgl_masuk);
-
-        // $selisih_tahun = ceil($selisih / (60 * 60 * 24 * 365));
-
-        $total_bayar = $harga;
-        $sisa_bayar = $total_bayar - $uang_muka;
-
-        $data = array(
-            // 'id_transaksi' => 'trx00'.$id_transaksi,
-            'id_kamar' => $kode_kamar,
-            'id_pencari' => $id_pencari,
-            'nama_penghuni' => $nama_penghuni,
-            'tanggal_pesan' => date('Y-m-d'),
-            'tanggal_masuk' => $tgl_masuk,
-            'tanggal_keluar' => $tgl_keluar,
-            'jumlah_dp' => $total_bayar - $sisa_bayar,
-            'jangka_waktu' => $jangka_waktu,
-            'sisa_pembayaran' => $sisa_bayar,
-            'status_transaksi' => 5,
-        );
-        // print_r($data);
-
-        $data_upd = array(
-            'status' => "Booked",
-        );
-
-        $this->M_All->insert('pemesanan', $data);
-
-        $where_upd = array('id_kamar' => $kode_kamar);
-
-        $this->M_All->update('kamar', $where_upd, $data_upd);
-
-        $data_pemilik = $this->M_All->getPemilikByKamar($kode_kamar)->row_array();
-
-        $id_pemilik = $data_pemilik['id_pemilik'];
-
-        $data_notif = [
-
-            'isi_pesan' => 'Ada Pesanan Baru Nih!',
-            'dari' => $id_pencari,
-            'untuk' => $id_pemilik,
-            'status_baca' => 0,
-            'id_pemilik' => $id_pemilik,
-            'id_pencari' => $id_pencari,
-        ];
-
-        $this->M_All->insert('notifikasi', $data_notif);
-
-        $this->session->set_flashdata('alert', true);
-
-        redirect('pencari');
     }
 
     public function pembayaran_upload_dp()
@@ -243,6 +262,9 @@ class Pencari extends CI_Controller
         $id_pesan = $this->input->post('id_pesan');
         $sisa_bayar = $this->input->post('sisa_bayar');
 
+        $nomor_ktp = $this->input->post('nomor_ktp');
+        $nomor_hp = $this->input->post('nomor_hp');
+
         $filename = $this->_uploadFile();
 
         $data = [
@@ -250,6 +272,8 @@ class Pencari extends CI_Controller
             'jumlah_dp' => $uang_muka,
             'bukti_bayar' => $filename,
             'status_transaksi' => 0,
+            'nomor_ktp' => $nomor_ktp,
+            'nomor_hp' => $nomor_hp,
         ];
 
         $this->db->where('id_pesan', $id_pesan);
@@ -262,23 +286,50 @@ class Pencari extends CI_Controller
 
         $id_pemilik = $data_pemilik['id_pemilik'];
 
-        $data_notif = [
-
-            'isi_pesan' => 'Ada Pesanan Baru Nih!',
-            'dari' => $id_pencari,
-            'untuk' => $id_pemilik,
-            'status_baca' => 0,
-            'id_pemilik' => $id_pemilik,
-            'id_pencari' => $id_pencari,
-        ];
-
-        $this->M_All->insert('notifikasi', $data_notif);
-
         // var_dump($this->M_All->update('pemesanan', $where_table, $data));
         // die;
+        $data_upd = array(
+            'status' => "Booked",
+        );
+
+        $where_upd = array('id_kamar' => $this->input->post('id_kamar'));
+
+        $this->M_All->update('kamar', $where_upd, $data_upd);
+
+        $wherePencari = [
+            'id_pencari' => $this->session->userdata('id_pencari'),
+        ];
+
+        $data_pencari = $this->M_All->get_where('pencari_kos', $wherePencari)->row_array();
+
+        $id_pencari = $data_pencari['id_user'];
+
+        $wherePemilik = [
+            'id_pemilik' => $data_pemilik['id_pemilik'],
+        ];
+
+        $data_pemilik2 = $this->M_All->get_where('pemilik_kos', $wherePemilik)->row_array();
+
+        $id_pemilik1 = $data_pemilik2['id_user'];
+
+        $this->kirim_notif("Ada pesanan baru nih!", $id_pencari, $id_pemilik1);
+
         $this->session->set_flashdata('alert', $this->toast('success', '00ff00', 'Berhasil membayar DP, Tunggu Proses Selanjutnya ya!', 'fas fa-smile-wink'));
 
         redirect('pencari/pembayaran');
+    }
+
+    public function kirim_notif($pesan, $dari, $untuk)
+    {
+        $data_notif = [
+
+            'isi_pesan' => $pesan,
+            'dari' => $dari,
+            'untuk' => $untuk,
+            'status_baca' => 0,
+        ];
+
+        $this->M_All->insert('notifikasi', $data_notif);
     }
 
     // public function test()

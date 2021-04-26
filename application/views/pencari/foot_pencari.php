@@ -22,6 +22,9 @@
         </div>
     </div>
 </div>
+
+
+
 <!-- Bootstrap core JavaScript-->
 <script src="<?php echo base_url() ?>asset_admin/vendor/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url() ?>asset_admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -41,6 +44,9 @@
 
 <script src="<?=base_url('asset_bootstrap/');?>datatables/js/jquery.dataTables.min.js"></script>
 <script src="<?=base_url('asset_bootstrap/');?>datatables/js/dataTables.bootstrap4.min.js"></script>
+
+
+
 <script>
 $(document).ready(function() {
     $('#dataTable').DataTable();
@@ -52,6 +58,10 @@ $(document).ready(function() {
     $('.toast').toast('show');
 });
 </script>
+
+<script src="//code.tidio.co/cw0nlksrln8emzcclf7knirkj8t4j5ip.js" async></script>
+
+
 
 </body>
 

@@ -12,6 +12,17 @@ class Welcome extends CI_Controller
 
         // var_dump($this->session->all_userdata());die();
         // var_dump($this->session->all_userdata());die();
+
+        // var_dump($this->session->all_userdata());die();
+
+        if ($this->session->userdata('admin')) {
+            redirect('admin');
+        } elseif ($this->session->userdata('pemilik')) {
+            redirect('pemilik');
+        } elseif ($this->session->userdata('pencari')) {
+            redirect('pencari');
+        }
+
     }
 
     public function index()
@@ -467,8 +478,8 @@ class Welcome extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'nurdalifahasr@gmail.com',
-            'smtp_pass' => 'gmailifay09',
+            'smtp_user' => 'unregistered30@gmail.com',
+            'smtp_pass' => 'Medellincartel13!',
             'smtp_port' => 465,
             'mailtype' => 'html',
             'charset' => 'utf-8',

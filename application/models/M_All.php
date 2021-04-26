@@ -13,6 +13,16 @@ class M_All extends CI_Model
         return $this->db->get_where($table, $where);
     }
 
+    public function view_where_join($kode_kos)
+    {
+
+        $this->db->select('*');
+        $this->db->from('kosan');
+        $this->db->join('pemilik_kos', 'kosan.id_pemilik = pemilik_kos.id_pemilik');
+        $this->db->where('kode_kos', $kode_kos);
+        return $this->db->get();
+    }
+
     public function get_where($from, $where)
     {
         $this->db->select('*');
@@ -159,7 +169,7 @@ class M_All extends CI_Model
 
     public function join_get_bayar($id, $tipe)
     {
-        $this->db->select('*,kamar.foto as kFoto, kamar.deskripsi as kDesc, kosan.foto as ksFoto, kosan.deskripsi as ksDesc');
+        $this->db->select('*,kamar.id_kamar as id_kamar,kamar.foto as kFoto, kamar.deskripsi as kDesc, kosan.foto as ksFoto, kosan.deskripsi as ksDesc');
         $this->db->from('pemesanan');
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
@@ -240,7 +250,7 @@ class M_All extends CI_Model
     public function getPemilikByKamar($kode_kamar)
     {
 
-        $this->db->select('pm.id_pemilik as id_pemilik');
+        $this->db->select('pm.id_pemilik as id_pemilik, id_user');
         $this->db->from('kamar km');
         $this->db->join('kosan ks', 'km.kode_kos = ks.kode_kos');
         $this->db->join('pemilik_kos pm', 'ks.id_pemilik = pm.id_pemilik');
@@ -333,5 +343,15 @@ class M_All extends CI_Model
         $this->db->join('user u', 'p.id_user = u.id_user');
         // $this->db->join('kosan k', 'p.id_pemilik = k.id_pemilik');
         return $this->db->get();
+    }
+
+    public function getCountBooking($id_pencari)
+    {
+        $query = "SELECT COUNT(id_pesan) as ct FROM `pemesanan` WHERE id_pencari = $id_pencari AND jumlah_dp = 0 GROUP BY id_pencari";
+
+        $result = $this->db->query($query);
+
+        return $result->row_array();
+
     }
 }

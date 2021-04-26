@@ -19,7 +19,6 @@
                             <!--<th>Sisa Pembayaran</th>-->
                             <th>Total Bayar</th>
                             <th>Sisa Bayar</th>
-
                             <th>Status</th>
                             <th>Action</th>
                             <!-- <th>Sisa Pembayaran</th> -->
@@ -105,6 +104,8 @@
                                 <button type="anchor" class="btn btn-danger" disabled>
                                     Transaksi Ditolak
                                 </button>
+                                <input type="text" class="form-control mt-2" value="<?=$r->keterangan_pembatalan?>"
+                                    readonly>
 
                                 <?php else: ?>
                                 Maaf Hubungi Pemilik atau Admin
@@ -270,6 +271,7 @@ $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
         Pesanan Berhasil Dibatalkan
     </div>
 </div>
+
 
 
 

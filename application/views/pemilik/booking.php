@@ -2,29 +2,48 @@
     <!-- DataTales Example -->
 
     <!-- <button></button> -->
-    <div class="btn-group mb-3 ">
+    <!-- <div class="btn-group mb-3 ">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
             Pilih Kosan
         </button>
         <div class="dropdown-menu">
-            <?php $uri2 = $this->uri->segment(2)?>
-            <?php foreach ($list_kosan as $l): ?>
-            <a class="dropdown-item" href="<?=base_url('pemilik/') . $uri2 . '/' . $l->kode_kos?>">Kost
-                <?=$l->nama_kos?></a>
-            <?php endforeach;?>
 
 
 
         </div>
-    </div>
+    </div> -->
+
+
+
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item dropdown mr-2">
+            <a class="nav-link dropdown-toggle active bg-primary text-white" data-toggle="dropdown" href="#"
+                role="button" aria-haspopup="true" aria-expanded="false">Pilih Kosan</a>
+            <div class="dropdown-menu">
+                <?php $uri2 = $this->uri->segment(2)?>
+                <?php foreach ($list_kosan as $l): ?>
+                <a class="dropdown-item" href="<?=base_url('pemilik/') . $uri2 . '/' . $l->kode_kos?>">Kost
+                    <?=$l->nama_kos?></a>
+                <?php endforeach;?>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link <?=$nav1?>" href="<?=base_url('pemilik/booking/')?>">Riwayat Pemesanan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?=$nav2?>" href="<?=base_url('pemilik/booking_pesanan/')?>">Data Pemesanan</a>
+        </li>
+
+    </ul>
 
 
 
     <div class="card shadow mb-4">
         <div class="card-header">
 
-            <div class="btn-group mb-3 float-right">
+            <!-- <div class="btn-group mb-3 float-right">
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Jenis Pemesanan
@@ -36,11 +55,14 @@
 
 
                 </div>
-            </div>
+            </div> -->
+
+            <?php if ($this->uri->segment(2) == "booking"): ?>
 
             <h6 class="m-0 font-weight-bold text-primary">Riwayat Transaksi Kos <b><?=$nama_kosan?></b></h6>
-
-
+            <?php else: ?>
+            <h6 class="m-0 font-weight-bold text-primary">Data Transaksi Kos <b><?=$nama_kosan?></b></h6>
+            <?php endif;?>
 
 
         </div>
@@ -108,10 +130,19 @@
                                             class="fas fa-file-invoice"></i> Cek
                                         Bukti Pelunasan</a>
 
-                                    <a class="badge-xl badge-danger dropdown-item mt-1"
-                                        href="<?=base_url('pemilik/proses_pesanan/penolakan/') . $r->id_pesan . "/" . $r->id_kamar?>"><i
-                                            class="fas fa-times-circle"></i> Tolak
-                                        pesanan</a>
+                                    <a class="badge-xl badge-danger dropdown-item mt-1 text-white" data-toggle="modal"
+                                        data-target="#exampleModal3" id="batal_pesan" data-idpesan="<?=$r->id_pesan?>"
+                                        data-idkamar="<?=$r->id_kamar?>">
+                                        <i class="fas fa-times-circle"></i>
+                                        Tolak pesanan
+                                    </a>
+
+
+
+
+
+
+
 
 
                                 </div>
@@ -216,29 +247,19 @@ foreach ($result as $r): ?>
                             <thead>
                                 <tr>
                                     <th scope="col">Nama Penghuni</th>
-                                    <th scope="col">Tanggal Pesan</th>
                                     <th scope="col">Tanggal Masuk</th>
                                     <th scope="col">Tanggal Keluar</th>
-                                    <th scope="col">Jumlah DP</th>
-                                    <th scope="col">Sisa Pembayaran</th>
-                                    <th scope="col">Bukti Bayar</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td><?=$r->nama_penghuni?></td>
-                                    <td><?=date_format(date_create($r->tanggal_pesan), "d-M-Y")?></td>
                                     <td><?=date_format(date_create($r->tanggal_masuk), "d-M-Y")?></td>
                                     <td><?=date_format(date_create($r->tanggal_keluar), "d-M-Y")?></td>
 
-                                    <?php
-$jumlahDP = "Rp " . number_format($r->jumlah_dp, 2, ',', '.');
-$sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
 
-                                    <td><?=$jumlahDP?></td>
-                                    <td><?=$sisa?></td>
-                                    <td><img src="<?=base_url('asset_admin/bukti_bayar/') . $r->bukti_bayar?>" alt=""
-                                            width="200" height="200"></td>
+
                                 </tr>
 
                             </tbody>
@@ -263,8 +284,55 @@ $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
 <?php endforeach;?>
 
 
+<!-- href="<?=base_url('pemilik/proses_pesanan/penolakan/') . $r->id_pesan . "/" . $r->id_kamar?>" -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Penolakan Pemesanan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?=base_url('pemilik/tolak_pesanan')?>" method="POST">
+                <div class="modal-body" id="modalBody">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Alasan Penolakan</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required
+                            name="alasan_penolakan"></textarea>
+                    </div>
+
+                    <input type="hidden" id="idpesanan" name="idpesanan">
+                    <input type="hidden" id="idkamar" name="idkamar">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Tolak Pesanan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
 
 
+<script type="text/javascript">
+$(document).on("click", "#batal_pesan", function() {
+    // alert('clicked')
+    var idpesan = $(this).data('idpesan');
+    var idkamar = $(this).data('idkamar');
+
+    $("#modalBody #idpesanan").val(idpesan);
+    $("#modalBody #idkamar").val(idkamar);
+
+
+});
+</script>
 
 
 
@@ -348,4 +416,10 @@ $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
 
 
 </div>
+
+
+
+
+
+
 <!-- End of Page Wrapper -->

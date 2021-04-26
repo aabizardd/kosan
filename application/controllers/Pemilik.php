@@ -76,18 +76,29 @@ class Pemilik extends CI_Controller
 
         $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
 
+        // pemilik
+
+        $wherePemilik = [
+            'id_pemilik' => $this->session->userdata('id_pemilik'),
+        ];
+
+        $data_pemilik = $this->M_All->get_where('pemilik_kos', $wherePemilik)->row_array();
+
+        $id_pemilik1 = $data_pemilik['id_user'];
+
         $where_notif = array(
-            'untuk' => $id_pemilik,
+            'untuk' => $id_pemilik1,
             'status_baca' => 0,
         );
 
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
-        $data['notif'] = $this->db
-            ->get_where('notifikasi', [
-                'untuk' => $id_pemilik,
-                'status_baca' => 0,
-            ])
-            ->result();
+
+        $data['notif'] =
+        $this->db->order_by('id_notifikasi', 'DESC')->limit(3)->get_where('notifikasi', [
+            'untuk' => $id_pemilik1,
+            'status_baca' => 0,
+        ])->result();
+        // sampe sini
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
 
@@ -148,6 +159,9 @@ class Pemilik extends CI_Controller
 
         $data_['result'] = $this->M_All->riwayat_transaksi2('pemesanan', 'kamar', 'kosan', 'pemilik_kos', 'pencari_kos', $id_pemilik, 'riwayat', $kode_kos)->result();
 
+        $data['nav1'] = 'active';
+        $data['nav2'] = '';
+
         $data_['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
 
         $this->load->view('pemilik/sidebar_pemilik');
@@ -184,6 +198,9 @@ class Pemilik extends CI_Controller
         $data_['result'] = $this->M_All->riwayat_transaksi('pemesanan', 'kamar', 'kosan', 'pemilik_kos', 'pencari_kos', $id_pemilik, 'info', $kode_kos)->result();
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
+
+        $data['nav1'] = '';
+        $data['nav2'] = 'active';
 
         $this->load->view('pemilik/sidebar_pemilik');
         $this->load->view('pemilik/header_pemilik', $data);
@@ -814,6 +831,37 @@ class Pemilik extends CI_Controller
 			');
 
         redirect('pemilik/profile/');
+
+    }
+
+    public function tolak_pesanan()
+    {
+
+        $idpesanan = $this->input->post('idpesanan');
+        $idkamar = $this->input->post('idkamar');
+        $alasan_penolakan = $this->input->post('alasan_penolakan');
+
+        $where = [
+            'id_pesan' => $idpesanan,
+        ];
+
+        $status = 4;
+
+        $data_update_kamar = [
+            'status' => 'Tersedia',
+        ];
+
+        $this->db->where('id_kamar', $idkamar);
+        $this->db->update('kamar', $data_update_kamar);
+
+        $data = [
+            'status_transaksi' => $status,
+            'keterangan_pembatalan' => $alasan_penolakan,
+        ];
+
+        $this->M_All->update('pemesanan', $where, $data);
+
+        redirect('pemilik/booking');
 
     }
 }

@@ -1,5 +1,5 @@
 <!-- Content Wrapper -->
-<?php error_reporting(0); ?>
+<?php error_reporting(0);?>
 <div id="content-wrapper" class="d-flex flex-column">
 
     <!-- Main Content -->
@@ -75,7 +75,7 @@
                     <span class="font-weight-bold">A new monthly report is ready to download!</span>
                   </div>
                 </a>
-               
+
               </div>
             </li>-->
 
@@ -87,7 +87,7 @@
                         <!-- Counter - Mes	sages -->
 
 
-                        <span class="badge badge-danger badge-counter"><?= $jml_notif ?></span>
+                        <span class="badge badge-danger badge-counter"><?="new"?></span>
                     </a>
                     <!-- Dropdown - Messages -->
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -98,17 +98,27 @@
 
 
 
-                        <?php foreach ($notif as $n) : ?>
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="<?= base_url('pemilik/booking_pesanan') ?>">
-                            <div class="font-weight-bold">
-                                <div class="text-truncate"><?= $n->isi_pesan ?></div>
-                                <div class="small text-gray-500">asdsasad | asdsad
+                        <?php foreach ($notif as $n): ?>
+
+
+                        <?php
+
+$href = "";
+if ($n->isi_pesan == "Ada pesanan baru nih!") {
+    $href = base_url('pemilik/booking_pesanan');
+}
+?>
+
+                        <a class="dropdown-item d-flex align-items-center" href="<?=$href?>">
+                            <div class="fo
+							nt-weight-bold">
+                                <div class="text-truncate"><?=$n->isi_pesan?></div>
+                                <div class="small text-gray-500">Notifikasi | Hari ini
 
                                 </div>
                             </div>
                         </a>
-                        <?php endforeach; ?>
+                        <?php endforeach;?>
 
 
 
@@ -122,9 +132,9 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nama->nama_pemilik; ?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$nama->nama_pemilik;?></span>
                         <img class="img-profile rounded-circle"
-                            src="<?= base_url('asset_registrasi/upload_pemilik/') . $nama->foto ?>">
+                            src="<?=base_url('asset_registrasi/upload_pemilik/') . $nama->foto?>">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -140,7 +150,7 @@
                         <!--<a class="dropdown-item" href="#">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
-        
+
         </a>-->
 
 

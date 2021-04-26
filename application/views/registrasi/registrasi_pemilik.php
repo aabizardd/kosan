@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Repeat Password is required">
-                        <span class="label-input100">Repeat Password</span>
+                        <span class="label-input100">Confirm Password</span>
                         <input class="input100" type="password" name="konfirmasi" placeholder="*************">
                         <span class="focus-input100"></span>
                     </div>

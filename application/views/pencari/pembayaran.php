@@ -6,6 +6,12 @@
             <h6 class="m-0 font-weight-bold text-primary">Data Tamu</h6>
         </div>
         <div class="card-body">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Perhatian!</strong> maksimal pembayaran DP adalah 2x24, lebih dari itu pesanan akan dibatalkan!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <!-- <?php print_r($result)?> -->
@@ -14,7 +20,7 @@
 
                             <th>Nama Kos</th>
                             <th>Alamat Kos</th>
-                            <th>Kamar</th>
+                            <th>Kode Kamar</th>
                             <th>Nama Penghuni</th>
                             <!--<th>Sisa Pembayaran</th>-->
                             <th>Total Bayar</th>
@@ -75,7 +81,8 @@
 
                                                 <div class="alert alert-primary" role="alert">
                                                     Rekening pemilik kosan : <b class="text-info"><?=$r->no_rek?></b>
-                                                    (<?=$r->bank?>)
+                                                    (<?=$r->bank?>) <br>
+                                                    <b>a.n <?=$r->nama_pemilik?></b>
                                                 </div>
 
                                                 <div class="alert alert-warning alert-dismissible fade show"
@@ -160,12 +167,33 @@
 
                                                     <div class="alert alert-primary" role="alert">
                                                         Rekening pemilik kosan : <b
-                                                            class="text-info"><?=$r->no_rek?></b> (<?=$r->bank?>)
+                                                            class="text-info"><?=$r->no_rek?></b> (<?=$r->bank?>) <br>
+                                                        <b>a.n <?=$r->nama_pemilik?></b>
+                                                    </div>
+
+                                                    <?php
+$keterangan_dp = 0;
+if ($r->jangka_waktu == "1 Tahun") {
+    $keterangan_dp = 20 / 100 * $r->harga;
+} else {
+    $keterangan_dp = 20 / 100 * $r->harga_smesteran;
+}?>
+
+                                                    <div class="alert alert-warning alert-dismissible fade show"
+                                                        role="alert">
+                                                        <strong>Perhatian!</strong> Pembyaran <b>DP 2X24 Jam</b>
+                                                        <button type="button" class="close" data-dismiss="alert"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
 
                                                     <div class="alert alert-warning alert-dismissible fade show"
                                                         role="alert">
-                                                        <strong>Perhatian!</strong> bayar DP harus 20% dari harga kamar.
+                                                        <strong>Perhatian!</strong> bayar DP harus 20% dari harga kamar
+                                                        (senilai
+                                                        <b><?="Rp " . number_format($keterangan_dp, 2, ',', '.');?></b>
+                                                        ).
                                                         Jika kurang, maka pihak admin akan menghubungi pemesan kost
                                                         <button type="button" class="close" data-dismiss="alert"
                                                             aria-label="Close">
@@ -178,6 +206,23 @@
                                                         aria-describedby="emailHelp" name="uang_muka"
                                                         value="<?=$r->sisa_pembayaran * 20 / 100?>">
 
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Nomor KTP</label>
+                                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                                            aria-describedby="emailHelp" name="nomor_ktp" required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Nomor HP</label>
+                                                        <input type="text" class="form-control" id="exampleInputEmail1"
+                                                            aria-describedby="emailHelp" name="nomor_hp" required>
+                                                    </div>
+
+                                                    <input type="hidden" name="id_kamar" value="<?=$r->id_kamar?>">
+
+
+
+
 
                                                     <div class="form-group">
                                                         <label for="exampleInputPassword1">File Upload</label>
@@ -188,6 +233,20 @@
                                                     <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar?>">
                                                     <input type="hidden" name="sisa_bayar"
                                                         value="<?=$r->sisa_pembayaran?>">
+
+                                                    <div class="custom-control custom-checkbox mb-2 text-justify"
+                                                        style="font-size: 10px;">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="customCheck1" required>
+                                                        <label class="custom-control-label" for="customCheck1">Syarat
+                                                            dan ketentuan</label> <br>
+                                                        Informasi yang terdapat dalam Situs Kami ditampilkan sesuai
+                                                        keadaan kenyataan untuk tujuan informasi umum. Kami berusaha
+                                                        untuk selalu menyediakan dan menampilkan informasi yang terbaru
+                                                        dan akurat, namun Kami tidak menjamin bahwa segala informasi
+                                                        sesuai dengan ketepatan waktu atau relevansi dengan kebutuhan
+                                                        Anda
+                                                    </div>
 
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </form>
@@ -208,19 +267,25 @@
                                 <?php else: ?>
                                 <div class=" col mt-1">
                                     <a href="pembatalan_pesanan/<?=$r->id_pesan . '/' . $r->id_kamar?>">
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger w-100" onclick="jadiatautidak()">
                                             <i class="fas fa-times-circle"></i> Batalkan
                                         </button>
                                     </a>
                                 </div>
                                 <?php endif;?>
 
+                                <script>
+                                function jadiatautidak() {
+                                    confirm("Yakin membatalkan pesanan?");
+                                }
+                                </script>
+
 
                                 <div class="col mt-1">
 
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary w-100" data-toggle="modal"
                                         data-target="#detail_pesanan<?=$r->id_pesan?>">
-                                        <i class="fas fa-info-circle"></i> Detail Pemesanan
+                                        <i class="fas fa-info-circle"></i> Detail
                                     </button>
 
                                 </div>
@@ -427,6 +492,9 @@ $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
 <?php if ($this->session->flashdata('alert')): ?>\
 
 <?=$this->session->flashdata('alert');?>
+
+
+
 
 
 

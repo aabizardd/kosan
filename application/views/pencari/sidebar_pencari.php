@@ -21,6 +21,8 @@
         <!-- Custom styles for this template-->
         <link href="<?php echo base_url() ?>asset_admin/css/sb-admin-2.min.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     </head>
 
     <body id="page-top">
@@ -36,7 +38,7 @@
 
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                    href="<?= base_url('admin'); ?>">
+                    href="<?=base_url('admin');?>">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -48,7 +50,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('pencari') ?>">
+                    <a class="nav-link" href="<?=base_url('pencari')?>">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Kost</span></a>
                 </li>

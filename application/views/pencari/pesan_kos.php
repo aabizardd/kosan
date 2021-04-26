@@ -1,8 +1,43 @@
 <div class="container-fluid">
 
-    <a href="<?= base_url('pencari') ?>">
+    <a href="<?=base_url('pencari')?>">
         <buatton class="btn btn-danger"><i class="fas fa-arrow-circle-left"> </i> Back</buatton>
     </a>
+
+
+
+    <div id="carouselExampleIndicators" class="carousel slide mt-2 h-50" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100"
+                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100"
+                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg"
+                    alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100"
+                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg" alt="Third slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
 
     <!-- DataTales Example -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -18,30 +53,34 @@
         <div class="card-body">
             <div class="row">
                 <div class="col col-md-3">
-                    <img src="<?= base_url('asset_admin/upload_kos/' . $kos->foto); ?>" alt="" width="100%">
+                    <img src="<?=base_url('asset_admin/upload_kos/' . $kos->foto);?>" alt="" width="100%">
                 </div>
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table" width="100%" cellspacing="0">
                             <tr>
                                 <th width="20%">Kode Kos</th>
-                                <th><?= $kos->kode_kos ?></th>
+                                <th><?=$kos->kode_kos?></th>
                             </tr>
                             <tr>
                                 <td>Nama Kos</td>
-                                <td><?= $kos->nama_kos ?></td>
+                                <td><?=$kos->nama_kos?></td>
                             </tr>
                             <tr>
                                 <td>Alamat</td>
-                                <td><?= $kos->alamat ?></td>
+                                <td><?=$kos->alamat?></td>
                             </tr>
                             <tr>
                                 <td>Deskripsi</td>
-                                <td><?= $kos->deskripsi ?></td>
+                                <td><?=$kos->deskripsi?></td>
                             </tr>
                             <tr>
                                 <td>Jenis Kosan</td>
-                                <td><?= $kos->jenis_kosan ?></td>
+                                <td><?=$kos->jenis_kosan?></td>
+                            </tr>
+                            <tr>
+                                <td>Nomor HP Pemilik</td>
+                                <td><?=$kos->no_telp?></td>
                             </tr>
                         </table>
                     </div>
@@ -61,14 +100,14 @@
                     aria-expanded="false">
                     Jangka Waktu
                 </button>
-                <?php $segment3 =  $this->uri->segment(3)  ?>
+                <?php $segment3 = $this->uri->segment(3)?>
 
 
 
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="<?= base_url('pencari/view_data_kos/') . $segment3 ?>/smester">6
+                    <a class="dropdown-item" href="<?=base_url('pencari/view_data_kos/') . $segment3?>/smester">6
                         Bulan</a>
-                    <a class="dropdown-item" href="<?= base_url('pencari/view_data_kos/') . $segment3 ?>/tahunan">1
+                    <a class="dropdown-item" href="<?=base_url('pencari/view_data_kos/') . $segment3?>/tahunan">1
                         Tahun</a>
 
                 </div>
@@ -79,34 +118,34 @@
             <div class="card-columns">
 
                 <?php
-				$no = 0;
-				foreach ($result as $r) : ?>
+$no = 0;
+foreach ($result as $r): ?>
                 <div class="card">
-                    <img class="card-img-top" src="<?= base_url('asset_admin/upload_kos/') ?><?= $r->foto; ?>"
-                        alt="<?= $r->foto; ?>">
+                    <img class="card-img-top" src="<?=base_url('asset_admin/upload_kos/')?><?=$r->foto;?>"
+                        alt="<?=$r->foto;?>">
                     <div class="card-body">
-                        <h3 class="card-title">No. <?= $r->kode_kamar ?></h3>
-                        <p class="card-text">Deskripsi : <?= $r->deskripsi; ?></p>
+                        <h3 class="card-title">No. <?=$r->kode_kamar?></h3>
+                        <p class="card-text">Deskripsi : <?=$r->deskripsi;?></p>
 
-                        <?php if ($this->uri->segment(4) == "tahunan") : ?>
-                        <p class="card-text">Harga : Rp. <?= $r->harga; ?>/tahun</p>
-                        <?php else : ?>
-                        <p class="card-text">Harga : Rp. <?= $r->harga_smesteran; ?>/bulan</p>
-                        <?php endif; ?>
+                        <?php if ($this->uri->segment(4) == "tahunan"): ?>
+                        <p class="card-text">Harga : Rp. <?=$r->harga;?>/tahun</p>
+                        <?php else: ?>
+                        <p class="card-text">Harga : Rp. <?=$r->harga_smesteran;?>/bulan</p>
+                        <?php endif;?>
 
-                        <p class="card-text">Status : <?= $r->status; ?></p>
-                        <p class="card-text">Tersedia Dari Tanggal : <?= $r->tgl_tersedia; ?></p>
+                        <p class="card-text">Status : <?=$r->status;?></p>
+                        <p class="card-text">Tersedia Dari Tanggal : <?=$r->tgl_tersedia;?></p>
                         <a href="" class="btn btn-primary" data-toggle="modal"
-                            data-target="#exampleModalCenter<?= $r->kode_kamar ?>">Booking Sekarang</a>
+                            data-target="#exampleModalCenter<?=$r->kode_kamar?>">Booking Sekarang</a>
                     </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter<?= $r->kode_kamar ?>" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="exampleModalCenter<?=$r->kode_kamar?>" tabindex="-1" role="dialog"
                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Booking Kamar No.
-                                        <?= $r->kode_kamar ?></h5>
+                                        <?=$r->kode_kamar?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -127,7 +166,7 @@
 
 
 
-                                    <form class="form" action="<?= base_url('pencari/pesan_kamar') ?>" method="post"
+                                    <form class="form" action="<?=base_url('pencari/pesan_kamar')?>" method="post"
                                         enctype="multipart/form-data">
                                         <div class="form-group">
                                             <div class="mb-2">
@@ -151,14 +190,29 @@
 
                                             <div class="mb-2">
                                                 <label for="exampleFormControlInput1">Tanggal Mulai Menghuni</label>
-                                                <input type="date" class="form-control" name="tgl_masuk">
+                                                <!-- <input type="date" class="form-control DateForm" name="tgl_masuk"
+                                                    id="datepicker"> -->
+                                                <input type="text" class="form-control" id="datepicker"
+                                                    placeholder="yy/mm/dd" name="tgl_masuk" autocomplete="off">
                                             </div>
 
+                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+                                            <script>
+                                            $('#datepicker').datepicker({
+                                                minDate: 0,
+                                                maxDate: '+1w',
+                                                dateFormat: 'yy/mm/dd'
+                                            });
+                                            </script>
 
 
 
-                                            <input type="hidden" name="kode_kamar" value="<?= $r->id_kamar; ?>">
-                                            <input type="hidden" name="id_pencari" value="<?= $nama->id_pencari; ?>">
+
+                                            <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar;?>">
+
+                                            <input type="hidden" name="id_pencari" value="<?=$nama->id_pencari;?>">
 
 
                                         </div>
@@ -184,7 +238,7 @@
                     </div>
 
                 </div>
-                <?php endforeach; ?>
+                <?php endforeach;?>
             </div>
         </div>
     </div>
@@ -356,7 +410,11 @@
 
 
 </div>
-<!-- End of Content Wrapper -->
+<!-- End of Content Wrapper
+-->
 
 </div>
+
+
+
 <!-- End of Page Wrapper -->

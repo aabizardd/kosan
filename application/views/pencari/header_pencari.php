@@ -1,5 +1,5 @@
 <!-- Content Wrapper -->
-<?php error_reporting(0); ?>
+<?php error_reporting(0);?>
 <div id="content-wrapper" class="d-flex flex-column">
 
     <!-- Main Content -->
@@ -15,7 +15,7 @@
 
             <!-- Topbar Search -->
             <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group">
+                <div class="input-group" id="search_for">
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                         aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
@@ -25,6 +25,16 @@
                     </div>
                 </div>
             </form>
+
+            <script>
+            var url = document.URL
+            // var searchbox =
+            var last_url = url.substr(url.lastIndexOf('/') + 1)
+            if (last_url == 'pembayaran') {
+                document.getElementById("search_for").style.display = "none";
+
+            }
+            </script>
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -114,7 +124,7 @@
                         <!-- Counter - Mes	sages -->
 
 
-                        <span class="badge badge-danger badge-counter"><?= $jml_notif ?></span>
+                        <span class="badge badge-danger badge-counter"><?=$jml_notif?></span>
                     </a>
                     <!-- Dropdown - Messages -->
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -126,16 +136,16 @@
 
 
 
-                        <?php foreach ($notif as $n) : ?>
-                        <a class="dropdown-item d-flex align-items-center" href="<?= base_url('pencari/pemesanan') ?>">
+                        <?php foreach ($notif as $n): ?>
+                        <a class="dropdown-item d-flex align-items-center" href="<?=base_url('pencari/pemesanan')?>">
                             <div class="font-weight-bold">
-                                <div class="text-truncate"><?= $n->isi_pesan ?></div>
+                                <div class="text-truncate"><?=$n->isi_pesan?></div>
                                 <div class="small text-gray-500">asdsasad | asdsad
 
                                 </div>
                             </div>
                         </a>
-                        <?php endforeach; ?>
+                        <?php endforeach;?>
 
 
 
@@ -155,9 +165,9 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nama->nama_pencari; ?></span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$nama->nama_pencari;?></span>
                         <img class="img-profile rounded-circle"
-                            src="<?= base_url('asset_registrasi/upload_pencari/') . $nama->foto ?>">
+                            src="<?=base_url('asset_registrasi/upload_pencari/') . $nama->foto?>">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -185,14 +195,15 @@
 
 
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-        
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
                         </a>
                     </div>
                 </li>
 
             </ul>
+
 
 
         </nav>

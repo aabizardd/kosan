@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 var colors = ['#007bff', '#28a745', '#444444', '#c3e6cb', '#dc3545', '#6c757d'];
 
 var chBar = document.getElementById("chBar");
@@ -13,7 +13,7 @@ var chartData = {
 };
 if (chBar) {
     new Chart(chBar, {
-        type: 'bar',
+        type: 'line',
         data: chartData,
         options: {
             scales: {
@@ -33,4 +33,33 @@ if (chBar) {
         }
     });
 }
+</script> -->
+
+<script>
+//line
+var ctxL = document.getElementById("chBar").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+        labels: [<?php foreach ($pemasukann as $b): ?> "<?=date("F", strtotime($b->tanggal));?>",
+            <?php endforeach;?>
+        ],
+        datasets: [{
+                label: "Pendapatan",
+                data: [<?php foreach ($pemasukann as $p): ?> <?=$p->pendapatan?>, <?php endforeach;?>],
+                backgroundColor: [
+                    'rgba(105, 0, 132, .2)',
+                ],
+                borderColor: [
+                    'rgba(200, 99, 132, .7)',
+                ],
+                borderWidth: 2
+            }
+
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});
 </script>

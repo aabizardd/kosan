@@ -474,12 +474,56 @@ class Admin extends CI_Controller
 
         $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
 
-        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun Pemilik!', 'fas fa-check-circle');
+        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_user' => $id_pemilik])->row_array();
+
+        $email_pemilik = $data_pemilik['email'];
+
+        // var_dump($email_pemilik);die();
+        $this->_sendEmail($email_pemilik, 'diterima');
+
+        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun Pemilik, Email Berhasil Dikirim ke Email Pendaftar!', 'fas fa-check-circle');
 
         $this->session->set_flashdata('alert', $alert);
 
         redirect('admin/data_pemilik/');
 
+    }
+
+    private function _sendEmail($email, $type)
+    {
+
+        $this->load->library('email');
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_user' => 'unregistered30@gmail.com',
+            'smtp_pass' => 'Medellincartel13!',
+            'smtp_port' => 465,
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n",
+        ];
+
+        $this->email->initialize($config);
+        $this->email->from('adminkoalakos@gmail.com', 'Admin Koala Kos');
+        $this->email->to($email);
+
+        if ($type == 'diterima') {
+
+            $this->email->subject('Berhasil Mengaktifkan Akun');
+            $this->email->message('Klik tatutan ini untuk login : <a href="' . base_url() . 'welcome/login_pemilik' . '">Login</a>');
+        } else if ($type == 'ditolak') {
+
+            $this->email->subject('Proses Pendaftaran Anda Ditolak');
+            $this->email->message('Klik tatutan ini untuk daftar lagi : <a href="' . base_url() . 'welcome/registrasi_pemilik' . '">Activate</a>');
+        }
+
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
     }
 
     public function tolak_pendaftaran($id_pemilik)
@@ -491,7 +535,14 @@ class Admin extends CI_Controller
 
         $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
 
-        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik!', 'fas fa-check-circle');
+        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_user' => $id_pemilik])->row_array();
+
+        $email_pemilik = $data_pemilik['email'];
+
+        // var_dump($email_pemilik);die();
+        $this->_sendEmail($email_pemilik, 'ditolak');
+
+        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik, Info Telah Dikirim ke Email Pendaftar', 'fas fa-check-circle');
 
         $this->session->set_flashdata('alert', $alert);
 
