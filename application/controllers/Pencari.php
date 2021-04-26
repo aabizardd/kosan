@@ -554,4 +554,11 @@ class Pencari extends CI_Controller
         // echo $perbedaan->m . ' selisih bulan.';
         // echo $perbedaan->d . ' selisih hari.';
     }
+
+    public function cetakKwitansi($idpesanan = null)
+    {
+
+        $this->load->view('invoice/index');
+
+    }
 }

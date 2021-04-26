@@ -647,17 +647,15 @@ class Pemilik extends CI_Controller
                 ])
                 ->row_array();
 
-            $data_notif = [
+            // $data_notif = [
 
-                'isi_pesan' => 'Pesanan anda diterima!',
-                'dari' => $id_pemilik,
-                'untuk' => $id_pencari['id_pencari'],
-                'status_baca' => 0,
-                'id_pemilik' => $id_pemilik,
-                'id_pencari' => $id_pencari['id_pencari'],
-            ];
+            //     'isi_pesan' => 'Pesanan anda diterima!',
+            //     'dari' => $id_pemilik,
+            //     'untuk' => $id_pencari['id_pencari'],
+            //     'status_baca' => 0,
+            // ];
 
-            $this->M_All->insert('notifikasi', $data_notif);
+            // $this->M_All->insert('notifikasi', $data_notif);
 
             $this->session->set_flashdata('alert', '
 
@@ -691,17 +689,17 @@ class Pemilik extends CI_Controller
                     ])
                     ->row_array();
 
-                $data_notif = [
+                // $data_notif = [
 
-                    'isi_pesan' => 'Pesanan anda diterima!',
-                    'dari' => $id_pemilik,
-                    'untuk' => $id_pencari['id_pencari'],
-                    'status_baca' => 0,
-                    'id_pemilik' => $id_pemilik,
-                    'id_pencari' => $id_pencari['id_pencari'],
-                ];
+                //     'isi_pesan' => 'Pesanan anda diterima!',
+                //     'dari' => $id_pemilik,
+                //     'untuk' => $id_pencari['id_pencari'],
+                //     'status_baca' => 0,
+                //     'id_pemilik' => $id_pemilik,
+                //     'id_pencari' => $id_pencari['id_pencari'],
+                // ];
 
-                $this->M_All->insert('notifikasi', $data_notif);
+                // $this->M_All->insert('notifikasi', $data_notif);
 
                 $this->session->set_flashdata('alert', '
 
@@ -736,17 +734,17 @@ class Pemilik extends CI_Controller
                 ])
                 ->row_array();
 
-            $data_notif = [
+            // $data_notif = [
 
-                'isi_pesan' => 'Segera Melakukan Pelunasan!',
-                'dari' => $id_pemilik,
-                'untuk' => $id_pencari['id_pencari'],
-                'status_baca' => 0,
-                'id_pemilik' => $id_pemilik,
-                'id_pencari' => $id_pencari['id_pencari'],
-            ];
+            //     'isi_pesan' => 'Segera Melakukan Pelunasan!',
+            //     'dari' => $id_pemilik,
+            //     'untuk' => $id_pencari['id_pencari'],
+            //     'status_baca' => 0,
+            //     'id_pemilik' => $id_pemilik,
+            //     'id_pencari' => $id_pencari['id_pencari'],
+            // ];
 
-            $this->M_All->insert('notifikasi', $data_notif);
+            // $this->M_All->insert('notifikasi', $data_notif);
 
             $this->session->set_flashdata('alert', '
 

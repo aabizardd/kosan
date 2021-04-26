@@ -263,7 +263,7 @@ if ($r->jangka_waktu == "1 Tahun") {
                             <td>
 
                                 <?php if ($r->status_transaksi == 0): ?>
-
+                                <!-- <button class="btn btn-info">Download Kwitansi DP</button> -->
                                 <?php else: ?>
                                 <div class=" col mt-1">
                                     <a href="pembatalan_pesanan/<?=$r->id_pesan . '/' . $r->id_kamar?>">
@@ -271,6 +271,16 @@ if ($r->jangka_waktu == "1 Tahun") {
                                             <i class="fas fa-times-circle"></i> Batalkan
                                         </button>
                                     </a>
+
+                                </div>
+
+                                <div class=" col mt-1">
+                                    <a href="<?=base_url('pencari/cetakKwitansi')?>" target="_blank">
+                                        <button class="btn btn-info w-100">
+                                            <i class="fas fa-download"></i> Download Kwitansi
+                                        </button>
+                                    </a>
+
                                 </div>
                                 <?php endif;?>
 
