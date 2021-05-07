@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2021 at 02:33 PM
+-- Generation Time: May 07, 2021 at 02:02 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -144,6 +144,13 @@ CREATE TABLE `pelunasan` (
   `id_pesan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Dumping data for table `pelunasan`
+--
+
+INSERT INTO `pelunasan` (`id_lunas`, `tanggal`, `jam_pelunasan`, `jumlah_pelunasan`, `bukti_pelunasan`, `id_pesan`) VALUES
+(13, '2021-04-26', '19:43:27', 4800000, '6086fbbf01bc6.png', 30);
+
 -- --------------------------------------------------------
 
 --
@@ -175,7 +182,7 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pesan`, `nama_penghuni`, `nomor_ktp`, `nomor_hp`, `tanggal_pesan`, `tanggal_masuk`, `tanggal_keluar`, `jam`, `jangka_waktu`, `jumlah_dp`, `bukti_bayar`, `sisa_pembayaran`, `status_transaksi`, `keterangan_pembatalan`, `id_pencari`, `id_penghuni`, `id_kamar`) VALUES
-(30, 'asdsa', '12312321', '213213', '2021-04-26', '2021-04-26', '2021-10-26', '', '6 Bulan', '1200000', '6086a8669ea4f.png', 4800000, 0, NULL, 4, NULL, 8);
+(30, 'asdsa', '12312321', '213213', '2021-04-26', '2021-04-26', '2021-10-26', '', '6 Bulan', '1200000', '6086a8669ea4f.png', 0, 2, NULL, 4, NULL, 8);
 
 -- --------------------------------------------------------
 
@@ -445,7 +452,7 @@ ALTER TABLE `notifikasi`
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
