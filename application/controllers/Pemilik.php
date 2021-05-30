@@ -15,6 +15,23 @@ class Pemilik extends CI_Controller
         }
     }
 
+    public function getNotif()
+    {
+        $id = $this->input->post('id');
+        $data = $this->db->get_where('notifikasi', array('id_notifikasi' => $id))->row();
+        echo json_encode($data);
+    }
+
+    public function notifDibaca()
+    {
+        $id = $this->input->post('id');
+        $status = $this->input->post('status_baca');
+
+        $this->db->set('status_baca', $status);
+        $this->db->where('id_notifikasi', $id);
+        $this->db->update('notifikasi');
+    }
+
     public function index($param1 = null)
     {
         $total_transaksi = $this->M_All->count('pemesanan');
@@ -94,9 +111,8 @@ class Pemilik extends CI_Controller
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
 
         $data['notif'] =
-        $this->db->order_by('id_notifikasi', 'DESC')->limit(3)->get_where('notifikasi', [
-            'untuk' => $id_pemilik1,
-            'status_baca' => 0,
+        $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
+            'untuk' => $id_pemilik1
         ])->result();
         // sampe sini
 
@@ -610,18 +626,18 @@ class Pemilik extends CI_Controller
         // var_dump($bukti_lunas['id_pesan']);
     }
 
-    public function proses_pesanan($tipe, $id, $idkamar = null)
+    public function proses_pesanan($tipe, $id_pencari, $id, $idkamar = null)
     {
-
         $id_pemilik = $this->session->userdata('id_pemilik');
-
         $where = array('id_pesan' => $id);
         $status = 0;
 
         if ($tipe == 'terima') {
             $status = 2;
+            $this->kirim_notif("Pesanan Diterima", 'info', $id_pemilik, $id_pencari);
         } elseif ($tipe == 'pelunasan') {
             $status = 1;
+            $this->kirim_notif("Silahkan Melakukan Pelunasan", 'pelunasan', $id_pemilik, $id_pencari);
         } else {
             $status = 4;
 
@@ -838,6 +854,7 @@ class Pemilik extends CI_Controller
         $idpesanan = $this->input->post('idpesanan');
         $idkamar = $this->input->post('idkamar');
         $alasan_penolakan = $this->input->post('alasan_penolakan');
+        $id_pencari = $this->input->post('id_pencari');
 
         $where = [
             'id_pesan' => $idpesanan,
@@ -849,6 +866,8 @@ class Pemilik extends CI_Controller
             'status' => 'Tersedia',
         ];
 
+        print_r($this->session->userdata('id_pemilik'));
+
         $this->db->where('id_kamar', $idkamar);
         $this->db->update('kamar', $data_update_kamar);
 
@@ -857,9 +876,29 @@ class Pemilik extends CI_Controller
             'keterangan_pembatalan' => $alasan_penolakan,
         ];
 
+        $wherePemilik = [
+            'id_pemilik' => $this->session->userdata('id_pemilik'),
+        ];
+        $data_pemilik = $this->M_All->get_where('pemilik_kos', $wherePemilik)->row_array();
+        $id_pemilik1 = $data_pemilik['id_user'];
+        $this->kirim_notif("Pesanan Ditolak", 'info', $id_pemilik1, $id_pencari);
+
         $this->M_All->update('pemesanan', $where, $data);
 
         redirect('pemilik/booking');
 
+    }
+
+    public function kirim_notif($pesan, $jenis, $dari, $untuk)
+    {
+        $data_notif = [
+            'isi_pesan' => $pesan,
+            'dari' => $dari,
+            'untuk' => $untuk,
+            'status_baca' => 0,
+            'jenis' => $jenis,
+        ];
+
+        $this->M_All->insert('notifikasi', $data_notif);
     }
 }

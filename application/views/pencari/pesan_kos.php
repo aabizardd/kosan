@@ -101,9 +101,6 @@
                     Jangka Waktu
                 </button>
                 <?php $segment3 = $this->uri->segment(3)?>
-
-
-
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="<?=base_url('pencari/view_data_kos/') . $segment3?>/smester">6
                         Bulan</a>
@@ -119,6 +116,7 @@
 
                 <?php
 $no = 0;
+// var_dump();
 foreach ($result as $r): ?>
                 <div class="card">
                     <img class="card-img-top" src="<?=base_url('asset_admin/upload_kos/')?><?=$r->foto;?>"
@@ -213,6 +211,8 @@ foreach ($result as $r): ?>
                                             <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar;?>">
 
                                             <input type="hidden" name="id_pencari" value="<?=$nama->id_pencari;?>">
+                                            <input type="hidden" name="id_pemilik" value="<?=$kos->id_pemilik;?>">
+                                            <input type="hidden" name="kode_kos" value="<?=$kos->kode_kos?>">
 
 
                                         </div>

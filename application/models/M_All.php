@@ -13,6 +13,16 @@ class M_All extends CI_Model
         return $this->db->get_where($table, $where);
     }
 
+    public function getNotif($id_pencari)
+    {
+        $this->db->select('*');
+        $this->db->from('notifikasi');
+        $this->db->where('untuk' ,$id_pencari);
+        $this->db->order_by('date', 'desc');
+        $this->db->limit(5);
+        return $this->db->get();
+    }
+
     public function view_where_join($kode_kos)
     {
 
@@ -20,6 +30,24 @@ class M_All extends CI_Model
         $this->db->from('kosan');
         $this->db->join('pemilik_kos', 'kosan.id_pemilik = pemilik_kos.id_pemilik');
         $this->db->where('kode_kos', $kode_kos);
+        return $this->db->get();
+    }
+
+    public function getIdUser($id_pemilik, $kode_kos)
+    {
+        $this->db->select('id_user');
+        $this->db->from('kosan');
+        $this->db->join('pemilik_kos', 'kosan.id_pemilik = pemilik_kos.id_pemilik');
+        $this->db->where('kosan.id_pemilik', $id_pemilik);
+        $this->db->where('kosan.kode_kos', $kode_kos);
+        return $this->db->get();
+    }
+
+    public function getIdUserPencari($id_pencari)
+    {
+        $this->db->select('id_user');
+        $this->db->from('pencari_kos');
+        $this->db->where('id_pencari', $id_pencari);
         return $this->db->get();
     }
 
@@ -347,7 +375,7 @@ class M_All extends CI_Model
 
     public function getCountBooking($id_pencari)
     {
-        $query = "SELECT COUNT(id_pesan) as ct FROM `pemesanan` WHERE id_pencari = $id_pencari AND jumlah_dp = 0 GROUP BY id_pencari";
+        $query = "SELECT COUNT(id_pesan) as ct FROM `pemesanan` WHERE id_pencari = $id_pencari AND jumlah_dp = 0 AND status_transaksi <> 3 GROUP BY id_pencari";
 
         $result = $this->db->query($query);
 

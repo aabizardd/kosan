@@ -137,12 +137,22 @@
 
 
                         <?php foreach ($notif as $n): ?>
-                        <a class="dropdown-item d-flex align-items-center" href="<?=base_url('pencari/pemesanan')?>">
+                        <?php 
+                        if ($n->jenis == "pemesanan" || $n->jenis == "info") {
+                          $href = base_url('pencari/pemesanan');
+                        }elseif ($n->jenis == 'pembayaran' || $n->jenis == 'pelunasan') {
+                          $href = base_url('pencari/pembayaran');
+                        }
+                        if ($n->status_baca == 0) {
+                          $color = 'black';
+                        }else{
+                          $color = 'grey';
+                        }
+                        ?>
+                        <a class="dropdown-item d-flex align-items-center notif<?=$n->id_notifikasi?>" data-url="<?= $href ?>" onclick="notifDibaca(<?= $n->id_notifikasi ?>)">
                             <div class="font-weight-bold">
-                                <div class="text-truncate"><?=$n->isi_pesan?></div>
-                                <div class="small text-gray-500">asdsasad | asdsad
-
-                                </div>
+                                <div class="text-truncate" style="color: <?=$color?>"><?=$n->isi_pesan?></div>
+                                <div class="small text-gray-500"><?=$n->date?></div>
                             </div>
                         </a>
                         <?php endforeach;?>

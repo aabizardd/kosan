@@ -56,6 +56,47 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('.toast').toast('show');
 });
+
+function notifDibaca(idnotif) {
+        var redirect = $('.notif'+idnotif).data('url');
+        // alert(url);
+        $.ajax({
+            url: 'getNotif',
+            type: 'post',
+            data: {
+                'id': idnotif
+            },
+            dataType: 'json',
+            success: function(response) {
+                let {
+                    id_notifikasi,
+                    jenis,
+                    untuk,
+                    status_baca
+                } = response
+                $.ajax({
+                    url: 'notifDibaca',
+                    type: 'post',
+                    data: {
+                        'id': id_notifikasi,
+                        'status_baca': 1
+                    },
+                    dataType: 'json',
+                    complete: function() {
+                        if (jenis == 'pemesanan' && status_baca == 0) {
+                            window.location = redirect;
+                        }else if(jenis == 'pemesanan' && status_baca == 1){
+                            window.location = "<?= base_url('pemilik/booking')?>";
+                        }else{
+                            window.location = redirect;
+                        }
+                        // alert(jenis);
+                    }
+                });
+                // console.log(jenis);
+            }
+        });
+    }
 </script>
 
 </body>

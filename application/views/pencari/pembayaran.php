@@ -117,6 +117,7 @@
                                                     </div>
 
                                                     <input type="hidden" name="id_pesan" value="<?=$r->id_pesan?>">
+                                                    <input type="hidden" name="id_pemilik" value="<?=$r->id_user?>">
                                                     <input type="hidden" name="sisa_bayar_dp"
                                                         value="<?=$r->sisa_pembayaran?>">
 
@@ -231,6 +232,7 @@ if ($r->jangka_waktu == "1 Tahun") {
 
                                                     <input type="hidden" name="id_pesan" value="<?=$r->id_pesan?>">
                                                     <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar?>">
+                                                    <input type="hidden" name="id_pencari" value="<?=$r->id_pencari?>">
                                                     <input type="hidden" name="sisa_bayar"
                                                         value="<?=$r->sisa_pembayaran?>">
 

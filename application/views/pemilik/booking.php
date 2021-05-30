@@ -115,13 +115,13 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="badge-xl badge-success dropdown-item"
-                                        href="<?=base_url('pemilik/proses_pesanan/terima/') . $r->id_pesan?>"><i
+                                        href="<?=base_url('pemilik/proses_pesanan/terima/'). $r->id_pencari . "/" . $r->id_pesan?>"><i
                                             class="fas fa-check-circle"></i>
                                         Terima
                                         Pesanan (Lunas)</a>
 
                                     <a class="badge-xl badge-warning dropdown-item mt-1"
-                                        href="<?=base_url('pemilik/proses_pesanan/pelunasan/') . $r->id_pesan?>"><i
+                                        href="<?=base_url('pemilik/proses_pesanan/pelunasan/'). $r->id_pencari . "/" . $r->id_pesan?>"><i
                                             class="fas fa-money-bill-wave-alt"></i>
                                         Proses Pelunasan</a>
 
@@ -132,7 +132,7 @@
 
                                     <a class="badge-xl badge-danger dropdown-item mt-1 text-white" data-toggle="modal"
                                         data-target="#exampleModal3" id="batal_pesan" data-idpesan="<?=$r->id_pesan?>"
-                                        data-idkamar="<?=$r->id_kamar?>">
+                                        data-idkamar="<?=$r->id_kamar?>" data-idpencari="<?=$r->id_pencari?>">
                                         <i class="fas fa-times-circle"></i>
                                         Tolak pesanan
                                     </a>
@@ -306,6 +306,7 @@ foreach ($result as $r): ?>
 
                     <input type="hidden" id="idpesanan" name="idpesanan">
                     <input type="hidden" id="idkamar" name="idkamar">
+                    <input type="hidden" id="idpencari" name="id_pencari">
 
                 </div>
                 <div class="modal-footer">
@@ -326,9 +327,11 @@ $(document).on("click", "#batal_pesan", function() {
     // alert('clicked')
     var idpesan = $(this).data('idpesan');
     var idkamar = $(this).data('idkamar');
+    var idpencari = $(this).data('idpencari');
 
     $("#modalBody #idpesanan").val(idpesan);
     $("#modalBody #idkamar").val(idkamar);
+    $("#modalBody #idpencari").val(idpencari);
 
 
 });

@@ -41,21 +41,23 @@ session_start(); ?>
 
     <div class="container">
         <div class="card-columns">
-            <?php $conn = mysqli_connect("localhost", "root", "", "ngekost");
-			$q 		= mysqli_query($conn, "select * from kosan ");
-			while ($r = mysqli_fetch_array($q)) {
+            <?php 
+            // $conn = mysqli_connect("localhost", "root", "", "ngekost");
+			// $q = mysqli_query($conn, "select * from kosan");
+			// while ($r = mysqli_fetch_array($q)) {
+            foreach ($content as $key => $r) {
 			?>
             <div class="card">
-                <a target="_blank" href="<?= base_url('Welcome/view_data_kos/' . $r[kode_kos]) ?>">
+                <a target="_blank" href="<?= base_url('Welcome/view_data_kos/' . $r['kode_kos']) ?>">
                     <img width="200" height="240" class="card-img-top"
-                        src="<?= base_url('asset_admin/upload_kos/' . $r[foto]) ?>" alt="Card image cap">
+                        src="<?= base_url('asset_admin/upload_kos/' . $r['foto']) ?>" alt="Card image cap">
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title"><?= $r[nama_kos] ?></h5>
-                    <p class="card-text"><?= $r[deskripsi] ?></p>
+                    <h5 class="card-title"><?= $r['nama_kos'] ?></h5>
+                    <p class="card-text"><?= $r['deskripsi'] ?></p>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted"><?= $r[jenis_kosan] ?></small>
+                    <small class="text-muted"><?= $r['jenis_kosan'] ?></small>
                 </div>
             </div>
             <?php } ?>

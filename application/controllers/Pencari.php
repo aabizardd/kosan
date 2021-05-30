@@ -15,6 +15,23 @@ class Pencari extends CI_Controller
         }
     }
 
+    public function getNotif()
+    {
+        $id = $this->input->post('id');
+        $data = $this->db->get_where('notifikasi', array('id_notifikasi' => $id))->row();
+        echo json_encode($data);
+    }
+
+    public function notifDibaca()
+    {
+        $id = $this->input->post('id');
+        $status = $this->input->post('status_baca');
+
+        $this->db->set('status_baca', $status);
+        $this->db->where('id_notifikasi', $id);
+        $this->db->update('notifikasi');
+    }
+
     public function index()
     {
         // $data['artikel'] = $this->M_All->get('artikel')->result();
@@ -29,12 +46,7 @@ class Pencari extends CI_Controller
         );
 
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
-        $data['notif'] = $this->db
-            ->get_where('notifikasi', [
-                'untuk' => $id_pencari,
-                'status_baca' => 0,
-            ])
-            ->result();
+        $data['notif'] = $this->M_All->getNotif($id_pencari)->result();
 
         $this->load->view('pencari/sidebar_pencari');
         $this->load->view('pencari/header_pencari', $data);
@@ -160,13 +172,14 @@ class Pencari extends CI_Controller
         if ($getCountBooking['ct'] >= 2) {
 
             redirect('pencari');
-
         } else {
 
             $uang_muka = 0;
             $harga = 0;
             $kode_kamar = $this->input->post('kode_kamar');
             $id_pencari = $this->input->post('id_pencari');
+            $id_pemilik = $this->M_All->getIdUser($this->input->post('id_pemilik'), $this->input->post('kode_kos'))->result();
+            $idUserPencari = $this->M_All->getIdUserPencari($this->input->post('id_pencari'))->result();
             $tgl_masuk = date('Y-m-d', strtotime($this->input->post('tgl_masuk')));
 
             // var_dump($tgl_masuk);die();
@@ -214,7 +227,12 @@ class Pencari extends CI_Controller
                 'sisa_pembayaran' => $sisa_bayar,
                 'status_transaksi' => 5,
             );
+            // return print_r($idUserPencari[0]->id_user);
+
+            $this->kirim_notif("Segera Bayar DP untuk kosanmu!", 'pembayaran', $id_pemilik[0]->id_user, $id_pencari);
+            // $this->kirim_notif("Segera Bayar DP untuk kosanmu!", $idUserPencari[0]->id_user, $id_pencari);
             // print_r($data);
+
 
             $this->M_All->insert('pemesanan', $data);
 
@@ -312,21 +330,30 @@ class Pencari extends CI_Controller
 
         $id_pemilik1 = $data_pemilik2['id_user'];
 
-        $this->kirim_notif("Ada pesanan baru nih!", $id_pencari, $id_pemilik1);
+        $this->kirim_notif("Ada pesanan baru nih!", 'pemesanan', $id_pencari, $id_pemilik1);
+
+        // $notif_update = [
+        //     'status_baca' => 1
+        // ];
+        $this->db->set('status_baca', 1);
+        $this->db->where('untuk', $id_pencari);
+        $this->db->where('jenis', 'pembayaran');
+        $this->db->where('status_baca', 0);
+        $this->db->update('notifikasi');
 
         $this->session->set_flashdata('alert', $this->toast('success', '00ff00', 'Berhasil membayar DP, Tunggu Proses Selanjutnya ya!', 'fas fa-smile-wink'));
 
         redirect('pencari/pembayaran');
     }
 
-    public function kirim_notif($pesan, $dari, $untuk)
+    public function kirim_notif($pesan, $jenis, $dari, $untuk)
     {
         $data_notif = [
-
             'isi_pesan' => $pesan,
             'dari' => $dari,
             'untuk' => $untuk,
             'status_baca' => 0,
+            'jenis' => $jenis,
         ];
 
         $this->M_All->insert('notifikasi', $data_notif);
@@ -373,11 +400,11 @@ class Pencari extends CI_Controller
 
     public function pembayaran_pelunasan()
     {
-
         $id_pesan = $this->input->post('id_pesan');
         $sisa_bayar = $this->input->post('sisa_bayar');
         $sisa_bayar_dp = $this->input->post('sisa_bayar_dp');
-
+        $id_pencari = $this->input->post('id_pencari');
+        $id_pemilik = $this->input->post('id_pemilik');
         $bukti_pelunasan = $this->_uploadFile();
 
         $data = [
@@ -394,9 +421,11 @@ class Pencari extends CI_Controller
             'sisa_pembayaran' => 0,
             'status_transaksi' => 0,
         ];
-
         $this->db->where('id_pesan', $id_pesan);
         $this->db->update('pemesanan', $data_update);
+        
+
+        $this->kirim_notif("Pembayaran Lunas", 'pembayaran', $id_pencari, $id_pemilik);
 
         redirect('pencari/pembayaran');
     }
@@ -450,7 +479,6 @@ class Pencari extends CI_Controller
 
     public function pembatalan_pesanan($idPesan, $idKamar)
     {
-
         $where_upd = array('id_pesan' => $idPesan);
         $where_update = array('id_kamar' => $idKamar);
 
@@ -559,6 +587,5 @@ class Pencari extends CI_Controller
     {
 
         $this->load->view('invoice/index');
-
     }
 }
