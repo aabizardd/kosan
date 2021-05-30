@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2021 at 02:02 PM
+-- Generation Time: May 30, 2021 at 07:50 PM
 -- Server version: 10.4.18-MariaDB
--- PHP Version: 7.3.27
+-- PHP Version: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `kos2`
+-- Database: `kost`
 --
 
 -- --------------------------------------------------------
@@ -80,7 +80,11 @@ CREATE TABLE `kamar` (
 --
 
 INSERT INTO `kamar` (`id_kamar`, `kode_kamar`, `kode_kos`, `harga`, `harga_smesteran`, `deskripsi`, `foto`, `status`, `tgl_tersedia`) VALUES
-(8, '1', 'OSAB6456', 12000000, 6000000, 'asdsa', 'BACKGROUND_MUBES_HMDSI.png', 'Booked', '2021-04-08');
+(8, '1', 'OSAB6456', 12000000, 6000000, 'asdsa', 'BACKGROUND_MUBES_HMDSI.png', 'Booked', '2021-04-08'),
+(9, '666', 'ndek7316', 10000000, 5000000, '4x4', 'Tom_Clancys_Rainbow_Six®_Siege2021-4-19-1-37-52.jpg', 'Booked', '2021-05-19'),
+(10, '2', 'OSAB6456', 5000000, 2500000, '3x2', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-51-25.jpg', 'Tersedia', '2021-05-20'),
+(11, '321', 'ndek7316', 3000000, 1500000, 'ini kamar', 'Screenshot_2021-04-17_011203.png', 'Booked', '2021-05-31'),
+(12, '007', 'OSAB6456', 4000000, 0, 'kamar james bond', 'Tom_Clancys_Rainbow_Six®_Siege2021-4-19-1-37-52.jpg', 'Tersedia', '2021-03-01');
 
 -- --------------------------------------------------------
 
@@ -105,6 +109,7 @@ CREATE TABLE `kosan` (
 --
 
 INSERT INTO `kosan` (`kode_kos`, `nama_kos`, `alamat`, `deskripsi`, `foto`, `jenis_kosan`, `saldo_kos`, `tanggal_daftar`, `id_pemilik`) VALUES
+('ndek7316', 'Indekost', 'Bandung Permata', 'Luas kamar ini adalah 4x4. Untuk tegangan listrik yaitu Bayar. Deskrip lainnya berupa, ayo ngekost', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-25-18.jpg', 'Campur', 0, '2021-05-18', 9),
 ('OSAB6456', 'KOSABC', 'Bandung', 'Luas kamar ini adalah 12. Untuk tegangan listrik yaitu 12. Deskrip lainnya berupa, 12', 'thumb-1920-1125041.png', 'Putra', 0, '2021-04-08', 9);
 
 -- --------------------------------------------------------
@@ -118,16 +123,34 @@ CREATE TABLE `notifikasi` (
   `isi_pesan` varchar(250) NOT NULL,
   `dari` varchar(250) NOT NULL,
   `untuk` varchar(250) NOT NULL,
-  `status_baca` int(11) NOT NULL
+  `status_baca` int(11) NOT NULL,
+  `jenis` varchar(50) DEFAULT NULL,
+  `date` datetime DEFAULT current_timestamp(),
+  `kode_kos` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `notifikasi`
 --
 
-INSERT INTO `notifikasi` (`id_notifikasi`, `isi_pesan`, `dari`, `untuk`, `status_baca`) VALUES
-(2, 'Ada pesanan baru nih!', '27', '26', 0),
-(3, 'Ada pesanan baru nih!', '27', '26', 0);
+INSERT INTO `notifikasi` (`id_notifikasi`, `isi_pesan`, `dari`, `untuk`, `status_baca`, `jenis`, `date`, `kode_kos`) VALUES
+(9, 'Segera Bayar DP untuk kosanmu!', '26', '4', 1, 'pembayaran', '2021-05-29 06:53:11', NULL),
+(10, 'Ada pesanan baru nih!', '27', '26', 1, 'pemesanan', '2021-05-29 07:05:22', NULL),
+(11, 'Pesanan Ditolak', '26', '4', 1, 'pemesanan', '2021-05-29 08:01:39', NULL),
+(12, 'Segera Bayar DP untuk kosanmu!', '26', '4', 1, 'pembayaran', '2021-05-29 08:18:37', NULL),
+(13, 'Ada pesanan baru nih!', '27', '26', 1, 'pemesanan', '2021-05-29 08:20:19', NULL),
+(14, 'Pesanan Ditolak', '26', '4', 1, 'pemesanan', '2021-05-30 15:13:11', NULL),
+(15, 'Segera Bayar DP untuk kosanmu!', '26', '4', 1, 'pembayaran', '2021-05-30 15:14:16', NULL),
+(16, 'Ada pesanan baru nih!', '27', '26', 1, 'pemesanan', '2021-05-30 15:15:38', NULL),
+(17, 'Pesanan Ditolak', '26', '4', 1, 'info', '2021-05-30 15:20:28', NULL),
+(18, 'Segera Bayar DP untuk kosanmu!', '26', '4', 1, 'pembayaran', '2021-05-30 16:17:48', NULL),
+(19, 'Ada pesanan baru nih!', '27', '26', 1, 'pemesanan', '2021-05-30 16:18:00', NULL),
+(20, 'Pesanan Ditolak', '26', '4', 1, 'info', '2021-05-30 16:44:10', NULL),
+(21, 'Segera Bayar DP untuk kosanmu!', '26', '4', 1, 'pembayaran', '2021-05-30 17:24:52', NULL),
+(22, 'Ada pesanan baru nih!', '27', '26', 1, 'pemesanan', '2021-05-30 17:25:13', NULL),
+(23, 'Silahkan Melakukan Pelunasan', '9', '4', 1, 'pelunasan', '2021-05-30 17:50:38', NULL),
+(24, 'Silahkan Melakukan Pelunasan', '9', '4', 1, 'pelunasan', '2021-05-30 23:00:45', NULL),
+(25, 'Pesanan Diterima', '9', '4', 1, 'info', '2021-05-30 23:24:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -149,7 +172,10 @@ CREATE TABLE `pelunasan` (
 --
 
 INSERT INTO `pelunasan` (`id_lunas`, `tanggal`, `jam_pelunasan`, `jumlah_pelunasan`, `bukti_pelunasan`, `id_pesan`) VALUES
-(13, '2021-04-26', '19:43:27', 4800000, '6086fbbf01bc6.png', 30);
+(13, '2021-04-26', '19:43:27', 4800000, '6086fbbf01bc6.png', 30),
+(14, '2021-05-18', '17:55:04', 8000000, '60a3e358f1f01.jpg', 31),
+(15, '2021-05-30', '17:59:22', 1200000, '60b3b65a409f4.png', 41),
+(16, '2021-05-30', '18:04:47', 0, '60b3b79f545d5.jpg', 41);
 
 -- --------------------------------------------------------
 
@@ -182,7 +208,15 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pesan`, `nama_penghuni`, `nomor_ktp`, `nomor_hp`, `tanggal_pesan`, `tanggal_masuk`, `tanggal_keluar`, `jam`, `jangka_waktu`, `jumlah_dp`, `bukti_bayar`, `sisa_pembayaran`, `status_transaksi`, `keterangan_pembatalan`, `id_pencari`, `id_penghuni`, `id_kamar`) VALUES
-(30, 'asdsa', '12312321', '213213', '2021-04-26', '2021-04-26', '2021-10-26', '', '6 Bulan', '1200000', '6086a8669ea4f.png', 0, 2, NULL, 4, NULL, 8);
+(30, 'asdsa', '12312321', '213213', '2021-04-26', '2021-04-26', '2021-10-26', '', '6 Bulan', '1200000', '6086a8669ea4f.png', 0, 2, NULL, 4, NULL, 8),
+(31, 'Wawan', '12123123123123', '433423251', '2021-05-18', '2021-05-20', '2022-05-20', '', '1 Tahun', '2000000', '60a3e227d42df.png', 0, 2, NULL, 4, NULL, 9),
+(32, 'Yanto', NULL, NULL, '2021-05-18', '2021-05-21', '2021-11-21', '', '6 Bulan', '0', '', 2500000, 3, NULL, 4, NULL, 10),
+(33, 'Mina', NULL, NULL, '2021-05-28', '2021-05-31', '2021-12-01', '', '6 Bulan', '0', '', 0, 3, NULL, 4, NULL, 11),
+(37, 'winni', '12312141', '0511511', '2021-05-29', '2021-05-30', '2021-11-30', '', '6 Bulan', '0', '60b1854208efb.jpg', 0, 4, 'salah harga', 4, NULL, 11),
+(38, 'winni', '12312141', '0511511', '2021-05-29', '2021-05-30', '2021-11-30', '', '6 Bulan', '300000', '60b196d36c639.jpg', 1200000, 4, 'DP kurang', 4, NULL, 11),
+(39, 'Yanto', '12312141', '0511511', '2021-05-30', '2021-05-30', '2021-11-30', '', '6 Bulan', '300000', '60b349aae4979.png', 1200000, 4, 'gak boleh', 4, NULL, 11),
+(40, 'Mina', '12312141', '0511511', '2021-05-30', '2021-05-30', '2021-11-30', '', '6 Bulan', '300000', '60b3584825e9b.png', 1200000, 4, 'gak', 4, NULL, 11),
+(41, 'Nina', '12312141', '0511511', '2021-05-30', '2021-05-30', '2021-11-30', '', '6 Bulan', '300000', '60b36809a3e10.png', 0, 2, NULL, 4, NULL, 11);
 
 -- --------------------------------------------------------
 
@@ -440,25 +474,25 @@ ALTER TABLE `bayar_di_muka`
 -- AUTO_INCREMENT for table `kamar`
 --
 ALTER TABLE `kamar`
-  MODIFY `id_kamar` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_kamar` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `pemilik_kos`
