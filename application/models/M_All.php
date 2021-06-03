@@ -291,7 +291,6 @@ class M_All extends CI_Model
     public function get_kode_kos($id_pemilik)
     {
         // SELECT ks.kode_kos FROM pemesanan p join kamar k on(p.id_kamar = k.id_kamar) join kosan ks on(k.kode_kos = ks.kode_kos) WHERE id_pemilik = 4 limit 1
-
         $this->db->select('*');
         $this->db->from('pemesanan p');
         $this->db->join('kamar k', 'p.id_kamar = k.id_kamar');
@@ -300,6 +299,11 @@ class M_All extends CI_Model
         $this->db->limit(1);
         return $this->db->get();
 
+    }
+
+    public function getPemesanan()
+    {
+        return $this->db->get('pemesanan');
     }
 
     public function getPemasukanPerBulan($id_kos)

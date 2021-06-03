@@ -51,14 +51,19 @@ class Pemilik extends CI_Controller
 
         $kode_kos = "";
         $data['nama_kosan'] = "";
-        if (is_null($param1)) {
-            $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-            $kode_kos = $k_kos['kode_kos'];
-            $data['nama_kosan'] = $k_kos['nama_kos'];
+        $cek = $this->M_All->getPemesanan()->result();
+        if (!$cek) {
+            $data['nama_kosan'] = " ";
         } else {
-            $kode_kos = $param1;
-            $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-            $data['nama_kosan'] = $nama_kosss['nama_kos'];
+            if (is_null($param1)) {
+                $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
+                $kode_kos = $k_kos['kode_kos'];
+                $data['nama_kosan'] = $k_kos['nama_kos'];
+            } else {
+                $kode_kos = $param1;
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
+                $data['nama_kosan'] = $nama_kosss['nama_kos'];
+            }
         }
 
         $data['count_transaksi'] = $this->M_All->getCountTransaksi($kode_kos);
@@ -111,9 +116,9 @@ class Pemilik extends CI_Controller
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
 
         $data['notif'] =
-        $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
-            'untuk' => $id_pemilik1
-        ])->result();
+            $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
+                'untuk' => $id_pemilik1
+            ])->result();
         // sampe sini
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
@@ -158,16 +163,20 @@ class Pemilik extends CI_Controller
 
         $kode_kos = "";
         $data_['nama_kosan'] = "";
-        if (is_null($param1)) {
-            $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-            $kode_kos = $k_kos['kode_kos'];
-            $data_['nama_kosan'] = $k_kos['nama_kos'];
+        $cek = $this->M_All->getPemesanan()->result();
+        if (!$cek) {
+            $data['nama_kosan'] = " ";
         } else {
-            $kode_kos = $param1;
-            $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-            $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            if (is_null($param1)) {
+                $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
+                $kode_kos = $k_kos['kode_kos'];
+                $data_['nama_kosan'] = $k_kos['nama_kos'];
+            } else {
+                $kode_kos = $param1;
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
+                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            }
         }
-
         // $id_pemilik = $this->session->userdata('id_pemilik');
         $where = array('id_pemilik' => $id_pemilik);
         $where_ = array('pemilik_kos.id_pemilik' => $id_pemilik);
@@ -192,14 +201,19 @@ class Pemilik extends CI_Controller
         $id_pemilik = $this->session->userdata('id_pemilik');
 
         $kode_kos = "";
-        if (is_null($param1)) {
-            $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-            $kode_kos = $k_kos['kode_kos'];
-            $data_['nama_kosan'] = $k_kos['nama_kos'];
+        $cek = $this->M_All->getPemesanan()->result();
+        if (!$cek) {
+            $data['nama_kosan'] = " ";
         } else {
-            $kode_kos = $param1;
-            $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-            $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            if (is_null($param1)) {
+                $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
+                $kode_kos = $k_kos['kode_kos'];
+                $data_['nama_kosan'] = $k_kos['nama_kos'];
+            } else {
+                $kode_kos = $param1;
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
+                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            }
         }
 
         // $id_pemilik = $this->session->userdata('id_pemilik');
@@ -251,14 +265,19 @@ class Pemilik extends CI_Controller
         $where = array('id_pemilik' => $id_pemilik);
 
         $kode_kos = "";
-        if (is_null($param1)) {
-            $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-            $kode_kos = $k_kos['kode_kos'];
-            $data_['nama_kosan'] = $k_kos['nama_kos'];
+        $cek = $this->M_All->getPemesanan()->result();
+        if (!$cek) {
+            $data['nama_kosan'] = " ";
         } else {
-            $kode_kos = $param1;
-            $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-            $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            if (is_null($param1)) {
+                $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
+                $kode_kos = $k_kos['kode_kos'];
+                $data_['nama_kosan'] = $k_kos['nama_kos'];
+            } else {
+                $kode_kos = $param1;
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
+                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+            }
         }
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
@@ -295,14 +314,19 @@ class Pemilik extends CI_Controller
         $data['bulan'] = $bulan_count;
 
         $kode_kos = "";
-        if (is_null($id_kos)) {
-            $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-            $kode_kos = $k_kos['kode_kos'];
-            $data['nama_kosan'] = $k_kos['nama_kos'];
+        $cek = $this->M_All->getPemesanan()->result();
+        if (!$cek) {
+            $data['nama_kosan'] = " ";
         } else {
-            $kode_kos = $id_kos;
-            $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $id_kos))->row_array();
-            $data['nama_kosan'] = $nama_kosss['nama_kos'];
+            if (is_null($id_kos)) {
+                $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
+                $kode_kos = $k_kos['kode_kos'];
+                $data['nama_kosan'] = $k_kos['nama_kos'];
+            } else {
+                $kode_kos = $id_kos;
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $id_kos))->row_array();
+                $data['nama_kosan'] = $nama_kosss['nama_kos'];
+            }
         }
 
         $bulan_angka = 0;
@@ -595,7 +619,6 @@ class Pemilik extends CI_Controller
         } else {
 
             $this->session->set_flashdata('alert', '
-
 			<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
 			style="position: fixed; top: 0; right: 0;">
 			<div class="toast-header">
@@ -603,19 +626,17 @@ class Pemilik extends CI_Controller
 					<i class="fas fa-times-circle"></i>
 				</span>
 				<strong class="mr-auto text-danger">Perhatian!</strong>
-
 				<small>Baru saja</small>
 				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-
 			</div>
 			<div class="toast-body">
 				Mohon maaf, pemesan belum melakukan pelunasan <span style="font-size: 1em; color: #EE2A00;">
 					<i class="fas fa-frown"></i>
 				</span>
 			</div>
-		</div>
+		    </div>
 
 
 			');
@@ -845,7 +866,6 @@ class Pemilik extends CI_Controller
 			');
 
         redirect('pemilik/profile/');
-
     }
 
     public function tolak_pesanan()
@@ -886,7 +906,6 @@ class Pemilik extends CI_Controller
         $this->M_All->update('pemesanan', $where, $data);
 
         redirect('pemilik/booking');
-
     }
 
     public function kirim_notif($pesan, $jenis, $dari, $untuk)

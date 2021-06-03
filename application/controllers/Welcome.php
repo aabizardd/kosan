@@ -23,7 +23,6 @@ class Welcome extends CI_Controller
         } elseif ($this->session->userdata('pencari')) {
             redirect('pencari');
         }
-
     }
 
     public function index()
@@ -173,7 +172,6 @@ class Welcome extends CI_Controller
 				</div>');
 
                 redirect('Welcome/login_pemilik');
-
             } else {
                 if ($rows > 0 && $ispemilik) {
                     $where = array('id_user' => $res[0]->id_user);
@@ -363,6 +361,12 @@ class Welcome extends CI_Controller
                     'tgl_daftar' => date('Y-m-d'),
                 );
                 if ($this->M_All->insert('pemilik_kos', $data) != true) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>Akun anda berhasil dibuat
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				</div>');
                     redirect('welcome/login_pemilik');
                     echo "<script> alert('Akun Pemilik berhasil dibuat');</script>";
                 } else {
@@ -615,9 +619,6 @@ class Welcome extends CI_Controller
                  </button>
                </div>');
             redirect('Welcome/forget');
-
         }
-
     }
-
 }
