@@ -5,11 +5,11 @@
             <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
                 <center><img src="<?php echo base_url() ?>asset_home/img/logo2.png" width="100px" height="100px" alt="">
                 </center> <br>
-                <form class="login100-form validate-form"
-                    action="<?php echo base_url('Welcome/proses_login?pencari'); ?>" method="POST">
+                <form class="login100-form validate-form" action="<?php echo base_url('Welcome/proses_login?pencari'); ?>" method="POST">
                     <span class="login100-form-title p-b-55">
                         Login Pencari Kos
                     </span>
+                    <?= $this->session->flashdata('message') ?>
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
                         <input class="input100" type="text" name="username" placeholder="Username">
@@ -32,13 +32,11 @@
                     </div>
 
                     <div class="container-login100-form-btn p-t-25">
-                        <button type="submit" name="submit" class="login100-form-btn"
-                            style="background-color: #5F9EA0;">
+                        <button type="submit" name="submit" class="login100-form-btn" style="background-color: #5F9EA0;">
                             Login
                         </button>
                         <div class="container-login100-form-btn p-t-25">
-                            <a class="login100-form-btn" style="background-color: red;"
-                                href="<?php echo base_url('Welcome/'); ?>">
+                            <a class="login100-form-btn" style="background-color: red;" href="<?php echo base_url('Welcome/'); ?>">
                                 Back
                             </a>
                             <a href="forget">Lupa password</a>

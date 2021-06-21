@@ -135,9 +135,7 @@ class Pencari extends CI_Controller
     {
         $id_pencari = $this->session->userdata('id_pencari');
         $where = array('id_pencari' => $id_pencari);
-
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-
         $data['result'] = $this->M_All->join_get_bayar($id_pencari, 'info')->result();
         // $data['result'] = $this->M_All->get('pemesanan')->result();
         // $data['rek'] = $this->M_All->join_get_bayar($data['result'][0])->result();
@@ -232,7 +230,6 @@ class Pencari extends CI_Controller
             $this->kirim_notif("Segera Bayar DP untuk kosanmu!", 'pembayaran', $id_pemilik[0]->id_user, $id_pencari);
             // $this->kirim_notif("Segera Bayar DP untuk kosanmu!", $idUserPencari[0]->id_user, $id_pencari);
             // print_r($data);
-
 
             $this->M_All->insert('pemesanan', $data);
 
@@ -346,7 +343,7 @@ class Pencari extends CI_Controller
         redirect('pencari/pembayaran');
     }
 
-    public function kirim_notif($pesan, $jenis, $dari, $untuk)
+    public function kirim_notif($pesan, $dari, $untuk, $jenis)
     {
         $data_notif = [
             'isi_pesan' => $pesan,
@@ -423,9 +420,8 @@ class Pencari extends CI_Controller
         ];
         $this->db->where('id_pesan', $id_pesan);
         $this->db->update('pemesanan', $data_update);
-        
 
-        $this->kirim_notif("Pembayaran Lunas", 'pembayaran', $id_pencari, $id_pemilik);
+        $this->kirim_notif("Pembayaran Lunas", $id_pemilik, $id_pencari, 'pembayaran');
 
         redirect('pencari/pembayaran');
     }

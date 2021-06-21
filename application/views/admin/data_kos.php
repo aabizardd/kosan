@@ -88,7 +88,7 @@ foreach ($bulan as $b): ?>
                              <th>Foto</th>
                              <th>Jenis Kosan</th>
                              <th>Saldo Kos</th>
-                             <th>ID Pemilik</th>
+                             <th>Nama Pemilik</th>
                              <th>Tanggal Pendaftaran</th>
 
                              <th>Aksi</th>
@@ -102,11 +102,15 @@ foreach ($bulan as $b): ?>
                              <td><?php echo $r->nama_kos ?></td>
                              <td><?php echo $r->alamat ?></td>
                              <td><?php echo $r->deskripsi ?></td>
-                             <td><img src="<?=base_url('asset_admin/upload_kos/') . $r->foto?>" alt="" width="250">
+                             <td>
+                                 <a href="" data-toggle="modal" data-target="#exampleModal" data-foto="<?=$r->foto?>"
+                                     class="foto_kos">
+                                     <img src="<?=base_url('asset_admin/upload_kos/') . $r->foto?>" alt="" width="250">
+                                 </a>
                              </td>
                              <td><?php echo $r->jenis_kosan ?></td>
                              <td><?php echo $r->saldo_kos ?></td>
-                             <td><?php echo $r->id_pemilik ?></td>
+                             <td><?php echo $r->nama_pemilik ?></td>
                              <td><?php echo date('d-F-Y', strtotime($r->tanggal_daftar)) ?></td>
 
                              <td>
@@ -118,6 +122,10 @@ foreach ($bulan as $b): ?>
                          </tr>
                          <?php endforeach;?>
                      </tbody>
+
+                     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                         Launch demo modal
+                     </button> -->
 
                  </table>
              </div>
@@ -135,3 +143,31 @@ foreach ($bulan as $b): ?>
 
  </div>
  <!-- End of Page Wrapper -->
+
+ <!-- Button trigger modal -->
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Detail Gambar</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body" id="modal-view">
+                 <img src="" alt="" id="gambar" width="100%">
+
+                 <!-- <input type="text" id="gambar"> -->
+
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 <button type="button" class="btn btn-primary">Save changes</button>
+             </div>
+         </div>
+     </div>
+ </div>

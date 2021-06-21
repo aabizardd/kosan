@@ -36,6 +36,12 @@
                          </tr>
                      </thead>
                      <tbody>
+
+                         <!-- Button trigger modal -->
+                         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                             Launch demo modal
+                         </button> -->
+
                          <?php
 $no = 1;
 foreach ($result as $r): ?>
@@ -45,7 +51,14 @@ foreach ($result as $r): ?>
                              <td><?=$r->nama_pemilik?></td>
                              <td><?=$r->email?></td>
                              <td><?=$r->jenis_kelamin?></td>
-                             <td><?=$r->foto?></td>
+                             <td>
+                                 <a href="" data-toggle="modal" data-target="#detailFoto" class="foto_pemilik"
+                                     data-foto="<?=$r->foto?>">
+                                     <img src="<?=base_url('asset_registrasi/upload_pemilik/') . $r->foto?>" alt=""
+                                         width="80%" height="180">
+                                 </a>
+
+                             </td>
                              <td>
                                  <?php if ($r->status_aktif_pemilik == 0): ?>
                                  Belum Aktif (Req Aktivasi)
@@ -82,11 +95,13 @@ foreach ($result as $r): ?>
                                          Terima</button>
                                  </a>
 
-                                 <a href="<?=base_url('admin/tolak_pendaftaran/') . $r->id_user?>">
 
-                                     <button class="btn btn-danger mt-1"><i class="fas fa-ban"></i>
-                                         Tolak</button>
-                                 </a>
+                                 <!-- Button trigger modal -->
+                                 <button type="button" class="btn btn-danger mt-1 tolak" data-toggle="modal"
+                                     data-target="#tolakModel" data-idd="<?=$r->id_pemilik?>">
+                                     <i class="fas fa-ban"></i> Tolak
+                                 </button>
+
 
                                  <?php endif;?>
                                  <!-- <button class="btn btn-success mt-1">Terima</button> -->
@@ -217,3 +232,63 @@ foreach ($result as $r): ?>
 
 
  <?=$this->session->flashdata('alert')?>
+
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="detailFoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Detail Foto Pemilik</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body" id="modal-view">
+
+                 <img src="" alt="" id="gambar" width="100%" height="500">
+
+             </div>
+
+         </div>
+     </div>
+ </div>
+
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="tolakModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">Penolakan Registrasi Pemilik Kos</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body" id="modal-view">
+
+                 <form method="POST" action="<?=base_url('admin/tolak_pendaftaran')?>">
+                     <div class="form-group">
+                         <label for="exampleInputEmail1">Alasan penolakan</label>
+                         <input type="text" class="form-control" id="alasanPenolakan" aria-describedby="emailHelp"
+                             placeholder="Masukkan Alasan Penolakan" name="alasan">
+
+                     </div>
+
+                     <input type="hidden" id="idPemilik" name="id_pemilik">
+
+
+
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 <button type="submit" class="btn btn-primary">Save changes</button>
+             </div>
+             </form>
+         </div>
+     </div>
+ </div>

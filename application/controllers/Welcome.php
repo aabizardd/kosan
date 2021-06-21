@@ -212,7 +212,7 @@ class Welcome extends CI_Controller
 				</button>
 				</div>');
 
-                redirect('Welcome/login_pemilik');
+                redirect('Welcome/login_pencari');
             }
             if (empty($_SESSION['id_pencari'])) {
                 // echo "<script> alert('Username atau Password Salah'); </script>";

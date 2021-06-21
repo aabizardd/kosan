@@ -45,49 +45,88 @@
              <h6 class="m-0 font-weight-bold text-primary">Informasi Kos-Kos an</h6>
          </div>
          <div class="card-body">
-             <div class="table-responsive">
-                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                     <thead>
-                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                             <div class="card-columns">
-                                 <?php
-// while ($row=$result->fetch_assoc()) {
-?>
-                                 <?php foreach ($result as $r): ?>
-                                 <div class="card">
-                                     <img class="card-img-top"
-                                         src="<?php echo base_url('asset_admin/upload_kos/' . $r->foto); ?>"
-                                         alt="<?=$r->foto?>">
-                                     <div class="card-body">
-                                         <h3 class="card-title"><?php echo $r->nama_kos; ?></h3>
-                                         <p class="card-text">
-                                             <?php echo $r->deskripsi; ?><br>
-                                             Alamat : <?php echo $r->alamat; ?>
-                                         </p>
+             <!-- <div class="table-responsive"> -->
+             <!-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> -->
+             <!-- <thead> -->
+             <!-- <div class="row"> -->
+             <!-- <div class="section-body">
+                 <div class="row">
+                     <div class="col">
+                         <section class="section-popular-content  py-3" id="tabel-files">
+                             <div class="container">
+                                 <div class="section-popular-travel row justify-content-start" id="">
+                                     <?php foreach ($result as $r): ?>
 
-                                         <a href="<?=base_url('pencari/view_data_kos/') . $r->kode_kos;?>"
-                                             class="btn btn-primary">
-                                             Ketersediaan Kamar</a>
-                                         <a target="_blank" href="https://api.whatsapp.com/send?phone=<?=$r->no_telp?>"
-                                             class="btn btn-success">Whatsapp</a>
-                                     </div>
+
+                                         <div class="col-sm-6 col-md-4 col-lg-4 mt-4">
+                                             <div class=" shadow bg-white rounded  d-flex flex-column ">
+                                                 <div class="view overlay">
+                                                     <img class="card-img-top " src="<?php echo base_url('asset_admin/upload_kos/' . $r->foto); ?>" height="250" alt="Card image cap">
+                                                 </div>
+
+                                                 <div class="card-body">
+                                                     <p class="card-title font-weight-"><a></a></p>
+
+                                                     <p class="card-text"><i class="fas fa-store mr-1"></i></p>
+                                                     <hr class="my-4">
+
+                                                     <a href="<?=base_url()?>reseller/beli_sekarang/<?=$p['id_produk']?>  " class="btn btn-primary btn-block">Beli Sekarang</a>
+                                                     <a href="<?=base_url()?>reseller/detail_produk/<?=$p['id_produk']?>  " class="btn btn-secondary btn-block">
+
+                                                         Detail
+                                                     </a>
+
+                                                 </div>
+                                             <?php endforeach;?>
+                                             </div>
+                                         </div>
                                  </div>
-                                 <?php endforeach;?>
-                                 <?php
-// }
-?>
+                             </div>
+                         </section>
+                     </div>
+                 </div>
+             </div> -->
+             <!-- </div> -->
+             <div class="row">
+                 <div class="col-12">
+                     <!-- <div class="col"> -->
+                     <div class="card-columns">
+                         <?php foreach ($result as $r): ?>
+                         <div class="card" style="height: 430px;">
+                             <img style="height: 200px;" class="card-img-top"
+                                 src="<?php echo base_url('asset_admin/upload_kos/' . $r->foto); ?>"
+                                 alt="<?=$r->foto?>">
+                             <div class="card-body">
+                                 <h3 class="card-title"><?php echo $r->nama_kos; ?></h3>
+                                 <p class="card-text">
+                                     <?php echo $r->deskripsi; ?><br>
+                                     Alamat : <?php echo $r->alamat; ?>
+                                 </p>
+
+                                 <a href="<?=base_url('pencari/view_data_kos/') . $r->kode_kos;?>"
+                                     class="btn btn-primary">
+                                     Ketersediaan Kamar</a>
+                                 <a target="_blank" href="https://api.whatsapp.com/send?phone=<?=$r->no_telp?>"
+                                     class="btn btn-success">Whatsapp</a>
                              </div>
                          </div>
-                     </thead>
-                     <tfoot>
+                         <?php endforeach;?>
 
-                         </tbody>
-                 </table>
+                     </div>
+                     <!-- </div> -->
+                 </div>
              </div>
+
+             <!-- </thead> -->
+             <!-- <tfoot> -->
+
+             <!-- </tbody> -->
+             <!-- </table> -->
          </div>
      </div>
-     <div class="card-columns">
-         <!-- <div class="card">
+ </div>
+ <div class="card-columns">
+     <!-- <div class="card">
                   <img class="card-img-top" src="assets/images/card-img.jpg" alt="Card image cap">
                   <div class="card-body">
                       <h3 class="card-title">Mudah mendapatkan vendor</h3>
@@ -109,7 +148,7 @@
                       <a href="<?=base_url('paket')?>" class="btn btn-outline-primary">Lihat Paket</a>
                   </div>
               </div> -->
-     </div>
+ </div>
 
  </div>
  <!-- /.container-fluid -->

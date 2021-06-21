@@ -1,5 +1,5 @@
  <div class="container-fluid">
-
+     <?php var_dump($result) ?>
      <!-- DataTales Example -->
      <div class="card shadow mb-4">
          <div class="card-header py-3">
@@ -22,24 +22,22 @@
                          </tr>
                      </thead>
                      <tbody>
-                         <?php foreach ($result as $r): ?>
-                         <tr>
-                             <td><?=$r->kode_kos;?></td>
-                             <td><?=$r->nama_kos;?></td>
-                             <td><?=$r->alamat;?></td>
-                             <td><?=$r->deskripsi;?></td>
-                             <td><?=$r->foto;?></td>
-                             <td><?=$r->jenis_kosan;?></td>
-                             <td><?=$r->saldo_kos;?></td>
-                             <td><?=$r->id_pemilik;?></td>
-                             <td>
-                                 <a href="<?php echo base_url("pemilik/hapus_kos/$r->kode_kos") ?>"
-                                     class="btn btn-danger">Hapus</a>
-                                 <a href="<?php echo base_url("pemilik/edit_kos/$r->kode_kos") ?>"
-                                     class="btn btn-primary mt-1">Data Kamar</a>
-                             </td>
-                         </tr>
-                         <?php endforeach;?>
+                         <?php foreach ($result as $r) : ?>
+                             <tr>
+                                 <td><?= $r->kode_kos; ?></td>
+                                 <td><?= $r->nama_kos; ?></td>
+                                 <td><?= $r->alamat; ?></td>
+                                 <td><?= $r->deskripsi; ?></td>
+                                 <td><?= $r->foto; ?></td>
+                                 <td><?= $r->jenis_kosan; ?></td>
+                                 <td><?= $r->saldo_kos; ?></td>
+                                 <td><?= $r->id_pemilik; ?></td>
+                                 <td>
+                                     <a href="<?php echo base_url("pemilik/hapus_kos/$r->kode_kos") ?>" class="btn btn-danger">Hapus</a>
+                                     <a href="<?php echo base_url("pemilik/edit_kos/$r->kode_kos") ?>" class="btn btn-primary mt-1">Data Kamar</a>
+                                 </td>
+                             </tr>
+                         <?php endforeach; ?>
                      </tbody>
 
                  </table>
