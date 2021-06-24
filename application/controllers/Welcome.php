@@ -2,7 +2,7 @@
 // session_start();
 defined('BASEPATH') or exit('No direct script access allowed');
 //commit coba
-//commit coba sadhasdhakh
+//commit coba sadhasdhakh asdas
 class Welcome extends CI_Controller
 {
     public function __construct()
