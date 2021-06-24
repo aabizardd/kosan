@@ -158,7 +158,7 @@
                                                         <form action="<?= base_url('pencari/pembayaran_upload_dp') ?>" method="post" enctype="multipart/form-data">
 
                                                             <div class="alert alert-primary" role="alert">
-                                                                Rekening pemilik kosan : <b class="text-info"><?= $r->no_rek ?></b> (<?= $r->bank ?>) <br>
+                                                                Rekening pemilik kosan :: <b class="text-info"><?= $r->no_rek ?></b> (<?= $r->bank ?>) <br>
                                                                 <b>a.n <?= $r->nama_pemilik ?></b>
                                                             </div>
 
