@@ -170,6 +170,7 @@
                                         <button type="anchor" class="btn btn-danger" disabled>
                                             Pesanan ditolak
                                         </button>
+                                        <input type="text" class="form-control mt-2" value="<?= $r->keterangan_pembatalan ?>" readonly>
                                     <?php endif; ?>
                                     <!-- <?= $r->status_transaksi ?> -->
 

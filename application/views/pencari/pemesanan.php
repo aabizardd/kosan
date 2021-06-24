@@ -144,7 +144,7 @@ foreach ($result as $r) : ?>
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title <?= $r->id_pesan ?>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel"> <?= $r->id_pesan ?> -->
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -152,8 +152,8 @@ foreach ($result as $r) : ?>
                 </div>
                 <div class="modal-body">
 
-                    <div class="card  text-black h-75 mt-2">
-                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->ksFoto ?>" alt="" height="200">
+                    <div class="card  text-black  mt-2">
+                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->ksFoto ?>" alt="" height="500">
                         <div class="card-body">
                             <h5 class="card-title font-weight-bold">Detail Kosan</h5>
                             <p class="card-text font-weight-bold">
@@ -163,8 +163,8 @@ foreach ($result as $r) : ?>
                         </div>
                     </div>
 
-                    <div class="card  text-black h-75 mt-5">
-                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" height="200">
+                    <div class="card  text-black  mt-5">
+                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" style="height:500px ;">
                         <div class="card-body">
                             <h5 class="card-title font-weight-bold">Detail Kamar</h5>
                             <p class="card-text font-weight-bold">
@@ -192,8 +192,6 @@ foreach ($result as $r) : ?>
                                         <th scope="col">Tanggal Pesan</th>
                                         <th scope="col">Tanggal Masuk</th>
                                         <th scope="col">Tanggal Keluar</th>
-                                        <th scope="col">Jumlah DP</th>
-                                        <th scope="col">Sisa Pembayaran</th>
                                         <th scope="col">Bukti Bayar</th>
                                     </tr>
                                 </thead>
@@ -208,9 +206,7 @@ foreach ($result as $r) : ?>
                                         $jumlahDP = "Rp " . number_format($r->jumlah_dp, 2, ',', '.');
                                         $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.'); ?>
 
-                                        <td><?= $jumlahDP ?></td>
-                                        <td><?= $sisa ?></td>
-                                        <td><img src="" alt=""></td>
+                                        <td><img src="<?= base_url('asset_admin/bukti_bayar/') . $r->bukti_bayar ?>" alt="" width="150"></td>
                                     </tr>
 
                                 </tbody>

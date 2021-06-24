@@ -116,9 +116,9 @@ class Pemilik extends CI_Controller
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
 
         $data['notif'] =
-        $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
-            'untuk' => $id_pemilik1,
-        ])->result();
+            $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
+                'untuk' => $id_pemilik1,
+            ])->result();
         // sampe sini
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
@@ -521,6 +521,7 @@ class Pemilik extends CI_Controller
             // $this->load->view('upload_success', $data);
             $kode_kamar = $this->input->post('kode_kamar');
             $harga = $this->input->post('harga');
+            $harga_smesteran = $this->input->post('harga_smesteran');
             $deskripsi = $this->input->post('deskripsi');
             $status = $this->input->post('status');
             $tanggal_tersedia = $this->input->post('tgl_tersedia');
@@ -530,6 +531,7 @@ class Pemilik extends CI_Controller
                 'kode_kamar' => $kode_kamar,
                 'kode_kos' => $this->session->userdata('kode_kos'),
                 'harga' => $harga,
+                'harga_smesteran' => $harga_smesteran,
                 'deskripsi' => $deskripsi,
                 'status' => $status,
                 'foto' => $foto,
@@ -816,6 +818,45 @@ class Pemilik extends CI_Controller
 
     public function update_profile()
     {
+        $upload_image = $_FILES['foto']['name'];
+        if ($upload_image) {
+            // echo 'upload nih';
+            // die;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size']      = '2048';
+            $config['upload_path'] = './asset_registrasi/upload_pemilik/';
+
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('foto')) {
+                // $old_image = $data['user']['image'];
+                $where = array('id_pencari' => $this->input->post('id_pencari'));
+                $new_image = $this->upload->data('file_name');
+                $nama_lengkap = $this->input->post('nama_pemilik');
+                $ktp = $this->input->post('no_ktp');
+                $email = $this->input->post('email');
+                $no_telp = $this->input->post('no_telp');
+                $atas_nama_rek = $this->input->post('atas_nama_rek');
+                $bank = $this->input->post('bank');
+                $no_rek = $this->input->post('no_rek');
+
+                $data = [
+                    'nama_pemilik' => $nama_lengkap,
+                    'no_telp' => $no_telp,
+                    'email' => $email,
+                    'foto' => $new_image,
+                    'no_ktp' => $ktp,
+                    'no_rek' => $no_rek,
+                    'atas_nama_rek' => $atas_nama_rek,
+                    'bank' => $bank,
+                ];
+                $where_update = array('id_pemilik' => $this->session->userdata('id_pemilik'));
+                $this->M_All->update('pemilik_kos', $where_update, $data);
+
+                // $this->db->set('image', $new_image);
+            } else {
+                echo $this->upload->dispay_errors();
+            }
+        }
 
         $nama_lengkap = $this->input->post('nama_pemilik');
         $ktp = $this->input->post('no_ktp');
