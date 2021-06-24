@@ -92,14 +92,14 @@
                      <!-- <div class="col"> -->
                      <div class="card-columns">
                          <?php foreach ($result as $r): ?>
-                         <div class="card" style="height: 430px;">
-                             <img style="height: 200px;" class="card-img-top"
+                         <div class="card">
+                             <img class="card-img-top"
                                  src="<?php echo base_url('asset_admin/upload_kos/' . $r->foto); ?>"
                                  alt="<?=$r->foto?>">
                              <div class="card-body">
                                  <h3 class="card-title"><?php echo $r->nama_kos; ?></h3>
                                  <p class="card-text">
-                                     <?php echo $r->deskripsi; ?><br>
+
                                      Alamat : <?php echo $r->alamat; ?>
                                  </p>
 

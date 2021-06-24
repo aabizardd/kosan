@@ -116,9 +116,9 @@ class Pemilik extends CI_Controller
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
 
         $data['notif'] =
-            $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
-                'untuk' => $id_pemilik1
-            ])->result();
+        $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
+            'untuk' => $id_pemilik1,
+        ])->result();
         // sampe sini
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();

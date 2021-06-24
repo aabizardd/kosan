@@ -14,17 +14,7 @@
             </button>
 
             <!-- Topbar Search -->
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group" id="search_for">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                        aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+
 
             <script>
             var url = document.URL
@@ -137,19 +127,20 @@
 
 
                         <?php foreach ($notif as $n): ?>
-                        <?php 
-                        if ($n->jenis == "pemesanan" || $n->jenis == "info") {
-                          $href = base_url('pencari/pemesanan');
-                        }elseif ($n->jenis == 'pembayaran' || $n->jenis == 'pelunasan') {
-                          $href = base_url('pencari/pembayaran');
-                        }
-                        if ($n->status_baca == 0) {
-                          $color = 'black';
-                        }else{
-                          $color = 'grey';
-                        }
-                        ?>
-                        <a class="dropdown-item d-flex align-items-center notif<?=$n->id_notifikasi?>" data-url="<?= $href ?>" onclick="notifDibaca(<?= $n->id_notifikasi ?>)">
+                        <?php
+if ($n->jenis == "pemesanan" || $n->jenis == "info") {
+    $href = base_url('pencari/pemesanan');
+} elseif ($n->jenis == 'pembayaran' || $n->jenis == 'pelunasan') {
+    $href = base_url('pencari/pembayaran');
+}
+if ($n->status_baca == 0) {
+    $color = 'black';
+} else {
+    $color = 'grey';
+}
+?>
+                        <a class="dropdown-item d-flex align-items-center notif<?=$n->id_notifikasi?>"
+                            data-url="<?=$href?>" onclick="notifDibaca(<?=$n->id_notifikasi?>)">
                             <div class="font-weight-bold">
                                 <div class="text-truncate" style="color: <?=$color?>"><?=$n->isi_pesan?></div>
                                 <div class="small text-gray-500"><?=$n->date?></div>
@@ -213,6 +204,7 @@
                 </li>
 
             </ul>
+
 
 
 

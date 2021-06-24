@@ -1,5 +1,5 @@
 <?php error_reporting(0);
-session_start(); ?>
+session_start();?>
 
 <body>
     <!-- Page Preloder -->
@@ -37,50 +37,56 @@ session_start(); ?>
     </header>
     <!-- Header section end -->
 
+    <div class="row">
 
+        <div class="col-12">
 
-    <div class="container">
-        <div class="card-columns">
-            <?php 
-            // $conn = mysqli_connect("localhost", "root", "", "ngekost");
-			// $q = mysqli_query($conn, "select * from kosan");
-			// while ($r = mysqli_fetch_array($q)) {
-            foreach ($content as $key => $r) {
-			?>
-            <div class="card">
-                <a target="_blank" href="<?= base_url('Welcome/view_data_kos/' . $r['kode_kos']) ?>">
-                    <img width="200" height="240" class="card-img-top"
-                        src="<?= base_url('asset_admin/upload_kos/' . $r['foto']) ?>" alt="Card image cap">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title"><?= $r['nama_kos'] ?></h5>
-                    <p class="card-text"><?= $r['deskripsi'] ?></p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted"><?= $r['jenis_kosan'] ?></small>
+            <div class="container">
+                <div class="card-columns">
+                    <?php
+// $conn = mysqli_connect("localhost", "root", "", "ngekost");
+// $q = mysqli_query($conn, "select * from kosan");
+// while ($r = mysqli_fetch_array($q)) {
+foreach ($content as $key => $r) {
+    ?>
+                    <div class="card">
+                        <a target="_blank" href="<?=base_url('Welcome/view_data_kos/' . $r['kode_kos'])?>">
+                            <img class="card-img-top" src="<?=base_url('asset_admin/upload_kos/' . $r['foto'])?>"
+                                alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"><?=$r['nama_kos']?></h5>
+                            <p class="card-text"> <?=substr($r['deskripsi'], 0, 80) . "....."?></p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted"><?=$r['jenis_kosan']?></small>
+                        </div>
+                    </div>
+                    <?php }?>
                 </div>
             </div>
-            <?php } ?>
+
         </div>
+
     </div>
 
 
 
 
 
+
+
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <link rel="stylesheet" href="<?= base_url('style.css'); ?>">
+    <link rel="stylesheet" href="<?=base_url('style.css');?>">
 
     <!--  <input type="checkbox" id="click">-->
 
-    <label for="click">
-        <a target="_blank" href="http://line.me/ti/p/@612lcjze">-<i class="fab fa-line "></i></a>
-        <!--<i class="fas fa-times"></i>-->
-    </label>
+
     <!--<div class="wrapper">
       <div class="head-text">Let's chat?</div>
       <div class="chat-box">
-	  <?php if ($_SESSION[myid] == '') { ?>
+	  <?php if ($_SESSION[myid] == '') {?>
         <div class="desc-text">Silahkan chat Kami Disini.</div>
         <form action="" method="post">
           <div class="field">
@@ -96,26 +102,26 @@ session_start(); ?>
             <button name="chat" value="1" type="submit">Start Chat</button>
           </div>-->
     </form>
-    <!-- <?php } else { ?>-->
+    <!-- <?php } else {?>-->
     <!-- <div class="desc-text"></div>
         <form action="" method="post">
 		<a href="chat">Start Chat</a>
 		</form>
 	  </div>
-	  <?php } ?>
+	  <?php }?>
     </div>-->
     <!--<?php if ($_POST[chat] != '') {
-			$_SESSION[myid] = rand('000000', '999999') . $_POST[nama];
-		?>
-		<script>window.location.href="chat?from=<?= $_SESSION[myid] ?>&msg=<?= $_POST[msg] ?>";</script>
+    $_SESSION[myid] = rand('000000', '999999') . $_POST[nama];
+    ?>
+		<script>window.location.href="chat?from=<?=$_SESSION[myid]?>&msg=<?=$_POST[msg]?>";</script>
 		<?php
 
-		}
-		?>-->
+}
+?>-->
 
     <!-- Footer section  -->
     <?php /*
-	<footer class="footer-section set-bg" data-setbg="<?php echo base_url() ?>asset_home/img/footer-bg.jpg">
+<footer class="footer-section set-bg" data-setbg="<?php echo base_url() ?>asset_home/img/footer-bg.jpg">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
@@ -146,6 +152,6 @@ session_start(); ?>
         </div>
     </div>
     </footer>
-    */ ?>
+    */?>
 
     <!-- Footer section end -->
