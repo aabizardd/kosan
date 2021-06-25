@@ -265,7 +265,7 @@
                                         </div>
 
                                         <div class=" col mt-1">
-                                            <a href="<?= base_url('pencari/cetakKwitansi') ?>" target="_blank">
+                                            <a href="<?= base_url('pencari/cetakKwitansi/') . $r->id_pesan ?>" target="_blank">
                                                 <button class="btn btn-info w-100">
                                                     <i class="fas fa-download"></i> Download Kwitansi
                                                 </button>
