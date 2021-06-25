@@ -113,7 +113,7 @@
                                     <div class="col mt-1">
 
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detail_pesanan<?= $r->id_pesan ?>">
-                                            <i class="fas fa-info-circle"></i> Detail Riwayat
+                                            <i class="fas fa-info-circle"></i> Detail Riwayat <?= $r->id_pencari ?>
                                         </button>
 
                                     </div>
