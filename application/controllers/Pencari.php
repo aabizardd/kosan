@@ -120,6 +120,7 @@ class Pencari extends CI_Controller
             'status_transaksi <>' => 0,
             'status_transaksi <>' => 1,
         );
+		
 
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where_nama)->row();
 

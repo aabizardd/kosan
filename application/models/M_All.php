@@ -202,16 +202,19 @@ class M_All extends CI_Model
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
         $this->db->join('pemilik_kos', 'pemilik_kos.id_pemilik = kosan.id_pemilik');
-        $this->db->where('id_pencari', $id);
+        $this->db->where('id_pencari', "$id"
+        );
 
         if ($tipe == 'info') {
-            $this->db->where('status_transaksi', 0);
-            $this->db->or_where('status_transaksi', 1);
-            $this->db->or_where('status_transaksi', 5);
+            // $this->db->where('status_transaksi', 0);
+            // $this->db->or_where('status_transaksi', 1);
+            // $this->db->or_where('status_transaksi', 5);
+            $this->db->where_in('status_transaksi', ['0', '1', '5']);
         } else {
-            $this->db->where('status_transaksi', 2);
-            $this->db->or_where('status_transaksi', 3);
-            $this->db->or_where('status_transaksi', 4);
+            // $this->db->where('status_transaksi IN', 2);
+            // $this->db->or_where('status_transaksi', 3);
+            // $this->db->or_where('status_transaksi', 4);
+            $this->db->where_in('status_transaksi', ['2', '3', '4']);
         }
 
         return $this->db->get();
