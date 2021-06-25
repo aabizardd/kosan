@@ -39,10 +39,10 @@
                             <tr>
 
 
-                                <?php
-                                echo $id_pencari = $this->session->userdata('id_pencari');
+                                <!-- <?php
+                                        echo $id_pencari = $this->session->userdata('id_pencari');
 
-                                ?>
+                                        ?> -->
                                 <td><?= strtoupper($r->nama_kos) ?></td>
                                 <td><?= strtoupper($r->alamat) ?></td>
                                 <td><?= $r->kode_kamar ?></td>
@@ -158,7 +158,7 @@
                                                         <form action="<?= base_url('pencari/pembayaran_upload_dp') ?>" method="post" enctype="multipart/form-data">
 
                                                             <div class="alert alert-primary" role="alert">
-                                                                Rekening pemilik kosan : <b class="text-info"><?= $r->no_rek ?></b> (<?= $r->bank ?>) <br>
+                                                                Rekening pemilik kosan :: <b class="text-info"><?= $r->no_rek ?></b> (<?= $r->bank ?>) <br>
                                                                 <b>a.n <?= $r->nama_pemilik ?></b>
                                                             </div>
 
@@ -323,8 +323,8 @@ foreach ($result as $r) : ?>
                 </div>
                 <div class="modal-body">
 
-                    <div class="card  h-75 mt-2">
-                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->ksFoto ?>" alt="" height="450">
+                    <div class="card   mt-2">
+                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->ksFoto ?>" alt="" height="500">
                         <div class="card-body">
                             <h5 class="card-title font-weight-bold">Detail Kosan</h5>
                             <p class="card-text font-weight-bold">
@@ -334,8 +334,8 @@ foreach ($result as $r) : ?>
                         </div>
                     </div>
 
-                    <div class="card  text-black h-75 mt-5">
-                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" height="450">
+                    <div class="card  text-black  mt-5">
+                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" height="500">
                         <!-- <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" class="card-img" alt="..." height="100%"> -->
                         <div class="card-body">
                             <h5 class="card-title font-weight-bold">Detail Kamar</h5>

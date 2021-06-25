@@ -1,4 +1,4 @@
- <?php error_reporting(0);?>
+ <?php error_reporting(0); ?>
  <div class="container-fluid">
 
      <div class="card shadow mb-4">
@@ -14,21 +14,18 @@
 
                          <div class="wrap-input100 validate-input" data-validate="Password is required">
                              <span class="label-input100">Password lama</span>
-                             <input class="form-control" class="input100" type="password" name="password1"
-                                 placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password" name="password1" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Password is required">
                              <span class="label-input100">Password baru</span>
-                             <input class="form-control" class="input100" type="password" name="password2"
-                                 placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password" name="password2" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
                          </div>
                          <div class="wrap-input100 validate-input" data-validate="Password is required">
                              <span class="label-input100">Password baru ulangi</span>
-                             <input class="form-control" class="input100" type="password" name="password3"
-                                 placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password" name="password3" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
                          </div>
                          <br>
@@ -36,19 +33,15 @@
                      </form>
                  </div>
                  <div class="col-lg-6">
-
-
-                     <form method="post" enctype="multipart/form-data" action="<?=base_url('pemilik/update_profile')?>">
-                         <img src="<?=base_url('asset_registrasi/upload_pemilik/') . $nama->foto?>"
-                             class="img img-thumbnail rounded-circle" style="width:100px; height:100px;">
+                     <form method="post" enctype="multipart/form-data" action="<?= base_url('pemilik/update_profile') ?>">
+                         <img src="<?= base_url('asset_registrasi/upload_pemilik/') . $nama->foto ?>" class="img img-thumbnail rounded-circle" style="width:100px; height:100px;">
                          <input type="file" name="foto">
                          <br>
 
 
                          <div class="wrap-input100 validate-input" data-validate="Username is required">
                              <span class="label-input100">Nama Lengkap</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->nama_pemilik; ?>"
-                                 type="text" name="nama_pemilik" placeholder="Nama Lengkap">
+                             <input class="form-control" class="input100" value="<?php echo $nama->nama_pemilik; ?>" type="text" name="nama_pemilik" placeholder="Nama Lengkap">
                              <span class="focus-input100"></span>
                          </div>
                          <!--
@@ -68,44 +61,38 @@
 
                          <div class="wrap-input100 validate-input" data-validate="Username is required">
                              <span class="label-input100">No KTP</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->no_ktp; ?>"
-                                 type="number" name="no_ktp" placeholder="No KTP...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->no_ktp; ?>" type="number" name="no_ktp" placeholder="No KTP...">
                              <span class="focus-input100"></span>
                          </div>
 
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Email</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->email; ?>"
-                                 type="email" name="email" placeholder="Email address...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->email; ?>" type="email" name="email" placeholder="Email address...">
                              <span class="focus-input100"></span>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">No Telepone</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->no_telp; ?>"
-                                 type="number" name="no_telp" placeholder="No Telepone...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->no_telp; ?>" type="number" name="no_telp" placeholder="No Telepone...">
                              <span class="focus-input100"></span>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">No Rek</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->no_rek; ?>"
-                                 type="text" name="no_rek" placeholder="No Rekening...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->no_rek; ?>" type="text" name="no_rek" placeholder="No Rekening...">
                              <span class="focus-input100"></span>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Atas nama</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->atas_nama_rek; ?>"
-                                 type="text" name="atas_nama_rek" placeholder="Atas nama...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->atas_nama_rek; ?>" type="text" name="atas_nama_rek" placeholder="Atas nama...">
                              <span class="focus-input100"></span>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Bank</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->bank; ?>" type="text"
-                                 name="bank" placeholder="Bank...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->bank; ?>" type="text" name="bank" placeholder="Bank...">
                              <span class="focus-input100"></span>
                          </div>
 
@@ -126,4 +113,4 @@
 
  </div>
  <!-- End of Main Content -->
- <?=$this->session->flashdata('alert');?>
+ <?= $this->session->flashdata('alert'); ?>

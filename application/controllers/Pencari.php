@@ -268,6 +268,58 @@ class Pencari extends CI_Controller
             redirect('pencari');
         }
     }
+    public function update_profile()
+    {
+
+        $upload_image = $_FILES['foto']['name'];
+
+        if ($upload_image) {
+            // echo 'upload nih';
+            // die;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size']      = '2048';
+            $config['upload_path'] = './asset_registrasi/upload_pencari/';
+
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('foto')) {
+                // $old_image = $data['user']['image'];
+                $where = array('id_pencari' => $this->input->post('id_pencari'));
+                $new_image = $this->upload->data('file_name');
+                $data = array(
+                    'nama_pencari' => $this->input->post('nama_pencari'),
+                    'tempat_lahir' => $this->input->post('tempat_lahir'),
+                    'tgl_lahir' => $this->input->post('tgl_lahir'),
+                    'email' => $this->input->post('email'),
+                    'no_telp' => $this->input->post('no_telp'),
+                    'no_ktp' => $this->input->post('no_ktp'),
+                    'status' => $this->input->post('status'),
+                    'no_telp_wali' => $this->input->post('no_telp_wali'),
+                    'foto' => $new_image,
+                );
+                $this->M_All->update('pencari_kos', $where, $data);
+                redirect('pencari/profile');
+                // $this->db->set('image', $new_image);
+            } else {
+                echo $this->upload->dispay_errors();
+            }
+        } else {
+            // echo 'waduh upload nih';
+            // die;
+            $where = array('id_pencari' => $this->input->post('id_pencari'));
+            $data = array(
+                'nama_pencari' => $this->input->post('nama_pencari'),
+                'tempat_lahir' => $this->input->post('tempat_lahir'),
+                'tgl_lahir' => $this->input->post('tgl_lahir'),
+                'email' => $this->input->post('email'),
+                'no_telp' => $this->input->post('no_telp'),
+                'no_ktp' => $this->input->post('no_ktp'),
+                'status' => $this->input->post('status'),
+                'no_telp_wali' => $this->input->post('no_telp_wali'),
+            );
+            $this->M_All->update('pencari_kos', $where, $data);
+            redirect('pencari/profile');
+        }
+    }
 
     public function pembayaran_upload_dp()
     {
@@ -400,10 +452,12 @@ class Pencari extends CI_Controller
         $id_pesan = $this->input->post('id_pesan');
         $sisa_bayar = $this->input->post('sisa_bayar');
         $sisa_bayar_dp = $this->input->post('sisa_bayar_dp');
-        $id_pencari = $this->input->post('id_pencari');
+        // $id_pencari = $this->input->post('id_pencari');
+        $id_pencari = $this->session->userdata('id_pencari');
         $id_pemilik = $this->input->post('id_pemilik');
         $bukti_pelunasan = $this->_uploadFile();
-
+        // var_dump($id_pencari);
+        // die;
         $data = [
             'tanggal' => date('Y-m-d'),
             'jam_pelunasan' => date('H:i:s'),
