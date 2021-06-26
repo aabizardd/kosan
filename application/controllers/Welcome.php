@@ -119,113 +119,286 @@ class Welcome extends CI_Controller
         $this->load->view('registrasi/foot_regis');
     }
 
-    public function proses_login()
+    public function proses_login($loginBy)
+    {
+
+        if ($loginBy == "admin") {
+            $this->prosesLoginAdmin();
+        } elseif ($loginBy == "pemilik") {
+            $this->prosesLoginPemilik();
+        } else {
+            $this->prosesLoginPencari();
+        }
+
+        // ifm
+
+        // $where = array(
+        //     'username' => $username,
+        //     'password' => md5($password),
+        // );
+
+        // $cek = $this->M_All->view_where('user', $where);
+        // $rows = $cek->num_rows();
+        // $res = $cek->result();
+        // // print_r($res);\
+        // // var_dump($res[0]);die();
+        // $isadmin = $res[0]->is_admin;
+        // $ispemilik = $res[0]->is_pemilik;
+        // if ($isadmin) {
+        //     if ($rows > 0 && $isadmin) {
+        //         $where = array('id_user' => $res[0]->id_user);
+        //         $admin = $this->M_All->view_where('admin', $where)->result();
+        //         $data_session = array(
+        //             'id_admin' => $admin[0]->id_admin,
+        //             'admin' => 'admin',
+        //         );
+
+        //         $this->session->set_userdata($data_session);
+        //         redirect(base_url('admin'));
+        //     } else {
+        //         echo "<script> alert('Username atau Password Salah'); </script>";
+        //         $this->load->view('login/head_login');
+        //         $this->load->view('login/login_admin');
+        //         $this->load->view('login/foot_login');
+        //     }
+        //     if (empty($_SESSION['username'])) {
+        //         echo "<script> alert('Username atau Password Salah'); </script>";
+        //         session_destroy();
+        //         header("location: " . base_url('Welcome/login_admin'));
+        //     }
+        // } elseif ($ispemilik) {
+        //     $get_status_aktif = $this->db
+        //         ->get_where('user', [
+        //             'username' => $username,
+        //         ])
+        //         ->row_array();
+
+        //     if ($get_status_aktif['status_aktif_pemilik'] == 0) {
+
+        //         $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        //         <strong>Maaf!</strong> Akun anda belum aktif.
+        //         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        //             <span aria-hidden="true">&times;</span>
+        //         </button>
+        //         </div>');
+
+        //         redirect('Welcome/login_pemilik');
+        //     } else {
+        //         if ($rows > 0 && $ispemilik) {
+        //             $where = array('id_user' => $res[0]->id_user);
+        //             $pemilik = $this->M_All->view_where('pemilik_kos', $where)->result();
+        //             $data_session = array(
+        //                 'id_pemilik' => $pemilik[0]->id_pemilik,
+        //                 'pemilik' => 'pemilik',
+        //             );
+
+        //             $this->session->set_userdata($data_session);
+        //             redirect(base_url('pemilik'));
+        //         } else {
+        //             echo "<script> alert('Username atau Password Salah'); </script>";
+        //             redirect('Welcome/login_pemilik');
+        //         }
+        //         if (empty($_SESSION['id_pemilik'])) {
+        //             echo "<script> alert('Username atau Password Salah'); </script>";
+        //             session_destroy();
+        //             redirect('Welcome/login_pemilik');
+        //         }
+        //     }
+        // } elseif (!$isadmin && !$ispemilik) {
+        //     if ($rows > 0) {
+        //         $where = array('id_user' => $res[0]->id_user);
+        //         $pencari = $this->M_All->view_where('pencari_kos', $where)->result();
+        //         $data_session = array(
+        //             'id_pencari' => $pencari[0]->id_pencari,
+        //             'pencari' => 'pencari',
+        //         );
+        //         print_r($pencari);
+        //         $this->session->set_userdata($data_session);
+        //         redirect(base_url('pencari'));
+        //     } else {
+        //         $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        //         <strong>Maaf!</strong> Password salah.
+        //         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        //             <span aria-hidden="true">&times;</span>
+        //         </button>
+        //         </div>');
+
+        //         redirect('Welcome/login_pencari');
+        //     }
+        //     if (empty($_SESSION['id_pencari'])) {
+        //         // echo "<script> alert('Username atau Password Salah'); </script>";
+        //         // session_destroy();
+        //         // header("location: ".base_url('Welcome/login_pencari'));
+        //     }
+        // } else {
+        //     // if ($this->agent->is_referral())
+        //     // {
+        //     //     echo $this->agent->referrer();
+        //     // }
+        // }
+    }
+
+    public function prosesLoginAdmin()
     {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
+
         $where = array(
             'username' => $username,
-            'password' => md5($password),
         );
 
-        $cek = $this->M_All->view_where('user', $where);
-        $rows = $cek->num_rows();
-        $res = $cek->result();
-        // print_r($res);
-        $isadmin = $res[0]->is_admin;
-        $ispemilik = $res[0]->is_pemilik;
-        if ($isadmin) {
-            if ($rows > 0 && $isadmin) {
-                $where = array('id_user' => $res[0]->id_user);
-                $admin = $this->M_All->view_where('admin', $where)->result();
-                $data_session = array(
-                    'id_admin' => $admin[0]->id_admin,
-                    'admin' => 'admin',
-                );
+        $user = $this->M_All->view_where('user', $where)->row_array();
 
-                $this->session->set_userdata($data_session);
-                redirect(base_url('admin'));
-            } else {
-                echo "<script> alert('Username atau Password Salah'); </script>";
-                $this->load->view('login/head_login');
-                $this->load->view('login/login_admin');
-                $this->load->view('login/foot_login');
-            }
-            if (empty($_SESSION['username'])) {
-                echo "<script> alert('Username atau Password Salah'); </script>";
-                session_destroy();
-                header("location: " . base_url('Welcome/login_admin'));
-            }
-        } elseif ($ispemilik) {
-            $get_status_aktif = $this->db
-                ->get_where('user', [
-                    'username' => $username,
-                ])
-                ->row_array();
+        if ($user) {
 
-            if ($get_status_aktif['status_aktif_pemilik'] == 0) {
+            if ($user['is_admin'] == 1) {
 
-                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<strong>Maaf!</strong> Akun anda belum aktif.
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				</div>');
+                if (md5($password) == $user['password']) {
 
-                redirect('Welcome/login_pemilik');
-            } else {
-                if ($rows > 0 && $ispemilik) {
-                    $where = array('id_user' => $res[0]->id_user);
-                    $pemilik = $this->M_All->view_where('pemilik_kos', $where)->result();
+                    //kalau berhasil
+                    $where = array('id_user' => $user['id_user']);
+                    $admin = $this->M_All->view_where('admin', $where)->result();
+                    // var_dump($admin[0]->id_admin);die();
                     $data_session = array(
-                        'id_pemilik' => $pemilik[0]->id_pemilik,
-                        'pemilik' => 'pemilik',
+                        'id_admin' => $admin[0]->id_admin,
+                        'admin' => 'admin',
                     );
 
                     $this->session->set_userdata($data_session);
-                    redirect(base_url('pemilik'));
-                } else {
-                    echo "<script> alert('Username atau Password Salah'); </script>";
-                    redirect('Welcome/login_pemilik');
-                }
-                if (empty($_SESSION['id_pemilik'])) {
-                    echo "<script> alert('Username atau Password Salah'); </script>";
-                    session_destroy();
-                    redirect('Welcome/login_pemilik');
-                }
-            }
-        } elseif (!$isadmin && !$ispemilik) {
-            if ($rows > 0) {
-                $where = array('id_user' => $res[0]->id_user);
-                $pencari = $this->M_All->view_where('pencari_kos', $where)->result();
-                $data_session = array(
-                    'id_pencari' => $pencari[0]->id_pencari,
-                    'pencari' => 'pencari',
-                );
-                print_r($pencari);
-                $this->session->set_userdata($data_session);
-                redirect(base_url('pencari'));
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<strong>Maaf!</strong> Password salah.
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				</div>');
+                    redirect(base_url('admin'));
 
-                redirect('Welcome/login_pencari');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+					<strong>Maaf</strong> Password salah.
+					  </div>');
+                    redirect('welcome/login_admin');
+                }
+
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+				<strong>Maaf</strong> Anda bukan admin.
+				  </div>');
+                redirect('welcome/login_admin');
             }
-            if (empty($_SESSION['id_pencari'])) {
-                // echo "<script> alert('Username atau Password Salah'); </script>";
-                // session_destroy();
-                // header("location: ".base_url('Welcome/login_pencari'));
-            }
+
         } else {
-            // if ($this->agent->is_referral())
-            // {
-            //     echo $this->agent->referrer();
-            // }
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+			<strong>Maaf</strong> Username belum terdaftar.
+		  	</div>');
+            redirect('welcome/login_admin');
         }
+
+    }
+
+    public function prosesLoginPemilik()
+    {
+        $username = $this->input->post('username');
+        $password = $this->input->post('password');
+
+        $where = array(
+            'username' => $username,
+        );
+
+        $user = $this->M_All->view_where('user', $where)->row_array();
+
+        if ($user) {
+
+            if ($user['is_pemilik'] == 1) {
+
+                if ($user['status_aktif_pemilik'] == 1) {
+
+                    if (md5($password) == $user['password']) {
+
+                        //kalau berhasil
+                        $where = array('id_user' => $user['id_user']);
+                        $pemilik = $this->M_All->view_where('pemilik_kos', $where)->result();
+                        $data_session = array(
+                            'id_pemilik' => $pemilik[0]->id_pemilik,
+                            'pemilik' => 'pemilik',
+                        );
+
+                        $this->session->set_userdata($data_session);
+                        redirect(base_url('pemilik'));
+
+                    } else {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+						<strong>Maaf</strong> Password salah.
+						  </div>');
+                        redirect('welcome/login_pemilik');
+                    }
+
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+					<strong>Maaf</strong> Akun anda belum aktif.
+					  </div>');
+                    redirect('welcome/login_pemilik');
+                }
+
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+				<strong>Maaf</strong> Anda bukan pemilik kosan.
+				  </div>');
+                redirect('welcome/login_pemilik');
+            }
+
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+			<strong>Maaf</strong> Username belum terdaftar.
+			  </div>');
+            redirect('welcome/login_pemilik');
+        }
+
+    }
+
+    public function prosesLoginPencari()
+    {
+        $username = $this->input->post('username');
+        $password = $this->input->post('password');
+
+        $where = array(
+            'username' => $username,
+        );
+
+        $user = $this->M_All->view_where('user', $where)->row_array();
+
+        if ($user) {
+
+            if ($user['is_pemilik'] == 0 && $user['is_admin'] == 0) {
+
+                if (md5($password) == $user['password']) {
+
+                    //kalau berhasil
+                    $where = array('id_user' => $user['id_user']);
+                    $pencari = $this->M_All->view_where('pencari_kos', $where)->result();
+                    $data_session = array(
+                        'id_pencari' => $pencari[0]->id_pencari,
+                        'pencari' => 'pencari',
+                    );
+                    // print_r($pencari);
+                    $this->session->set_userdata($data_session);
+                    redirect(base_url('pencari'));
+
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+						<strong>Maaf</strong> Password salah.
+						  </div>');
+                    redirect('welcome/login_pencari');
+                }
+
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+				<strong>Maaf</strong> Anda bukan pencari kosan.
+				  </div>');
+                redirect('welcome/login_pencari');
+            }
+
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+			<strong>Maaf</strong> Username belum terdaftar.
+			  </div>');
+            redirect('welcome/login_pencari');
+        }
+
     }
 
     public function login_pilihan()
