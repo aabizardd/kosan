@@ -112,10 +112,17 @@
 
                                     <div class="col mt-1">
 
+<<<<<<< HEAD
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detail_pesanan<?= $r->id_pesan ?>">
                                             <i class="fas fa-info-circle"></i> Detail Riwayat
                                             <!-- <?= $r->id_pencari ?> -->
                                         </button>
+=======
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#detail_pesanan<?=$r->id_pesan?>">
+                                        <i class="fas fa-info-circle"></i> Detail Riwayat
+                                    </button>
+>>>>>>> a827a7edd51863aa18d055f010253b6bf977f3f1
 
                                     </div>
 
