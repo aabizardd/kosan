@@ -113,7 +113,8 @@
                                     <div class="col mt-1">
 
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detail_pesanan<?= $r->id_pesan ?>">
-                                            <i class="fas fa-info-circle"></i> Detail Riwayat <?= $r->id_pencari ?>
+                                            <i class="fas fa-info-circle"></i> Detail Riwayat
+                                            <!-- <?= $r->id_pencari ?> -->
                                         </button>
 
                                     </div>
@@ -144,7 +145,7 @@ foreach ($result as $r) : ?>
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!-- <h5 class="modal-title" id="exampleModalLabel"> <?= $r->id_pesan ?> -->
+                    <h5 class="modal-title" id="exampleModalLabel">
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -163,8 +164,8 @@ foreach ($result as $r) : ?>
                         </div>
                     </div>
 
-                    <div class="card  text-black  mt-5">
-                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" style="height:500px ;">
+                    <div class="card  text-black mt-5">
+                        <img src="<?= base_url('asset_admin/upload_kos/') . $r->kFoto ?>" alt="" height="500">
                         <div class="card-body">
                             <h5 class="card-title font-weight-bold">Detail Kamar</h5>
                             <p class="card-text font-weight-bold">
@@ -192,6 +193,8 @@ foreach ($result as $r) : ?>
                                         <th scope="col">Tanggal Pesan</th>
                                         <th scope="col">Tanggal Masuk</th>
                                         <th scope="col">Tanggal Keluar</th>
+                                        <th scope="col">Jumlah DP</th>
+                                        <th scope="col">Sisa Pembayaran</th>
                                         <th scope="col">Bukti Bayar</th>
                                     </tr>
                                 </thead>
@@ -206,7 +209,9 @@ foreach ($result as $r) : ?>
                                         $jumlahDP = "Rp " . number_format($r->jumlah_dp, 2, ',', '.');
                                         $sisa = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.'); ?>
 
-                                        <td><img src="<?= base_url('asset_admin/bukti_bayar/') . $r->bukti_bayar ?>" alt="" width="150"></td>
+                                        <td><?= $jumlahDP ?></td>
+                                        <td><?= $sisa ?></td>
+                                        <td><img src="" alt=""></td>
                                     </tr>
 
                                 </tbody>
@@ -250,9 +255,9 @@ foreach ($result as $r) : ?>
         </span>
         <strong class="mr-auto text-danger">Perhatian!</strong>
         <small>Baru Saja</small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <butto n type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </butto>
     </div>
     <div class="toast-body">
         Pesanan Berhasil Dibatalkan
