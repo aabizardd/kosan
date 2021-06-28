@@ -304,7 +304,7 @@ class Pemilik extends CI_Controller
         $where = array('id_pemilik' => $id_pemilik);
         $where_ = array(
             'pemilik_kos.id_pemilik' => $id_pemilik,
-            'status_transaksi' => 2,
+            // 'status_transaksi' => 2,
         );
         $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
         // $data['result'] = $this->M_All->get_where('pemesanan', array(''));
@@ -338,9 +338,10 @@ class Pemilik extends CI_Controller
 
         $where_ = array(
             'pemilik_kos.id_pemilik' => $id_pemilik,
-            'status_transaksi' => 2,
+            // 'status_transaksi' => 2,
             'kamar.kode_kos' => $kode_kos,
-            'MONTH(pelunasan.tanggal)' => $bulan_angka,
+            // 'MONTH(pelunasan.tanggal)' => $bulan_angka,
+            'MONTH(tanggal_pesan)' => $bulan_angka,
         );
 
         // $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();

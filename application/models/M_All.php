@@ -189,8 +189,9 @@ class M_All extends CI_Model
         $this->db->join($at, 'pemesanan.id_kamar = kamar.id_kamar');
         $this->db->join($at1, 'kamar.kode_kos = kosan.kode_kos');
         $this->db->join($at2, 'kosan.id_pemilik = pemilik_kos.id_pemilik');
-        $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
         $this->db->where($where);
+        $this->db->where_in('status_transaksi', ['1', '2']);
 
         return $this->db->get();
     }
@@ -202,7 +203,9 @@ class M_All extends CI_Model
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
         $this->db->join('pemilik_kos', 'pemilik_kos.id_pemilik = kosan.id_pemilik');
-        $this->db->where('id_pencari', "$id"
+        $this->db->where(
+            'id_pencari',
+            "$id"
         );
 
         if ($tipe == 'info') {
