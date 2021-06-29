@@ -117,6 +117,7 @@
                                                             <input type="hidden" name="id_pesan" value="<?= $r->id_pesan ?>">
                                                             <input type="hidden" name="id_pemilik" value="<?= $r->id_user ?>">
                                                             <input type="hidden" name="sisa_bayar_dp" value="<?= $r->sisa_pembayaran ?>">
+                                                            <input type="hidden" name="kode_kos" value="<?= $r->kode_kos ?>">
 
 
                                                         </form>
@@ -202,20 +203,15 @@
                                                             </div>
 
                                                             <input type="hidden" name="id_kamar" value="<?= $r->id_kamar ?>">
-
-
-
-
-
                                                             <div class="form-group">
                                                                 <label for="exampleInputPassword1">File Upload</label>
                                                                 <input type="file" class="form-control" name=" depe" id="depe">
                                                             </div>
-
                                                             <input type="hidden" name="id_pesan" value="<?= $r->id_pesan ?>">
                                                             <input type="hidden" name="kode_kamar" value="<?= $r->id_kamar ?>">
                                                             <input type="hidden" name="id_pencari" value="<?= $r->id_pencari ?>">
                                                             <input type="hidden" name="sisa_bayar" value="<?= $r->sisa_pembayaran ?>">
+                                                            <input type="hidden" name="kode_kos" value="<?= $r->kode_kos ?>">
 
                                                             <div class="custom-control custom-checkbox mb-2 text-justify" style="font-size: 10px;">
                                                                 <input type="checkbox" class="custom-control-input" id="customCheck1" required>

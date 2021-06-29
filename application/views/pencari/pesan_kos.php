@@ -166,7 +166,6 @@ foreach ($result as $r): ?>
                                                 <input type="tuext" class="form-control" placeholder="Nama Penghuni"
                                                     name="nama_penghuni">
                                             </div>
-
                                             <div class="mb-2">
                                                 <label for="exampleFormControlInput1">Jangka Waktu</label>
                                                 <select class="custom-select" id="jangka_waktu" name="jangka_waktu">
@@ -175,11 +174,6 @@ foreach ($result as $r): ?>
                                                     <option value="1 Tahun">1 Tahun</option>
                                                 </select>
                                             </div>
-
-
-
-
-
                                             <div class="mb-2">
                                                 <label for="exampleFormControlInput1">Tanggal Mulai Menghuni</label>
                                                 <!-- <input type="date" class="form-control DateForm" name="tgl_masuk"
@@ -187,13 +181,7 @@ foreach ($result as $r): ?>
                                                 <input type="text" class="form-control datepicker"
                                                     placeholder="yy/mm/dd" name="tgl_masuk" autocomplete="off">
                                             </div>
-
-
-
-
-
                                             <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar;?>">
-
                                             <input type="hidden" name="id_pencari" value="<?=$nama->id_pencari;?>">
                                             <input type="hidden" name="id_pemilik" value="<?=$kos->id_pemilik;?>">
                                             <input type="hidden" name="kode_kos" value="<?=$kos->kode_kos?>">

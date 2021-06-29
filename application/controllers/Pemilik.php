@@ -58,15 +58,15 @@ class Pemilik extends CI_Controller
             if (is_null($param1)) {
                 $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
                 if (!$k_kos) {
-                    $kode_kos = "";
-                    $data['nama_kosan'] = "";
+                    $kode_kos = "tidak ada";
+                    $data['nama_kosan'] = " tidak ada";
                 } else {
                     $kode_kos = $k_kos['kode_kos'];
                     $data['nama_kosan'] = $k_kos['nama_kos'];
                 }
             } else {
-                $kode_kos = $param1;
-                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
+                $kode_kos = urldecode($param1);
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $kode_kos))->row_array();
                 $data['nama_kosan'] = $nama_kosss['nama_kos'];
             }
         }
@@ -86,7 +86,7 @@ class Pemilik extends CI_Controller
         } else {
             $where = array(
                 'id_pemilik' => $id_pemilik,
-                'kode_kos' => $sesi_nama_kost,
+                'kode_kos' => urldecode($sesi_nama_kost),
             );
         }
 
@@ -175,16 +175,16 @@ class Pemilik extends CI_Controller
             if (is_null($param1)) {
                 $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
                 if (!$k_kos) {
-                    $kode_kos = "";
-                    $data['nama_kosan'] = "";
+                    $kode_kos = "tidak ada";
+                    $data['nama_kosan'] = " tidak ada";
                 } else {
                     $kode_kos = $k_kos['kode_kos'];
                     $data['nama_kosan'] = $k_kos['nama_kos'];
                 }
             } else {
-                $kode_kos = $param1;
-                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+                $kode_kos = urldecode($param1);
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $kode_kos))->row_array();
+                $data['nama_kosan'] = $nama_kosss['nama_kos'];
             }
         }
         // $id_pemilik = $this->session->userdata('id_pemilik');
@@ -218,16 +218,16 @@ class Pemilik extends CI_Controller
             if (is_null($param1)) {
                 $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
                 if (!$k_kos) {
-                    $kode_kos = null;
-                    $data['nama_kosan'] = null;
+                    $kode_kos = "tidak ada";
+                    $data['nama_kosan'] = " tidak ada";
                 } else {
                     $kode_kos = $k_kos['kode_kos'];
                     $data['nama_kosan'] = $k_kos['nama_kos'];
                 }
             } else {
-                $kode_kos = $param1;
-                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+                $kode_kos = urldecode($param1);
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $kode_kos))->row_array();
+                $data['nama_kosan'] = $nama_kosss['nama_kos'];
             }
         }
 
@@ -287,16 +287,16 @@ class Pemilik extends CI_Controller
             if (is_null($param1)) {
                 $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
                 if (!$k_kos) {
-                    $kode_kos = "";
-                    $data['nama_kosan'] = "";
+                    $kode_kos = "tidak ada";
+                    $data['nama_kosan'] = " tidak ada";
                 } else {
                     $kode_kos = $k_kos['kode_kos'];
                     $data['nama_kosan'] = $k_kos['nama_kos'];
                 }
             } else {
-                $kode_kos = $param1;
-                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $param1))->row_array();
-                $data_['nama_kosan'] = $nama_kosss['nama_kos'];
+                $kode_kos = urldecode($param1);
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $kode_kos))->row_array();
+                $data['nama_kosan'] = $nama_kosss['nama_kos'];
             }
         }
 
@@ -340,11 +340,16 @@ class Pemilik extends CI_Controller
         } else {
             if (is_null($id_kos)) {
                 $k_kos = $this->M_All->get_kode_kos($id_pemilik)->row_array();
-                $kode_kos = $k_kos['kode_kos'];
-                $data['nama_kosan'] = $k_kos['nama_kos'];
+                if (!$k_kos) {
+                    $kode_kos = "tidak ada";
+                    $data['nama_kosan'] = " tidak ada";
+                } else {
+                    $kode_kos = $k_kos['kode_kos'];
+                    $data['nama_kosan'] = $k_kos['nama_kos'];
+                }
             } else {
-                $kode_kos = $id_kos;
-                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $id_kos))->row_array();
+                $kode_kos = urldecode($id_kos);
+                $nama_kosss = $this->M_All->get_where('kosan', array('kode_kos' => $kode_kos))->row_array();
                 $data['nama_kosan'] = $nama_kosss['nama_kos'];
             }
         }
@@ -451,7 +456,7 @@ class Pemilik extends CI_Controller
             $foto = $this->upload->data('file_name');
 
             $data = array(
-                'kode_kos' => $kode_kos,
+                'kode_kos' => urldecode($kode_kos),
                 'nama_kos' => $nama_kos,
                 'alamat' => $alamat,
                 'deskripsi' => "Luas kamar ini adalah " . $luas_kamar . ". Untuk tegangan listrik yaitu " . $listrik . ". Deskrip lainnya berupa, " . $deskripsi,
@@ -484,12 +489,12 @@ class Pemilik extends CI_Controller
     public function edit_kos($id)
     {
         $newdat = array(
-            'kode_kos' => $id,
+            'kode_kos' => urldecode($id),
         );
         $this->session->set_userdata($newdat);
         $id_pemilik = $this->session->userdata('id_pemilik');
         $where = array('id_pemilik' => $id_pemilik);
-        $where_ = array('kode_kos' => $id);
+        $where_ = array('kode_kos' => urldecode($id));
         $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
         $data['kos'] = $this->M_All->view_where('kosan', $where_)->row();
 
@@ -502,7 +507,7 @@ class Pemilik extends CI_Controller
 
     public function update_kos()
     {
-        $where = array('kode_kos' => $this->input->post('kode_kos'));
+        $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
         $data = array(
             'nama_kos' => $this->input->post('nama_kos'),
             'alamat' => $this->input->post('alamat'),
@@ -516,7 +521,7 @@ class Pemilik extends CI_Controller
     public function hapus_kos($id)
     {
 
-        $where = array('kode_kos' => $id);
+        $where = array('kode_kos' => urldecode($id));
 
         $this->M_All->delete($where, 'kosan');
         redirect('pemilik/view_data_kos');
@@ -550,7 +555,7 @@ class Pemilik extends CI_Controller
 
             $data = array(
                 'kode_kamar' => $kode_kamar,
-                'kode_kos' => $this->session->userdata('kode_kos'),
+                'kode_kos' => urldecode($this->session->userdata('kode_kos')),
                 'harga' => $harga,
                 'harga_smesteran' => $harga_smesteran,
                 'deskripsi' => $deskripsi,
@@ -591,7 +596,7 @@ class Pemilik extends CI_Controller
             'tgl_tersedia' => $this->input->post('tgl_tersedia'),
         );
         $this->M_All->update('kamar', $where, $data);
-        $kos = $this->session->userdata('kode_kos');
+        $kos = urldecode($this->session->userdata('kode_kos'));
 
         redirect('pemilik/edit_kos/' . $kos);
     }

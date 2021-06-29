@@ -18,7 +18,7 @@ class M_All extends CI_Model
         $this->db->select('*');
         $this->db->from('notifikasi');
         $this->db->where('untuk', $id_pencari);
-        // $this->db->order_by('date', 'desc');
+        $this->db->order_by('date', 'desc');
         $this->db->limit(5);
         return $this->db->get();
     }

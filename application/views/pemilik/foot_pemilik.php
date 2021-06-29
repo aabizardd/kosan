@@ -85,8 +85,6 @@ function notifDibaca(idnotif) {
                     complete: function() {
                         if (jenis == 'pemesanan' && status_baca == 0) {
                             window.location = redirect;
-                        }else if(jenis == 'pemesanan' && status_baca == 1){
-                            window.location = "<?= base_url('pemilik/booking')?>";
                         }else{
                             window.location = redirect;
                         }
