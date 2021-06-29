@@ -10,14 +10,18 @@
                 </center> <br>
 
 
-                <form class="login100-form validate-form" action="<?php echo base_url('Welcome/proses_login/'); ?>"
-                    method="POST">
+                <form class="login100-form validate-form"
+                    action="<?php echo base_url('Welcome/proses_login/pemilik'); ?>" method="POST">
                     <span class="login100-form-title p-b-55">
                         Login Pemilik Kos
                     </span>
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
                         <input class="input100" type="text" name="username" placeholder="Username">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <span class="lnr lnr-user"></span>
+                        </span>
                     </div>
 
 
@@ -43,7 +47,7 @@
                         </button>
                         <div class="container-login100-form-btn p-t-25">
                             <a class="login100-form-btn" style="background-color: red;"
-                                href="<?php echo base_url('Welcome/'); ?>">
+                                href="<?php echo base_url('Welcome/login_pilihan'); ?>">
                                 Back
                             </a>
 

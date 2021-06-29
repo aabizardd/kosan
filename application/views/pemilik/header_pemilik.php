@@ -1,5 +1,5 @@
 <!-- Content Wrapper -->
-<?php error_reporting(0); ?>
+<?php error_reporting(0);?>
 <div id="content-wrapper" class="d-flex flex-column">
 
     <!-- Main Content -->
@@ -14,30 +14,24 @@
             </button>
 
             <!-- Topbar Search -->
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" style="background-color: #5F9EA0;">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
 
                 <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                 <li class="nav-item dropdown no-arrow d-sm-none">
-                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-search fa-fw"></i>
                     </a>
                     <!-- Dropdown - Messages -->
-                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                        aria-labelledby="searchDropdown">
                         <form class="form-inline mr-auto w-100 navbar-search">
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control bg-light border-0 small"
+                                    placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
                                         <i class="fas fa-search fa-sm"></i>
@@ -77,47 +71,50 @@
 
                 <!-- Nav Item - Messages -->
                 <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-envelope fa-fw"></i>
                         <!-- Counter - Mes	sages -->
 
 
-                        <span class="badge badge-danger badge-counter"><?= $jml_notif ?></span>
+                        <span class="badge badge-danger badge-counter"><?=$jml_notif?></span>
                     </a>
                     <!-- Dropdown - Messages -->
-                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="messagesDropdown">
                         <h6 class="dropdown-header">
                             Message Center
                         </h6>
 
 
 
-                        <?php foreach ($notif as $n) : ?>
+                        <?php foreach ($notif as $n): ?>
 
 
-                            <?php
+                        <?php
 
-                            $href = "";
-                            if ($n->jenis == "pemesanan" || $n->jenis == "info") {
-                                $href = base_url('pemilik/booking_pesanan');
-                            }
-                            if ($n->status_baca == 0) {
-                                $color = 'black';
-                            } else {
-                                $color = 'grey';
-                            }
-                            ?>
+$href = "";
+if ($n->jenis == "pemesanan" || $n->jenis == "info") {
+    $href = base_url('pemilik/booking_pesanan');
+}
+if ($n->status_baca == 0) {
+    $color = 'black';
+} else {
+    $color = 'grey';
+}
+?>
 
-                            <a class="dropdown-item d-flex align-items-center notif<?= $n->id_notifikasi ?>" data-url="<?= $href ?>" onclick="notifDibaca(<?= $n->id_notifikasi ?>)">
-                                <div class="fo
+                        <a class="dropdown-item d-flex align-items-center notif<?=$n->id_notifikasi?>"
+                            data-url="<?=$href?>" onclick="notifDibaca(<?=$n->id_notifikasi?>)">
+                            <div class="fo
 							nt-weight-bold">
-                                    <div class="text-truncate" style="color: <?= $color ?>;"><b><?= $n->isi_pesan ?></b></div>
-                                    <div class="small text-gray-500"><?= $n->date ?>
+                                <div class="text-truncate" style="color: <?=$color?>;"><b><?=$n->isi_pesan?></b></div>
+                                <div class="small text-gray-500"><?=$n->date?>
 
-                                    </div>
                                 </div>
-                            </a>
-                        <?php endforeach; ?>
+                            </div>
+                        </a>
+                        <?php endforeach;?>
 
 
 
@@ -129,12 +126,15 @@
 
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nama->nama_pemilik; ?></span>
-                        <img class="img-profile rounded-circle" src="<?= base_url('asset_registrasi/upload_pemilik/') . $nama->foto ?>">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$nama->nama_pemilik;?></span>
+                        <img class="img-profile rounded-circle"
+                            src="<?=base_url('asset_registrasi/upload_pemilik/') . $nama->foto?>">
                     </a>
                     <!-- Dropdown - User Information -->
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="<?php echo base_url('pemilik/') ?>profile">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
@@ -168,6 +168,7 @@
 
 
                         <div class="dropdown-divider"></div>
+
 
 
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

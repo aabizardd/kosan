@@ -56,6 +56,64 @@ $(document).ready(function() {
     $('.toast').toast('show');
 });
 </script>
+
+
+
+<script type="text/javascript">
+$('.foto_kos').on('click', function(e) {
+
+    // alert('aa');
+
+
+    var foto = $(this).data('foto');
+
+
+    // $("#modal-view #judul").val(judul_bahan);
+    // $("#modal-view #keterangan").val(keterangan_bahan);
+    // $("#modal-view #id_bahan").val(id_bahan);
+    // $("#modal-view #gambar").val(foto);
+    $("#modal-view #gambar").attr('src', '<?=base_url('asset_admin/upload_kos/')?>' + foto);
+
+
+});
+</script>
+
+<script>
+$('.foto_pemilik').on('click', function(e) {
+
+    // alert('aa');
+
+
+    var foto = $(this).data('foto');
+
+
+    // $("#modal-view #judul").val(judul_bahan);
+    // $("#modal-view #keterangan").val(keterangan_bahan);
+    // $("#modal-view #id_bahan").val(id_bahan);
+    // $("#modal-view #gambar").val(foto);
+    $("#modal-view #gambar").attr('src', '<?=base_url('asset_registrasi/upload_pemilik/')?>' + foto);
+
+
+});
+
+$('.tolak').on('click', function(e) {
+
+    // alert('aa');
+
+
+    var id_pemilik = $(this).data('idd');
+
+
+    // $("#modal-view #judul").val(judul_bahan);
+    // $("#modal-view #keterangan").val(keterangan_bahan);
+    // $("#modal-view #id_bahan").val(id_bahan);
+    $("#modal-view #idPemilik").val(id_pemilik);
+
+
+
+});
+</script>
+
 </body>
 
 </html>

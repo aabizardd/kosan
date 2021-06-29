@@ -120,6 +120,7 @@ class Pencari extends CI_Controller
             'status_transaksi <>' => 0,
             'status_transaksi <>' => 1,
         );
+		
 
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where_nama)->row();
 
@@ -135,9 +136,7 @@ class Pencari extends CI_Controller
     {
         $id_pencari = $this->session->userdata('id_pencari');
         $where = array('id_pencari' => $id_pencari);
-
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-
         $data['result'] = $this->M_All->join_get_bayar($id_pencari, 'info')->result();
         // $data['result'] = $this->M_All->get('pemesanan')->result();
         // $data['rek'] = $this->M_All->join_get_bayar($data['result'][0])->result();
@@ -233,7 +232,6 @@ class Pencari extends CI_Controller
             // $this->kirim_notif("Segera Bayar DP untuk kosanmu!", $idUserPencari[0]->id_user, $id_pencari);
             // print_r($data);
 
-
             $this->M_All->insert('pemesanan', $data);
 
             // $data_upd = array(
@@ -269,6 +267,58 @@ class Pencari extends CI_Controller
             $this->session->set_flashdata('alert', true);
 
             redirect('pencari');
+        }
+    }
+    public function update_profile()
+    {
+
+        $upload_image = $_FILES['foto']['name'];
+
+        if ($upload_image) {
+            // echo 'upload nih';
+            // die;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size']      = '2048';
+            $config['upload_path'] = './asset_registrasi/upload_pencari/';
+
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('foto')) {
+                // $old_image = $data['user']['image'];
+                $where = array('id_pencari' => $this->input->post('id_pencari'));
+                $new_image = $this->upload->data('file_name');
+                $data = array(
+                    'nama_pencari' => $this->input->post('nama_pencari'),
+                    'tempat_lahir' => $this->input->post('tempat_lahir'),
+                    'tgl_lahir' => $this->input->post('tgl_lahir'),
+                    'email' => $this->input->post('email'),
+                    'no_telp' => $this->input->post('no_telp'),
+                    'no_ktp' => $this->input->post('no_ktp'),
+                    'status' => $this->input->post('status'),
+                    'no_telp_wali' => $this->input->post('no_telp_wali'),
+                    'foto' => $new_image,
+                );
+                $this->M_All->update('pencari_kos', $where, $data);
+                redirect('pencari/profile');
+                // $this->db->set('image', $new_image);
+            } else {
+                echo $this->upload->dispay_errors();
+            }
+        } else {
+            // echo 'waduh upload nih';
+            // die;
+            $where = array('id_pencari' => $this->input->post('id_pencari'));
+            $data = array(
+                'nama_pencari' => $this->input->post('nama_pencari'),
+                'tempat_lahir' => $this->input->post('tempat_lahir'),
+                'tgl_lahir' => $this->input->post('tgl_lahir'),
+                'email' => $this->input->post('email'),
+                'no_telp' => $this->input->post('no_telp'),
+                'no_ktp' => $this->input->post('no_ktp'),
+                'status' => $this->input->post('status'),
+                'no_telp_wali' => $this->input->post('no_telp_wali'),
+            );
+            $this->M_All->update('pencari_kos', $where, $data);
+            redirect('pencari/profile');
         }
     }
 
@@ -346,7 +396,7 @@ class Pencari extends CI_Controller
         redirect('pencari/pembayaran');
     }
 
-    public function kirim_notif($pesan, $jenis, $dari, $untuk)
+    public function kirim_notif($pesan, $dari, $untuk, $jenis)
     {
         $data_notif = [
             'isi_pesan' => $pesan,
@@ -403,10 +453,12 @@ class Pencari extends CI_Controller
         $id_pesan = $this->input->post('id_pesan');
         $sisa_bayar = $this->input->post('sisa_bayar');
         $sisa_bayar_dp = $this->input->post('sisa_bayar_dp');
-        $id_pencari = $this->input->post('id_pencari');
+        // $id_pencari = $this->input->post('id_pencari');
+        $id_pencari = $this->session->userdata('id_pencari');
         $id_pemilik = $this->input->post('id_pemilik');
         $bukti_pelunasan = $this->_uploadFile();
-
+        // var_dump($id_pencari);
+        // die;
         $data = [
             'tanggal' => date('Y-m-d'),
             'jam_pelunasan' => date('H:i:s'),
@@ -423,9 +475,8 @@ class Pencari extends CI_Controller
         ];
         $this->db->where('id_pesan', $id_pesan);
         $this->db->update('pemesanan', $data_update);
-        
 
-        $this->kirim_notif("Pembayaran Lunas", 'pembayaran', $id_pencari, $id_pemilik);
+        $this->kirim_notif("Pembayaran Lunas", $id_pemilik, $id_pencari, 'pembayaran');
 
         redirect('pencari/pembayaran');
     }
@@ -583,9 +634,10 @@ class Pencari extends CI_Controller
         // echo $perbedaan->d . ' selisih hari.';
     }
 
-    public function cetakKwitansi($idpesanan = null)
+    public function cetakKwitansi($idpesanan)
     {
-
-        $this->load->view('invoice/index');
+        $where_ = array('id_pesan' => $idpesanan);
+        $data['pesanan'] = $this->M_All->view_where('pemesanan', $where_)->row();
+        $this->load->view('invoice/index', $data);
     }
 }

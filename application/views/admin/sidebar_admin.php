@@ -21,6 +21,8 @@
         <!-- Custom styles for this template-->
         <link href="<?php echo base_url() ?>asset_admin/css/sb-admin-2.min.css" rel="stylesheet">
 
+        <link href="<?=base_url('asset_bootstrap/')?>datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     </head>
 
     <body id="page-top">
@@ -33,7 +35,7 @@
                 style="background-color: #5F9EA0;">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?=base_url("admin")?>">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>

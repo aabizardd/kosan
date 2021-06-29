@@ -17,8 +17,8 @@ class M_All extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('notifikasi');
-        $this->db->where('untuk' ,$id_pencari);
-        $this->db->order_by('date', 'desc');
+        $this->db->where('untuk', $id_pencari);
+        // $this->db->order_by('date', 'desc');
         $this->db->limit(5);
         return $this->db->get();
     }
@@ -189,8 +189,9 @@ class M_All extends CI_Model
         $this->db->join($at, 'pemesanan.id_kamar = kamar.id_kamar');
         $this->db->join($at1, 'kamar.kode_kos = kosan.kode_kos');
         $this->db->join($at2, 'kosan.id_pemilik = pemilik_kos.id_pemilik');
-        $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
         $this->db->where($where);
+        $this->db->where_in('status_transaksi', ['1', '2']);
 
         return $this->db->get();
     }
@@ -202,16 +203,21 @@ class M_All extends CI_Model
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
         $this->db->join('pemilik_kos', 'pemilik_kos.id_pemilik = kosan.id_pemilik');
-        $this->db->where('id_pencari', $id);
+        $this->db->where(
+            'id_pencari',
+            "$id"
+        );
 
         if ($tipe == 'info') {
-            $this->db->where('status_transaksi', 0);
-            $this->db->or_where('status_transaksi', 1);
-            $this->db->or_where('status_transaksi', 5);
+            // $this->db->where('status_transaksi', 0);
+            // $this->db->or_where('status_transaksi', 1);
+            // $this->db->or_where('status_transaksi', 5);
+            $this->db->where_in('status_transaksi', ['0', '1', '5']);
         } else {
-            $this->db->where('status_transaksi', 2);
-            $this->db->or_where('status_transaksi', 3);
-            $this->db->or_where('status_transaksi', 4);
+            // $this->db->where('status_transaksi IN', 2);
+            // $this->db->or_where('status_transaksi', 3);
+            // $this->db->or_where('status_transaksi', 4);
+            $this->db->where_in('status_transaksi', ['2', '3', '4']);
         }
 
         return $this->db->get();
@@ -224,7 +230,7 @@ class M_All extends CI_Model
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
         $this->db->join('pemilik_kos', 'pemilik_kos.id_pemilik = kosan.id_pemilik');
-        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');fjoinfj
         $this->db->where('status_transaksi<>', 5);
         return $this->db->get();
     }
@@ -298,7 +304,6 @@ class M_All extends CI_Model
         $this->db->where('id_pemilik =', $id_pemilik);
         $this->db->limit(1);
         return $this->db->get();
-
     }
 
     public function getPemesanan()
@@ -314,7 +319,6 @@ class M_All extends CI_Model
         $result = $this->db->query($query);
 
         return $result->result();
-
     }
 
     public function get_transaksi_selesai($id_kos)
@@ -324,7 +328,6 @@ class M_All extends CI_Model
 
         $result = $this->db->query($query);
         return $result->row_array();
-
     }
 
     public function get_transaksi_proses($id_kos)
@@ -334,7 +337,6 @@ class M_All extends CI_Model
 
         $result = $this->db->query($query);
         return $result->row_array();
-
     }
 
     public function getCountTransaksi($id_kos)
@@ -345,7 +347,6 @@ class M_All extends CI_Model
         $result = $this->db->query($query);
 
         return $result->result();
-
     }
 
     public function getCountPenghuni($id_kos)
@@ -356,7 +357,6 @@ class M_All extends CI_Model
         $result = $this->db->query($query);
 
         return $result->result();
-
     }
 
     public function count_groupby($table, $group_by)
@@ -384,6 +384,18 @@ class M_All extends CI_Model
         $result = $this->db->query($query);
 
         return $result->row_array();
+    }
 
+    public function getDataKos($where = "")
+    {
+        $this->db->select('*');
+        $this->db->from('kosan k');
+        $this->db->join('pemilik_kos p', 'k.id_pemilik = p.id_pemilik');
+
+        if ($where != "") {
+            $this->db->where($where);
+        }
+        // $this->db->join('kosan k', 'p.id_pemilik = k.id_pemilik');
+        return $this->db->get();
     }
 }

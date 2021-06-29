@@ -164,14 +164,14 @@ class Admin extends CI_Controller
         $data['result'] = "";
 
         if (is_null($bulan) && is_null($tipe_kos) || $bulan == "" && $tipe_kos == "") {
-            $data['result'] = $this->db->get('kosan')->result();
+            $data['result'] = $this->M_All->getDataKos()->result();
         } elseif (!is_null($tipe_kos) && $bulan == "") {
 
             $where = [
                 'jenis_kosan' => $tipe_kos,
             ];
 
-            $data['result'] = $this->db->get_where('kosan', $where)->result();
+            $data['result'] = $this->M_All->getDataKos($where)->result();
         } elseif ($tipe_kos == "" && !is_null($bulan)) {
             // var_dump($bulan);die();
 
@@ -179,14 +179,14 @@ class Admin extends CI_Controller
                 'MONTH(tanggal_daftar)' => $bulan,
             ];
 
-            $data['result'] = $this->db->get_where('kosan', $where)->result();
+            $data['result'] = $this->M_All->getDataKos($where)->result();
         } else {
             $where = [
                 'MONTH(tanggal_daftar)' => $bulan,
                 'jenis_kosan' => $tipe_kos,
             ];
 
-            $data['result'] = $this->db->get_where('kosan', $where)->result();
+            $data['result'] = $this->M_All->getDataKos($where)->result();
         }
 
         $this->load->view('admin/sidebar_admin');
@@ -489,7 +489,7 @@ class Admin extends CI_Controller
 
     }
 
-    private function _sendEmail($email, $type)
+    private function _sendEmail($email, $type, $alasan = "")
     {
 
         $this->load->library('email');
@@ -515,7 +515,7 @@ class Admin extends CI_Controller
         } else if ($type == 'ditolak') {
 
             $this->email->subject('Proses Pendaftaran Anda Ditolak');
-            $this->email->message('Klik tatutan ini untuk daftar lagi : <a href="' . base_url() . 'welcome/registrasi_pemilik' . '">Activate</a>');
+            $this->email->message('Alasan Penolakan = ' . $alasan . ' <br> Klik tatutan ini untuk daftar lagi : <a href="' . base_url() . 'welcome/registrasi_pemilik' . '">Activate</a>');
         }
 
         if ($this->email->send()) {
@@ -526,21 +526,23 @@ class Admin extends CI_Controller
         }
     }
 
-    public function tolak_pendaftaran($id_pemilik)
+    public function tolak_pendaftaran()
     {
+        $id_pemilik = $this->input->post('id_pemilik');
+        $alasan = $this->input->post('alasan');
 
         $data = [
             'status_aktif_pemilik' => 2,
         ];
 
-        $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
+        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_pemilik' => $id_pemilik])->row_array();
 
-        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_user' => $id_pemilik])->row_array();
+        $this->M_All->update('user', array('id_user' => $data_pemilik['id_user']), $data);
 
         $email_pemilik = $data_pemilik['email'];
 
         // var_dump($email_pemilik);die();
-        $this->_sendEmail($email_pemilik, 'ditolak');
+        $this->_sendEmail($email_pemilik, 'ditolak', $alasan);
 
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik, Info Telah Dikirim ke Email Pendaftar', 'fas fa-check-circle');
 

@@ -20,6 +20,8 @@
 
         <!-- Custom styles for this template-->
         <link href="<?php echo base_url() ?>asset_admin/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="<?php echo base_url() ?>asset_bootstrap/datatables/css/dataTables.bootstrap4.min.css"
+            rel="stylesheet">
 
     </head>
 

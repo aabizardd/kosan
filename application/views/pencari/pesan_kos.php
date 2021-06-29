@@ -4,45 +4,39 @@
         <buatton class="btn btn-danger"><i class="fas fa-arrow-circle-left"> </i> Back</buatton>
     </a>
 
+    <center>
+        <div id="carouselExampleIndicators" class="carousel slide mt-2 h-50" data-ride="carousel" style="width: 900px;">
+            <ol class="carousel-indicators">
+                <?php $i = 1;?>
+                <?php foreach ($result as $r): ?>
+                <li data-target="#carouselExampleIndicators" data-slide-to="<?=$i++;?>" class=""></li>
+                <!-- <li data-target="#carouselExampleIndicators" data-slide-to="1"></li> -->
+                <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> -->
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="<?=base_url('asset_admin/upload_kos/')?><?=$r->foto;?>"
+                        alt="First slide">
+                </div>
 
-
-    <div id="carouselExampleIndicators" class="carousel slide mt-2 h-50" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100"
-                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg" alt="First slide">
+                <?php endforeach;?>
+                <?php $i;?>
             </div>
-            <div class="carousel-item">
-                <img class="d-block w-100"
-                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg"
-                    alt="Second slide">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100"
-                    src="https://www.ruparupa.com/blog/wp-content/uploads/2020/05/dekorasi-kamar.jpg" alt="Third slide">
-            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+    </center>
 
 
 
     <!-- DataTales Example -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-
         <h1 class="h3 mb-0 mt-3 text-gray-800">Data Kost</h1>
     </div>
     <!-- Content Row -->
@@ -155,7 +149,7 @@ foreach ($result as $r): ?>
                                     </div>
 
                                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Perhatian!</strong> Untuk pembayaran bisa dilakukan DP 50% atau
+                                        <strong>Perhatian!</strong> Untuk pembayaran bisa dilakukan DP 20% atau
                                         pembayaran Full
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -190,20 +184,10 @@ foreach ($result as $r): ?>
                                                 <label for="exampleFormControlInput1">Tanggal Mulai Menghuni</label>
                                                 <!-- <input type="date" class="form-control DateForm" name="tgl_masuk"
                                                     id="datepicker"> -->
-                                                <input type="text" class="form-control" id="datepicker"
+                                                <input type="text" class="form-control datepicker"
                                                     placeholder="yy/mm/dd" name="tgl_masuk" autocomplete="off">
                                             </div>
 
-                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-                                            <script>
-                                            $('#datepicker').datepicker({
-                                                minDate: 0,
-                                                maxDate: '+1w',
-                                                dateFormat: 'yy/mm/dd'
-                                            });
-                                            </script>
 
 
 
@@ -239,6 +223,17 @@ foreach ($result as $r): ?>
 
                 </div>
                 <?php endforeach;?>
+
+                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+                <script>
+                $('.datepicker').datepicker({
+                    minDate: 0,
+                    maxDate: '+1w',
+                    dateFormat: 'yy/mm/dd'
+                });
+                </script>
             </div>
         </div>
     </div>
