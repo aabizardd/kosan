@@ -566,6 +566,26 @@ class Pemilik extends CI_Controller
             if ($this->M_All->insert('kamar', $data) != true) {
                 redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
                 echo "<script> alert('Data Kos berhasil ditambah');</script>";
+                $this->session->set_flashdata('alert', '
+                <div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
+                style="position: fixed; top: 0; right: 0;">
+                <div class="toast-header">
+                    <span style="font-size: 1.5em; color: #EE2A00; margin-right: 10px;">
+                        <i class="fas fa-times-circle"></i>
+                    </span>
+                    <strong class="mr-auto text-success">Perhatian!</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    Kamar ditambahkan <span style="font-size: 1em; color: #EE2A00;">
+                        <i class="fas fa-frown"></i>
+                    </span>
+                </div>
+                </div>
+                ');
             } else {
                 redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
                 echo "<script> alert('Data Kos gagal ditambah');</script>";

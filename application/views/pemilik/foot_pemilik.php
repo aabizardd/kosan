@@ -61,7 +61,7 @@ function notifDibaca(idnotif) {
         var redirect = $('.notif'+idnotif).data('url');
         // alert(url);
         $.ajax({
-            url: 'getNotif',
+            url: '<?= base_url('pemilik/getNotif') ?>',
             type: 'post',
             data: {
                 'id': idnotif
@@ -75,7 +75,7 @@ function notifDibaca(idnotif) {
                     status_baca
                 } = response
                 $.ajax({
-                    url: 'notifDibaca',
+                    url: '<?= base_url('pemilik/notifDibaca') ?>',
                     type: 'post',
                     data: {
                         'id': id_notifikasi,

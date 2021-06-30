@@ -189,6 +189,6 @@
 
 </div>
 <!-- End of Content Wrapper -->
-
+<?= $this->session->flashdata('alert') ?>
 </div>
 <!-- End of Page Wrapper -->

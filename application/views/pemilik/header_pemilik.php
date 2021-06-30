@@ -88,7 +88,7 @@
                             $href = "";
                             if ($n->jenis == "pemesanan" || $n->jenis == "pembayaran" || $n->jenis == "info") {
                                 // $href = base_url('pemilik/booking_pesanan/').urlencode($n->kode_kos);
-                                $href = base_url('pemilik/booking_pesanan/').$n->kode_kos;
+                                $href = base_url('pemilik/booking_pesanan/').urldecode($n->kode_kos);
                             }
                             if ($n->status_baca == 0) {
                                 $color = 'black';
