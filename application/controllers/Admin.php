@@ -193,7 +193,6 @@ class Admin extends CI_Controller
         $this->load->view('admin/header_admin', $data);
         $this->load->view('admin/data_kos', $data);
         $this->load->view('admin/foot_admin');
-
     }
 
     public function data_pemilik($id = '')
@@ -279,7 +278,6 @@ class Admin extends CI_Controller
             $this->load->view('admin/foot_admin');
         } else {
             $this->load->view('admin/transaksi', $data);
-
         }
     }
 
@@ -314,7 +312,6 @@ class Admin extends CI_Controller
         $this->load->view('admin/header_admin', $data);
         $this->load->view('admin/artikel', $data);
         $this->load->view('admin/foot_admin');
-
     }
 
     public function edit_artikel($id = '')
@@ -391,22 +388,57 @@ class Admin extends CI_Controller
         $where = array('id_admin' => $idadmin);
         $data['nama'] = $this->M_All->view_where('admin', $where)->row();
         $data['kos'] = $this->M_All->view_where('kosan', $where_)->row();
-        $this->load->view('admin/sidebar_admin');
-        $this->load->view('admin/header_admin', $data);
-        $this->load->view('admin/edit_kos', $data);
-        $this->load->view('admin/foot_admin');
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nama_kos', '', 'required', [
+            'required' => 'Nama Kos tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('alamat', '', 'required', [
+            'required' => 'Alamat tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('deskripsi', '', 'required', [
+            'required' => 'Deskripsi tidak boleh kosong'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->load->view('admin/sidebar_admin');
+            $this->load->view('admin/header_admin', $data);
+            $this->load->view('admin/edit_kos', $data);
+            $this->load->view('admin/foot_admin');
+        } else {
+            $where = array('kode_kos' => $this->input->post('kode_kos'));
+            $data = array(
+                'nama_kos' => $this->input->post('nama_kos'),
+                'alamat' => $this->input->post('alamat'),
+                'deskripsi' => $this->input->post('deskripsi'),
+            );
+            $this->M_All->update('kosan', $where, $data);
+            redirect('admin/data_kos');
+        }
     }
 
     public function update_kos()
     {
-        $where = array('kode_kos' => $this->input->post('kode_kos'));
-        $data = array(
-            'nama_kos' => $this->input->post('nama_kos'),
-            'alamat' => $this->input->post('alamat'),
-            'deskripsi' => $this->input->post('deskripsi'),
-        );
-        $this->M_All->update('kosan', $where, $data);
-        redirect('admin/data_kos');
+        // $this->load->library('form_validation');
+        // $this->form_validation->set_rules('nama_kos', '', 'required', [
+        //     'required' => 'Nama Kos tidak boleh kosong'
+        // ]);
+        // $this->form_validation->set_rules('alamat', '', 'required', [
+        //     'required' => 'Alamat tidak boleh kosong'
+        // ]);
+        // $this->form_validation->set_rules('deskripsi', '', 'required', [
+        //     'required' => 'Deskripsi tidak boleh kosong'
+        // ]);
+        // if ($this->form_validation->run() == false) {
+        //     $this->edit_kos();
+        // } else {
+        //     $where = array('kode_kos' => $this->input->post('kode_kos'));
+        //     $data = array(
+        //         'nama_kos' => $this->input->post('nama_kos'),
+        //         'alamat' => $this->input->post('alamat'),
+        //         'deskripsi' => $this->input->post('deskripsi'),
+        //     );
+        //     $this->M_All->update('kosan', $where, $data);
+        //     redirect('admin/data_kos');
+        // }
     }
 
     public function hapus_pemilik($id)
@@ -483,10 +515,14 @@ class Admin extends CI_Controller
 
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun Pemilik, Email Berhasil Dikirim ke Email Pendaftar!', 'fas fa-check-circle');
 
-        $this->session->set_flashdata('alert', $alert);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Akun pemilik berhasil diaktifkan
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
 
-        redirect('admin/data_pemilik/');
-
+        redirect('admin/data_pemilik');
     }
 
     private function _sendEmail($email, $type, $alasan = "")
@@ -546,10 +582,14 @@ class Admin extends CI_Controller
 
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik, Info Telah Dikirim ke Email Pendaftar', 'fas fa-check-circle');
 
-        $this->session->set_flashdata('alert', $alert);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Akun pemilik ditolak dengan memberikan alasan penolakan
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>');
 
-        redirect('admin/data_pemilik/');
-
+        redirect('admin/data_pemilik');
     }
 
     public function toast($tipe_warna_judul, $warna_icon, $pesan, $icon)
@@ -650,5 +690,4 @@ class Admin extends CI_Controller
 
         // var_dump($bukti_lunas['id_pesan']);
     }
-
 }

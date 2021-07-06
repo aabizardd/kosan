@@ -1,4 +1,4 @@
-<?php error_reporting(0);?>
+<?php error_reporting(0); ?>
 
 
 
@@ -10,20 +10,19 @@
 
             <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
 
-                <a name="submit" class="btn btn-danger mb-2 w-25 text-white" style="margin-top: -100px;"
-                    href="<?=base_url('Welcome/login_pilihan')?>">
+                <a name="submit" class="btn btn-danger mb-2 w-25 text-white" style="margin-top: -100px;" href="<?= base_url('Welcome/login_pilihan') ?>">
                     <i class="fas fa-arrow-left"></i> Login
                 </a>
 
 
-                <?=$this->session->flashdata('message')?>
+                <?= $this->session->flashdata('message') ?>
 
 
                 <center><img src="<?php echo base_url() ?>asset_home/img/logo2.png" width="100px" height="100px" alt="">
                 </center> <br>
 
 
-                <form class="login100-form validate-form" action="<?=base_url('Welcome/form_forgotPW')?>" method="POST">
+                <form class="login100-form validate-form" action="<?= base_url('Welcome/form_forgotPW') ?>" method="POST">
                     <span class="login100-form-title p-b-55">
                         Lupa password
                     </span>
@@ -31,8 +30,9 @@
 
 
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate="Email is required">
-                        <input class="input100" type="email" name="email" placeholder="Email">
+                    <div class="wrap-input100  m-b-16">
+                        <input class="input100" type="text" name="email" placeholder="Email">
+                        <?= form_error('email', '<small class="text-danger ">', '</small>'); ?>
                     </div>
 
 

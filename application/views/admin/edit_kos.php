@@ -12,42 +12,43 @@
         <div class="card-body">
             <div class="row">
                 <div class="col col-md-3">
-                    <img src="<?=base_url('asset_admin/upload_kos/' . $kos->foto);?>" alt="" width="100%">
+                    <img src="<?= base_url('asset_admin/upload_kos/' . $kos->foto); ?>" alt="" width="100%">
                 </div>
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table" width="100%" cellspacing="0">
-                            <form class="form" action="<?=base_url('admin/update_kos');?>" method="post">
+                            <form class="form" action="" method="post">
                                 <tr>
                                     <th width="20%">Kode Kos</th>
                                     <th>
-                                        <?=$kos->kode_kos?>
-                                        <input type="hidden" name="kode_kos" value="<?=$kos->kode_kos?>">
+                                        <?= $kos->kode_kos ?>
+                                        <input type="hidden" name="kode_kos" value="<?= $kos->kode_kos ?>">
                                     </th>
                                 </tr>
                                 <tr>
                                     <td>Nama Kos</td>
                                     <td>
-                                        <input class="form-control" type="text" name="nama_kos"
-                                            value="<?=$kos->nama_kos?>">
+                                        <input class="form-control" type="text" name="nama_kos" value="<?= $kos->nama_kos ?>">
+                                        <?= form_error('nama_kos', '<small class="text-danger ">', '</small>'); ?>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Alamat</td>
                                     <td>
-                                        <input class="form-control" type="text" name="alamat" value="<?=$kos->alamat?>">
+                                        <input class="form-control" type="text" name="alamat" value="<?= $kos->alamat ?>">
+                                        <?= form_error('alamat', '<small class="text-danger ">', '</small>'); ?>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Deskripsi</td>
                                     <td>
-                                        <input class="form-control" type="text" name="deskripsi"
-                                            value="<?=$kos->deskripsi?>">
+                                        <input class="form-control" type="text" name="deskripsi" value="<?= $kos->deskripsi ?>">
+                                        <?= form_error('deskripsi', '<small class="text-danger ">', '</small>'); ?>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Jenis Kosan</td>
-                                    <td><?=$kos->jenis_kosan?></td>
+                                    <td><?= $kos->jenis_kosan ?></td>
                                 </tr>
                                 <tr>
                                     <td></td>

@@ -138,29 +138,46 @@ class Pemilik extends CI_Controller
 
     public function profile()
     {
-        $total_transaksi = $this->M_All->count('pemesanan');
-        $where_ = array('id_pesan' => 0, 'pemilik_kos.id_pemilik' => $this->session->userdata('id_pemilik'));
-        $yang_belum = $this->M_All->join_get_bayar_($where_);
-        $f = 0;
-        if ($total_transaksi > 0) {
-            $f = $yang_belum / $total_transaksi;
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('password_lama', 'Password', 'required', [
+            'required' => 'Password tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('password_baru', '', 'min_length[6]|required|matches[konfirmasi]', [
+            'required' => 'Password tidak boleh kosong',
+            'min_length' => 'Password terlalu pendek',
+            'matches' => 'Password tidak cocok'
+        ]);
+        $this->form_validation->set_rules('konfirmasi', '', 'min_length[6]|required|matches[password_baru]', [
+            'required' => 'Confirm Password tidak boleh kosong',
+            'min_length' => ' Password terlalu pendek',
+            'matches' => ' Password tidak cocok',
+        ]);
+        if ($this->form_validation->run() == false) {
+            $total_transaksi = $this->M_All->count('pemesanan');
+            $where_ = array('id_pesan' => 0, 'pemilik_kos.id_pemilik' => $this->session->userdata('id_pemilik'));
+            $yang_belum = $this->M_All->join_get_bayar_($where_);
+            $f = 0;
+            if ($total_transaksi > 0) {
+                $f = $yang_belum / $total_transaksi;
+            }
+            $persen = number_format($f * 100, 0);
+            $data['per'] = array(
+                'total_transaksi' => $total_transaksi,
+                'persen' => $persen,
+                'yang_belum' => $yang_belum,
+            );
+            $id_pemilik = $this->session->userdata('id_pemilik');
+            $where = array('id_pemilik' => $id_pemilik);
+            // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
+            $data['jumlah_orang'] = 0;
+            $data['jumlah_kamar'] = $this->M_All->count_('kamar', $where);
+            $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
+
+            $this->load->view('pemilik/sidebar_pemilik');
+            $this->load->view('pemilik/header_pemilik', $data);
+            $this->load->view('pemilik/profile');
+            $this->load->view('pemilik/foot_pemilik');
         }
-        $persen = number_format($f * 100, 0);
-        $data['per'] = array(
-            'total_transaksi' => $total_transaksi,
-            'persen' => $persen,
-            'yang_belum' => $yang_belum,
-        );
-        $id_pemilik = $this->session->userdata('id_pemilik');
-        $where = array('id_pemilik' => $id_pemilik);
-        // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
-        $data['jumlah_orang'] = 0;
-        $data['jumlah_kamar'] = $this->M_All->count_('kamar', $where);
-        $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
-        $this->load->view('pemilik/sidebar_pemilik');
-        $this->load->view('pemilik/header_pemilik', $data);
-        $this->load->view('pemilik/profile');
-        $this->load->view('pemilik/foot_pemilik');
     }
     public function booking($param1 = null)
     {
@@ -422,55 +439,97 @@ class Pemilik extends CI_Controller
 
     public function insert_data_kos()
     {
-        $config['upload_path'] = './asset_admin/upload_kos/';
-        $config['overwrite'] = true;
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = 1024;
-        // $config['max_width']            = 1024;
-        // $config['max_height']           = 768;
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('foto')) {
-            $error = array('error' => $this->upload->display_errors());
-            // $this->load->view('upload_form', $error);
-            echo "<script> alert('Foto Kos Gagal diunggah');</script>";
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nama_kos', 'Nama Kos', 'required', [
+            'required' => 'Nama Kos tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('luas_kamar', 'Luas Kamar', 'required', [
+            'required' => 'Luas Kamar tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required', [
+            'required' => 'Alamat tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('listrik', 'Listrik', 'required', [
+            'required' => 'Keterangan tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required', [
+            'required' => 'Deskripsi tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('jenis_kosan', 'jenis_kosan', 'required', [
+            'required' => 'Jenis Kosan tidak boleh kosong'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $id_pemilik = $this->session->userdata('id_pemilik');
+            $where = array('id_pemilik' => $id_pemilik);
+            $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
+            $this->load->view('pemilik/sidebar_pemilik');
+            $this->load->view('pemilik/header_pemilik', $data);
+            $this->load->view('pemilik/input_data_kos');
+            $this->load->view('pemilik/foot_pemilik');
         } else {
-            $data = array('upload_data' => $this->upload->data());
-            // $this->load->view('upload_success', $data);
-            $nama_kos = $this->input->post('nama_kos');
-            $karakter = '123456789';
-            $string = '';
-            for ($i = 0; $i < 4; $i++) {
-                $pos = rand(0, strlen($karakter) - 1);
-                $string .= $karakter[$pos];
-            }
-            $kode_kos = substr($nama_kos, 1, 4) . $string;
-            $alamat = $this->input->post('alamat');
+            # code...
 
-            $luas_kamar = $this->input->post('luas_kamar');
-            $listrik = $this->input->post('listrik');
+            $config['upload_path'] = './asset_admin/upload_kos/';
+            $config['overwrite'] = true;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size'] = 1024;
+            // $config['max_width']            = 1024;
+            // $config['max_height']           = 768;
 
-            $deskripsi = $this->input->post('deskripsi');
-            $jenis_kosan = $this->input->post('jenis_kosan');
-            $foto = $this->upload->data('file_name');
+            $this->load->library('upload', $config);
 
-            $data = array(
-                'kode_kos' => urldecode($kode_kos),
-                'nama_kos' => $nama_kos,
-                'alamat' => $alamat,
-                'deskripsi' => "Luas kamar ini adalah " . $luas_kamar . ". Untuk tegangan listrik yaitu " . $listrik . ". Deskrip lainnya berupa, " . $deskripsi,
-                'foto' => $foto,
-                'jenis_kosan' => $jenis_kosan,
-                'saldo_kos' => 0,
-                'id_pemilik' => $this->session->userdata('id_pemilik'),
-            );
-            if ($this->M_All->insert('kosan', $data) != true) {
-                redirect('pemilik/view_data_kos');
-                echo "<script> alert('Data Kos berhasil ditambah');</script>";
-            } else {
+            if (!$this->upload->do_upload('foto')) {
+                $error = array('error' => $this->upload->display_errors());
+                // $this->load->view('upload_form', $error);
+                $this->session->set_flashdata('foto', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Foto tidak boleh kosong
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
                 redirect('pemilik/input_data_kos');
-                echo "<script> alert('Data Kos gagal ditambah');</script>";
+            } else {
+                $data = array('upload_data' => $this->upload->data());
+                // $this->load->view('upload_success', $data);
+                $nama_kos = $this->input->post('nama_kos');
+                $karakter = '123456789';
+                $string = '';
+                for ($i = 0; $i < 4; $i++) {
+                    $pos = rand(0, strlen($karakter) - 1);
+                    $string .= $karakter[$pos];
+                }
+                $kode_kos = substr($nama_kos, 1, 4) . $string;
+                $alamat = $this->input->post('alamat');
+
+                $luas_kamar = $this->input->post('luas_kamar');
+                $listrik = $this->input->post('listrik');
+
+                $deskripsi = $this->input->post('deskripsi');
+                $jenis_kosan = $this->input->post('jenis_kosan');
+                $foto = $this->upload->data('file_name');
+
+                $data = array(
+                    'kode_kos' => urldecode($kode_kos),
+                    'nama_kos' => $nama_kos,
+                    'alamat' => $alamat,
+                    'deskripsi' => "Luas kamar ini adalah " . $luas_kamar . ". Untuk tegangan listrik yaitu " . $listrik . ". Deskrip lainnya berupa, " . $deskripsi,
+                    'foto' => $foto,
+                    'jenis_kosan' => $jenis_kosan,
+                    'saldo_kos' => 0,
+                    'id_pemilik' => $this->session->userdata('id_pemilik'),
+                );
+                if ($this->M_All->insert('kosan', $data) != true) {
+                    $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Data berhasil ditambahkan
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
+                    redirect('pemilik/view_data_kos');
+                } else {
+                    redirect('pemilik/input_data_kos');
+                    echo "<script> alert('Data Kos gagal ditambah');</script>";
+                }
             }
         }
     }
@@ -497,25 +556,93 @@ class Pemilik extends CI_Controller
         $where_ = array('kode_kos' => urldecode($id));
         $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
         $data['kos'] = $this->M_All->view_where('kosan', $where_)->row();
-
         $data['result'] = $this->M_All->view_where('kamar', $where_)->result();
-        $this->load->view('pemilik/sidebar_pemilik');
-        $this->load->view('pemilik/header_pemilik', $data);
-        $this->load->view('pemilik/view_data_kos', $data);
-        $this->load->view('pemilik/foot_pemilik');
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nama_kos', 'Nama Kos', 'required', [
+            'required' => 'Nama Kos tidak boleh kosong'
+        ]);
+
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required', [
+            'required' => 'Alamat tidak boleh kosong'
+        ]);
+
+        $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required', [
+            'required' => 'Deskripsi tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('jenis_kosan', 'jenis_kosan', 'required', [
+            'required' => 'Jenis Kosan tidak boleh kosong'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->load->view('pemilik/sidebar_pemilik');
+            $this->load->view('pemilik/header_pemilik', $data);
+            $this->load->view('pemilik/view_data_kos', $data);
+            $this->load->view('pemilik/foot_pemilik');
+        } else {
+            $config['upload_path'] = './asset_admin/upload_kos/';
+            $config['overwrite'] = true;
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size'] = 1024;
+            // $config['max_width']            = 1024;
+            // $config['max_height']           = 768;
+
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload('foto')) {
+                $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
+                $data = array(
+                    'nama_kos' => $this->input->post('nama_kos'),
+                    'alamat' => $this->input->post('alamat'),
+                    'deskripsi' => $this->input->post('deskripsi'),
+                    'saldo_kos' => $this->input->post('saldo_kos'),
+                );
+                $this->M_All->update('kosan', $where, $data);
+                $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Data berhasil di update
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
+                redirect('pemilik/view_data_kos');
+            } else {
+                $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
+                $foto = $this->upload->data('file_name');
+                $data = array(
+                    'nama_kos' => $this->input->post('nama_kos'),
+                    'alamat' => $this->input->post('alamat'),
+                    'deskripsi' => $this->input->post('deskripsi'),
+                    'saldo_kos' => $this->input->post('saldo_kos'),
+                    'foto' => $foto
+                );
+                $this->M_All->update('kosan', $where, $data);
+                $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Data berhasil di update
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
+                redirect('pemilik/view_data_kos');
+            }
+        }
     }
 
     public function update_kos()
     {
-        $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
-        $data = array(
-            'nama_kos' => $this->input->post('nama_kos'),
-            'alamat' => $this->input->post('alamat'),
-            'deskripsi' => $this->input->post('deskripsi'),
-            'saldo_kos' => $this->input->post('saldo_kos'),
-        );
-        $this->M_All->update('kosan', $where, $data);
-        redirect('pemilik/view_data_kos');
+        // $upload_image = $_FILES['foto']['name'];
+        // if ($upload_image) {
+
+        // }
+
+
+        // $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
+        // $data = array(
+        //     'nama_kos' => $this->input->post('nama_kos'),
+        //     'alamat' => $this->input->post('alamat'),
+        //     'deskripsi' => $this->input->post('deskripsi'),
+        //     'saldo_kos' => $this->input->post('saldo_kos'),
+        // );
+        // $this->M_All->update('kosan', $where, $data);
+        // redirect('pemilik/view_data_kos');
     }
 
     public function hapus_kos($id)
@@ -529,44 +656,72 @@ class Pemilik extends CI_Controller
 
     public function tambah_kamar()
     {
-        $config['upload_path'] = './asset_admin/upload_kos/';
-        $config['overwrite'] = true;
-        $config['allowed_types'] = 'gif|jpg|png';
-        // $config['max_size']             = 1024;
-        // $config['max_width']            = 1024;
-        // $config['max_height']           = 768;
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('foto')) {
-            $error = array('error' => $this->upload->display_errors());
-            // $this->load->view('upload_form', $error);
-            echo "<script> alert('Foto Kos Gagal diunggah');</script>";
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('kode_kamar', 'Kode Kamar', 'required', [
+            'required' => 'Kode Kamar tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('harga_smesteran', '', 'required', [
+            'required' => 'Harga 6 Bulan tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('harga', '', 'required', [
+            'required' => 'Harga 1 Tahun tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('deskripsi', '', 'required', [
+            'required' => 'Deskripsi tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('status', '', 'required', [
+            'required' => 'status tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('tgl_tersedia', '', 'required', [
+            'required' => 'Tanggal tersedia tidak boleh kosong'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->view_data_kos();
         } else {
-            $data = array('upload_data' => $this->upload->data());
-            // $this->load->view('upload_success', $data);
-            $kode_kamar = $this->input->post('kode_kamar');
-            $harga = $this->input->post('harga');
-            $harga_smesteran = $this->input->post('harga_smesteran');
-            $deskripsi = $this->input->post('deskripsi');
-            $status = $this->input->post('status');
-            $tanggal_tersedia = $this->input->post('tgl_tersedia');
-            $foto = $this->upload->data('file_name');
+            $config['upload_path'] = './asset_admin/upload_kos/';
+            $config['overwrite'] = true;
+            $config['allowed_types'] = 'gif|jpg|png';
+            // $config['max_size']             = 1024;
+            // $config['max_width']            = 1024;
+            // $config['max_height']           = 768;
 
-            $data = array(
-                'kode_kamar' => $kode_kamar,
-                'kode_kos' => urldecode($this->session->userdata('kode_kos')),
-                'harga' => $harga,
-                'harga_smesteran' => $harga_smesteran,
-                'deskripsi' => $deskripsi,
-                'status' => $status,
-                'foto' => $foto,
-                'tgl_tersedia' => $tanggal_tersedia,
-            );
-            if ($this->M_All->insert('kamar', $data) != true) {
-                redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
-                echo "<script> alert('Data Kos berhasil ditambah');</script>";
-                $this->session->set_flashdata('alert', '
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload('foto')) {
+                $error = array('error' => $this->upload->display_errors());
+                // $this->load->view('upload_form', $error);
+                $this->session->set_flashdata('foto', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Foto tidak boleh kosong
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
+                redirect('pemilik/view_data_kos');
+            } else {
+                $data = array('upload_data' => $this->upload->data());
+                // $this->load->view('upload_success', $data);
+                $kode_kamar = $this->input->post('kode_kamar');
+                $harga = $this->input->post('harga');
+                $harga_smesteran = $this->input->post('harga_smesteran');
+                $deskripsi = $this->input->post('deskripsi');
+                $status = $this->input->post('status');
+                $tanggal_tersedia = $this->input->post('tgl_tersedia');
+                $foto = $this->upload->data('file_name');
+
+                $data = array(
+                    'kode_kamar' => $kode_kamar,
+                    'kode_kos' => urldecode($this->session->userdata('kode_kos')),
+                    'harga' => $harga,
+                    'harga_smesteran' => $harga_smesteran,
+                    'deskripsi' => $deskripsi,
+                    'status' => $status,
+                    'foto' => $foto,
+                    'tgl_tersedia' => $tanggal_tersedia,
+                );
+                if ($this->M_All->insert('kamar', $data) != true) {
+                    redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
+                    echo "<script> alert('Data Kos berhasil ditambah');</script>";
+                    $this->session->set_flashdata('alert', '
                 <div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
                 style="position: fixed; top: 0; right: 0;">
                 <div class="toast-header">
@@ -586,9 +741,10 @@ class Pemilik extends CI_Controller
                 </div>
                 </div>
                 ');
-            } else {
-                redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
-                echo "<script> alert('Data Kos gagal ditambah');</script>";
+                } else {
+                    redirect('pemilik/edit_kos/' . $this->session->userdata('kode_kos'));
+                    echo "<script> alert('Data Kos gagal ditambah');</script>";
+                }
             }
         }
     }
@@ -864,69 +1020,103 @@ class Pemilik extends CI_Controller
 
     public function update_profile()
     {
-        $upload_image = $_FILES['foto']['name'];
-        if ($upload_image) {
-            // echo 'upload nih';
-            // die;
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size']      = '2048';
-            $config['upload_path'] = './asset_registrasi/upload_pemilik/';
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('nama_pemilik', '', 'required', [
+            'required' => 'Nama Lengkap tidak boleh kosong'
+        ]);
 
-            $this->load->library('upload', $config);
-            if ($this->upload->do_upload('foto')) {
-                // $old_image = $data['user']['image'];
-                $where = array('id_pencari' => $this->input->post('id_pencari'));
-                $new_image = $this->upload->data('file_name');
-                $nama_lengkap = $this->input->post('nama_pemilik');
-                $ktp = $this->input->post('no_ktp');
-                $email = $this->input->post('email');
-                $no_telp = $this->input->post('no_telp');
-                $atas_nama_rek = $this->input->post('atas_nama_rek');
-                $bank = $this->input->post('bank');
-                $no_rek = $this->input->post('no_rek');
+        $this->form_validation->set_rules('no_ktp', 'No KTP', 'required', [
+            'required' => 'No KTP tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('no_telp', 'No Telephone', 'required', [
+            'required' => 'No Telephone tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email', [
+            'required' => 'Email tidak boleh kosong',
+            'valid_email' => 'Email tidak valid',
+            'is_unique' => 'Email sudah terdaftar'
+        ]);
+        $this->form_validation->set_rules('no_rek', 'Nomor Rekening', 'required', [
+            'required' => 'Nomor Rekening tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('atas_nama_rek', 'Nama Pemilik Rekening', 'required', [
+            'required' => 'Nama Pemilik Rekening tidak boleh kosong'
+        ]);
+        $this->form_validation->set_rules('bank', 'Nama bank', 'required', [
+            'required' => 'Nama bank tidak boleh kosong'
+        ]);
+        if ($this->form_validation->run() == false) {
+            $this->profile();
+        } else {
+            $upload_image = $_FILES['foto']['name'];
+            if ($upload_image) {
+                // echo 'upload nih';
+                // die;
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size']      = '2048';
+                $config['upload_path'] = './asset_registrasi/upload_pemilik/';
 
-                $data = [
-                    'nama_pemilik' => $nama_lengkap,
-                    'no_telp' => $no_telp,
-                    'email' => $email,
-                    'foto' => $new_image,
-                    'no_ktp' => $ktp,
-                    'no_rek' => $no_rek,
-                    'atas_nama_rek' => $atas_nama_rek,
-                    'bank' => $bank,
-                ];
-                $where_update = array('id_pemilik' => $this->session->userdata('id_pemilik'));
-                $this->M_All->update('pemilik_kos', $where_update, $data);
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('foto')) {
+                    // $old_image = $data['user']['image'];
+                    $where = array('id_pencari' => $this->input->post('id_pencari'));
+                    $new_image = $this->upload->data('file_name');
+                    $nama_lengkap = $this->input->post('nama_pemilik');
+                    $ktp = $this->input->post('no_ktp');
+                    $email = $this->input->post('email');
+                    $no_telp = $this->input->post('no_telp');
+                    $atas_nama_rek = $this->input->post('atas_nama_rek');
+                    $bank = $this->input->post('bank');
+                    $no_rek = $this->input->post('no_rek');
 
-                // $this->db->set('image', $new_image);
-            } else {
-                echo $this->upload->dispay_errors();
+                    $data = [
+                        'nama_pemilik' => $nama_lengkap,
+                        'no_telp' => $no_telp,
+                        'email' => $email,
+                        'foto' => $new_image,
+                        'no_ktp' => $ktp,
+                        'no_rek' => $no_rek,
+                        'atas_nama_rek' => $atas_nama_rek,
+                        'bank' => $bank,
+                    ];
+                    $where_update = array('id_pemilik' => $this->session->userdata('id_pemilik'));
+                    $this->M_All->update('pemilik_kos', $where_update, $data);
+
+                    // $this->db->set('image', $new_image);
+                } else {
+                    $this->session->set_flashdata('foto', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Yang anda pilih bukan gambar atau ukuran gambar terlalu besar
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>');
+                    redirect('pemilik/profile');
+                }
             }
-        }
 
-        $nama_lengkap = $this->input->post('nama_pemilik');
-        $ktp = $this->input->post('no_ktp');
-        $email = $this->input->post('email');
-        $no_telp = $this->input->post('no_telp');
-        $atas_nama_rek = $this->input->post('atas_nama_rek');
-        $bank = $this->input->post('bank');
-        $no_rek = $this->input->post('no_rek');
+            $nama_lengkap = $this->input->post('nama_pemilik');
+            $ktp = $this->input->post('no_ktp');
+            $email = $this->input->post('email');
+            $no_telp = $this->input->post('no_telp');
+            $atas_nama_rek = $this->input->post('atas_nama_rek');
+            $bank = $this->input->post('bank');
+            $no_rek = $this->input->post('no_rek');
 
-        $data = [
-            'nama_pemilik' => $nama_lengkap,
-            'no_telp' => $no_telp,
-            'email' => $email,
-            'no_ktp' => $ktp,
-            'no_rek' => $no_rek,
-            'atas_nama_rek' => $atas_nama_rek,
-            'bank' => $bank,
-        ];
+            $data = [
+                'nama_pemilik' => $nama_lengkap,
+                'no_telp' => $no_telp,
+                'email' => $email,
+                'no_ktp' => $ktp,
+                'no_rek' => $no_rek,
+                'atas_nama_rek' => $atas_nama_rek,
+                'bank' => $bank,
+            ];
 
-        $where_update = array('id_pemilik' => $this->session->userdata('id_pemilik'));
+            $where_update = array('id_pemilik' => $this->session->userdata('id_pemilik'));
 
-        $this->M_All->update('pemilik_kos', $where_update, $data);
+            $this->M_All->update('pemilik_kos', $where_update, $data);
 
-        $this->session->set_flashdata('alert', '
+            $this->session->set_flashdata('alert', '
 
 			<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
 			style="position: fixed; top: 0; right: 0;">
@@ -952,7 +1142,8 @@ class Pemilik extends CI_Controller
 
 			');
 
-        redirect('pemilik/profile/');
+            redirect('pemilik/profile/');
+        }
     }
 
     public function tolak_pesanan()
