@@ -241,10 +241,10 @@ class Welcome extends CI_Controller
     public function prosesLoginAdmin()
     {
         $this->form_validation->set_rules('username', 'username', 'required|trim', [
-            'required' => 'username tidak boleh kosong'
+            'required' => 'username tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('password', 'password', 'required|trim', [
-            'required' => 'password tidak boleh kosong'
+            'required' => 'password tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->load->view('login/head_login');
@@ -301,10 +301,10 @@ class Welcome extends CI_Controller
     public function prosesLoginPemilik()
     {
         $this->form_validation->set_rules('username', 'username', 'required|trim', [
-            'required' => 'username tidak boleh kosong'
+            'required' => 'username tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('password', 'password', 'required|trim', [
-            'required' => 'password tidak boleh kosong'
+            'required' => 'password tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->load->view('login/head_login');
@@ -496,16 +496,16 @@ class Welcome extends CI_Controller
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'Username', 'required', [
-            'required' => 'Username tidak boleh kosong'
+            'required' => 'Username tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('username', 'Username', 'required', [
-            'required' => 'Username tidak boleh kosong'
+            'required' => 'Username tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('nama_pemilik', 'Nama Lengkap', 'required', [
-            'required' => 'Nama Lengkap tidak boleh kosong'
+            'required' => 'Nama Lengkap tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('nama_pemilik', 'Nama Lengkap', 'required', [
-            'required' => 'Nama Lengkap tidak boleh kosong'
+            'required' => 'Nama Lengkap tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[3]|matches[konfirmasi]', [
             'required' => 'Password tidak boleh kosong',
@@ -518,27 +518,27 @@ class Welcome extends CI_Controller
             'matches' => 'Confirm Password tidak cocok',
         ]);
         $this->form_validation->set_rules('no_ktp', 'No KTP', 'required', [
-            'required' => 'No KTP tidak boleh kosong'
+            'required' => 'No KTP tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('no_telp', 'No Telephone', 'required', [
-            'required' => 'No Telephone tidak boleh kosong'
+            'required' => 'No Telephone tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[pemilik_kos.email]', [
             'required' => 'Email tidak boleh kosong',
             'valid_email' => 'Email tidak valid',
-            'is_unique' => 'Email sudah terdaftar'
+            'is_unique' => 'Email sudah terdaftar',
         ]);
         $this->form_validation->set_rules('no_rek', 'Nomor Rekening', 'required', [
-            'required' => 'Nomor Rekening tidak boleh kosong'
+            'required' => 'Nomor Rekening tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('atas_nama_rek', 'Nama Pemilik Rekening', 'required', [
-            'required' => 'Nama Pemilik Rekening tidak boleh kosong'
+            'required' => 'Nama Pemilik Rekening tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('bank', 'Nama bank', 'required', [
-            'required' => 'Nama bank tidak boleh kosong'
+            'required' => 'Nama bank tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required', [
-            'required' => 'Jenis Kelamin tidak boleh kosong'
+            'required' => 'Jenis Kelamin tidak boleh kosong',
         ]);
 
         if ($this->form_validation->run() == false) {
@@ -754,8 +754,8 @@ class Welcome extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'unregistered30@gmail.com',
-            'smtp_pass' => 'Medellincartel13!',
+            'smtp_user' => 'nurdalifahasr@gmail.com',
+            'smtp_pass' => 'gmailifay09',
             'smtp_port' => 465,
             'mailtype' => 'html',
             'charset' => 'utf-8',

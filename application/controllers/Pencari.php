@@ -120,7 +120,6 @@ class Pencari extends CI_Controller
             'status_transaksi <>' => 0,
             'status_transaksi <>' => 1,
         );
-		
 
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where_nama)->row();
 
@@ -279,7 +278,7 @@ class Pencari extends CI_Controller
             // echo 'upload nih';
             // die;
             $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size']      = '2048';
+            $config['max_size'] = '2048';
             $config['upload_path'] = './asset_registrasi/upload_pencari/';
 
             $this->load->library('upload', $config);
@@ -408,17 +407,16 @@ class Pencari extends CI_Controller
                 'status_baca' => 0,
                 'jenis' => $jenis,
             ];
-        }else{
+        } else {
             $data_notif = [
                 'isi_pesan' => $pesan,
                 'dari' => $dari,
                 'untuk' => $untuk,
                 'status_baca' => 0,
                 'jenis' => $jenis,
-                'kode_kos' => $kode_kos
+                'kode_kos' => $kode_kos,
             ];
         }
-        
 
         $this->M_All->insert('notifikasi', $data_notif);
     }
@@ -650,10 +648,15 @@ class Pencari extends CI_Controller
         // echo $perbedaan->d . ' selisih hari.';
     }
 
-    public function cetakKwitansi($idpesanan)
+    public function cetakKwitansi($idpesanan, $harga = null)
     {
         $where_ = array('id_pesan' => $idpesanan);
         $data['pesanan'] = $this->M_All->view_where('pemesanan', $where_)->row();
+
+        if (!is_null($harga)) {
+            $data['harga'] = $harga;
+        }
+
         $this->load->view('invoice/index', $data);
     }
 }

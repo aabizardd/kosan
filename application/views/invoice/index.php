@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
 
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+            id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
 
-    <style>
+        <style>
         #invoice {
             padding: 30px;
         }
@@ -182,117 +183,126 @@
                 page-break-before: always
             }
         }
-    </style>
+        </style>
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-    <div id="invoice">
+        <div id="invoice">
 
-        <div class="toolbar hidden-print">
-            <div class="text-right">
-                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            <div class="toolbar hidden-print">
+                <div class="text-right">
+                    <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
 
+                </div>
+                <hr>
             </div>
-            <hr>
-        </div>
-        <div class="invoice overflow-auto">
-            <div style="min-width: 600px">
-                <header>
-                    <div class="row">
-                        <div class="col">
-                            <!-- <a target="_blank" href="https://lobianijs.com">
+            <div class="invoice overflow-auto">
+                <div style="min-width: 600px">
+                    <header>
+                        <div class="row">
+                            <div class="col">
+                                <!-- <a target="_blank" href="https://lobianijs.com">
                                     <img src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png"
                                         data-holder-rendered="true" />
                                 </a> -->
-                        </div>
-                        <div class="col company-details">
-                            <h2 class="name">
-                                <a target="_blank" href="https://lobianijs.com">
-                                    KOALA KOS
-                                </a>
-                            </h2>
+                            </div>
+                            <div class="col company-details">
+                                <h2 class="name">
+                                    <a target="_blank" href="https://lobianijs.com">
+                                        KOALA KOS
+                                    </a>
+                                </h2>
 
+                            </div>
                         </div>
-                    </div>
-                </header>
-                <main>
-                    <div class="row contacts">
-                        <div class="col invoice-to">
-                            <div class="text-gray-light">INVOICE TO:</div>
-                            <h2 class="to">Suci</h2>
-                            <!-- <div class="address">796 Silver Harbour, TX 79273, US</div> -->
-                            <div class="email"><a href="mailto:john@example.com">suci@example.com</a></div>
+                    </header>
+                    <main>
+                        <div class="row contacts">
+                            <div class="col invoice-to">
+                                <div class="text-gray-light">INVOICE TO:</div>
+                                <h2 class="to">Suci</h2>
+                                <!-- <div class="address">796 Silver Harbour, TX 79273, US</div> -->
+                                <div class="email"><a href="mailto:john@example.com">suci@example.com</a></div>
+                            </div>
+                            <div class="col invoice-details">
+                                <h1 class="invoice-id">INVOICE 3-2-1</h1>
+                                <div class="date">Date of Invoice: <?=date('y-m-d');?></div>
+                                <!-- <div class="date">Due Date: 30/10/2018</div> -->
+                            </div>
                         </div>
-                        <div class="col invoice-details">
-                            <h1 class="invoice-id">INVOICE 3-2-1</h1>
-                            <div class="date">Date of Invoice: <?= date('y-m-d'); ?></div>
-                            <!-- <div class="date">Due Date: 30/10/2018</div> -->
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="text-left">DESCRIPTION</th>
+                                    <th class="text-right"><?php echo ($harga) ? "TOTAL HARGA" : "JUMLAH DP"; ?></th>
+                                    <th class="text-right">SISA PEMBAYARAN</th>
+                                    <th class="text-right">
+                                        <?php echo ($harga) ? "TOTAL HARGA" : "TOTAL DP"; ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="no">04</td>
+                                    <td class="text-left">
+                                        <h3>
+                                            <a target="_blank"
+                                                href="https://www.youtube.com/channel/UC_UMEcP_kF0z4E6KbxCpV1w">
+                                                Kosan (Kamar 011321)
+                                            </a>
+                                        </h3>
+
+                                        to improve your Javascript skills. Subscribe and stay tuned :)
+                                    </td>
+                                    <td class="unit"><?="Rp " . number_format($pesanan->jumlah_dp, 2, ',', '.');?></td>
+                                    <td class="qty"><?="Rp " . number_format($pesanan->sisa_pembayaran, 2, ',', '.');?>
+                                    </td>
+                                    <td class="total"><?="Rp " . number_format($pesanan->jumlah_dp, 2, ',', '.');?></td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2"></td>
+                                    <td></td>
+
+                                </tr>
+                                <tr>
+                                    <?php $grand_total = $pesanan->jumlah_dp + $pesanan->sisa_pembayaran?>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">GRAND TOTAL</td>
+                                    <td>
+
+
+
+                                        <?php echo ($harga) ? "Rp " . number_format($harga, 2, ',', '.') : "Rp " . number_format($grand_total, 2, ',', '.'); ?>
+
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="thanks">Thank you!</div>
+                        <div class="notices">
+                            <div>NOTICE:</div>
+                            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.
+                            </div>
                         </div>
-                    </div>
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="text-left">DESCRIPTION</th>
-                                <th class="text-right">JUMLAH DP</th>
-                                <th class="text-right">SISA PEMBAYARAN</th>
-                                <th class="text-right">TOTAL DP</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="no">04</td>
-                                <td class="text-left">
-                                    <h3>
-                                        <a target="_blank" href="https://www.youtube.com/channel/UC_UMEcP_kF0z4E6KbxCpV1w">
-                                            Kosan (Kamar 011321)
-                                        </a>
-                                    </h3>
-
-                                    to improve your Javascript skills. Subscribe and stay tuned :)
-                                </td>
-                                <td class="unit"><?= "Rp " . number_format($pesanan->jumlah_dp, 2, ',', '.'); ?></td>
-                                <td class="qty"><?= "Rp " . number_format($pesanan->sisa_pembayaran, 2, ',', '.'); ?></td>
-                                <td class="total"><?= "Rp " . number_format($pesanan->jumlah_dp, 2, ',', '.'); ?></td>
-                            </tr>
-
-                        </tbody>
-                        <tfoot>
-
-                            <tr>
-                                <td colspan="2"></td>
-                                <td colspan="2"></td>
-                                <td></td>
-
-                            </tr>
-                            <tr>
-                                <?php $grand_total = $pesanan->jumlah_dp + $pesanan->sisa_pembayaran ?>
-                                <td colspan="2"></td>
-                                <td colspan="2">GRAND TOTAL</td>
-                                <td><?= "Rp " . number_format($grand_total, 2, ',', '.'); ?></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <div class="thanks">Thank you!</div>
-                    <div class="notices">
-                        <div>NOTICE:</div>
-                        <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.
-                        </div>
-                    </div>
-                </main>
-                <footer>
-                    Invoice was created on a computer and is valid without the signature and seal.
-                </footer>
+                    </main>
+                    <footer>
+                        Invoice was created on a computer and is valid without the signature and seal.
+                    </footer>
+                </div>
+                <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                <div></div>
             </div>
-            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
-            <div></div>
         </div>
-    </div>
 
-</body>
-<script>
+    </body>
+    <script>
     $('#printInvoice').click(function() {
         Popup($('.invoice')[0].outerHTML);
 
@@ -301,6 +311,7 @@
             return true;
         }
     });
-</script>
+    </script>
+
 
 </html>
