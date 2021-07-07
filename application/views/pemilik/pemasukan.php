@@ -75,7 +75,6 @@ foreach ($bulan as $b): ?>
                         </tr>
                     </thead>
                     <?php
-<<<<<<< HEAD
 $no = 1;
 foreach ($result as $r): ?>
                     <tbody>
@@ -86,18 +85,19 @@ foreach ($result as $r): ?>
                         <td><?=$r->jangka_waktu?></td>
                         <td><?=date("d-F-Y", strtotime($r->tanggal_keluar))?></td>
                         <td><?=date("d-F-Y", strtotime($r->tanggal_pesan))?></td>
-                        <!-- <?php if ($r->jangka_waktu == "1 Tahun"): ?> -->
                         <?php
-if ($r->jangka_waktu = "1 Tahun") {
+if ($r->jangka_waktu = "6 Bulan") {
+    $sisa_pembayaran = $r->harga_smesteran * 20 / 100;
+    $sisa = $r->harga_smesteran - $sisa_pembayaran;
+} else {
+
     $sisa_pembayaran = $r->harga * 20 / 100;
     $sisa = $r->harga - $sisa_pembayaran;
-} else {
-    $sisa_pembayaran = $r->harga * 20 / 100;
-    $sisa = $r->harga_smesteran - $sisa_pembayaran;
 }
 
 ?>
                         <?php if ($r->sisa_pembayaran == 0): ?>
+
                         <td>Lunas</td>
                         <td> <?="Rp " . number_format($r->jumlah_dp + $sisa, 2, ',', '.');?></td>
                         <?php else: ?>
@@ -106,53 +106,10 @@ if ($r->jangka_waktu = "1 Tahun") {
 
                         <?php endif;?>
 
-                        <!-- <td><?="Rp " . number_format($r->harga, 2, ',', '.');?></td> -->
-                        <!-- <?php else: ?> -->
-                        <!-- <td><?="Rp " . number_format($r->harga_smesteran, 2, ',', '.');?></td> -->
-                        <!-- <?php endif?> -->
-
-
 
 
                     </tbody>
                     <?php endforeach;?>
-=======
-                    $no = 1;
-                    foreach ($result as $r) : ?>
-                        <tbody>
-
-
-                            <td><?= $no++ ?></td>
-                            <td><?= $r->kode_kamar ?></td>
-                            <td><?= $r->jangka_waktu ?></td>
-                            <td><?= date("d-F-Y", strtotime($r->tanggal_keluar)) ?></td>
-                            <td><?= date("d-F-Y", strtotime($r->tanggal_pesan)) ?></td>
-                            <?php
-                            if ($r->jangka_waktu = "6 Bulan") {
-                                $sisa_pembayaran =   $r->harga_smesteran * 20 / 100;
-                                $sisa = $r->harga_smesteran - $sisa_pembayaran;
-                            } else {
-
-                                $sisa_pembayaran =   $r->harga * 20 / 100;
-                                $sisa = $r->harga - $sisa_pembayaran;
-                            }
-
-                            ?>
-                            <?php if ($r->sisa_pembayaran == 0) : ?>
-
-                                <td>Lunas</td>
-                                <td> <?= "Rp " . number_format($r->jumlah_dp + $sisa, 2, ',', '.'); ?></td>
-                            <?php else : ?>
-                                <td>DP</td>
-                                <td> <?= "Rp " . number_format($r->jumlah_dp, 2, ',', '.'); ?></td>
-
-                            <?php endif; ?>
-
-
-
-                        </tbody>
-                    <?php endforeach; ?>
->>>>>>> 0b9a6bab81eb841087433ffe28fa224950c6814b
 
                 </table>
             </div>
