@@ -80,7 +80,7 @@
                         if (jenis == 'pembayaran' && status_baca == 0) {
                             window.location = redirect;
                         }else if(jenis == 'pembayaran' && status_baca == 1){
-                            window.location = "<?= base_url('pencari/pemesanan')?>";
+                            window.location = "<?= base_url('pencari/pembayaran')?>";
                         }else{
                             window.location = redirect;
                         }

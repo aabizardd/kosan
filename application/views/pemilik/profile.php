@@ -1,6 +1,6 @@
  <?php error_reporting(0); ?>
  <div class="container-fluid">
-
+     <?= $this->session->flashdata('foto') ?>
      <div class="card shadow mb-4">
          <!-- DataTales Example -->
          <div class="card shadow mb-4">
@@ -12,21 +12,24 @@
                      <h3>Ganti password</h3>
                      <form method="post">
 
-                         <div class="wrap-input100 validate-input" data-validate="Password is required">
+                         <div class="wrap-input100 validate-input">
                              <span class="label-input100">Password lama</span>
-                             <input class="form-control" class="input100" type="password" name="password1" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" name="password_lama" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
+                             <?= form_error('password_lama', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
-                         <div class="wrap-input100 validate-input" data-validate="Password is required">
+                         <div class="wrap-input100 validate-input">
                              <span class="label-input100">Password baru</span>
-                             <input class="form-control" class="input100" type="password" name="password2" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password_baru" name="password_baru" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
+                             <?= form_error('password_baru', '<small class="text-danger ">', '</small>'); ?>
                          </div>
-                         <div class="wrap-input100 validate-input" data-validate="Password is required">
+                         <div class="wrap-input100 validate-input">
                              <span class="label-input100">Password baru ulangi</span>
-                             <input class="form-control" class="input100" type="password" name="password3" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="konfirmasi" name="konfirmasi" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
+                             <?= form_error('konfirmasi', '<small class="text-danger ">', '</small>'); ?>
                          </div>
                          <br>
                          <button name="cpass" value="1" class="btn btn-primary btn-lg">Save</button>
@@ -43,60 +46,50 @@
                              <span class="label-input100">Nama Lengkap</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->nama_pemilik; ?>" type="text" name="nama_pemilik" placeholder="Nama Lengkap">
                              <span class="focus-input100"></span>
+                             <?= form_error('nama_pemilik', '<small class="text-danger ">', '</small>'); ?>
                          </div>
-                         <!--
-					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<span class="label-input100">Password</span>
-						<input class="form-control" class="input100" type="password" name="password" placeholder="*************">
-						<span class="focus-input100"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input" data-validate = "Repeat Password is required">
-						<span class="label-input100">Repeat Password</span>
-						<input class="form-control" class="input100" type="password" name="konfirmasi" placeholder="*************">
-						<span class="focus-input100"></span>
-					</div>
-					-->
-
-
                          <div class="wrap-input100 validate-input" data-validate="Username is required">
                              <span class="label-input100">No KTP</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->no_ktp; ?>" type="number" name="no_ktp" placeholder="No KTP...">
                              <span class="focus-input100"></span>
+                             <?= form_error('no_ktp', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Email</span>
-                             <input class="form-control" class="input100" value="<?php echo $nama->email; ?>" type="email" name="email" placeholder="Email address...">
+                             <input class="form-control" class="input100" value="<?php echo $nama->email; ?>" type="text" name="email" placeholder="Email address...">
                              <span class="focus-input100"></span>
+                             <?= form_error('email', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">No Telepone</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->no_telp; ?>" type="number" name="no_telp" placeholder="No Telepone...">
                              <span class="focus-input100"></span>
+                             <?= form_error('no_telp', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">No Rek</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->no_rek; ?>" type="text" name="no_rek" placeholder="No Rekening...">
                              <span class="focus-input100"></span>
+                             <?= form_error('no_rek', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Atas nama</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->atas_nama_rek; ?>" type="text" name="atas_nama_rek" placeholder="Atas nama...">
                              <span class="focus-input100"></span>
+                             <?= form_error('atas_nama_rek', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
                          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                              <span class="label-input100">Bank</span>
                              <input class="form-control" class="input100" value="<?php echo $nama->bank; ?>" type="text" name="bank" placeholder="Bank...">
                              <span class="focus-input100"></span>
+                             <?= form_error('bank', '<small class="text-danger ">', '</small>'); ?>
                          </div>
-
-
                          <br>
                          <div class="wrap-input100 validate-input">
                              <button value="1" name="udata" class="btn btn-primary btn-lg">Save</button>

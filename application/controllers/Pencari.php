@@ -92,17 +92,17 @@ class Pencari extends CI_Controller
     public function view_data_kos($id, $waktu = null)
     {
         $where_ = array(
-            'kode_kos' => $id,
+            'kode_kos' => urldecode($id),
         );
 
         $where_kosan = array(
-            'kode_kos' => $id,
+            'kode_kos' => urldecode($id),
             'status' => 'Tersedia',
         );
         $id_pencari = $this->session->userdata('id_pencari');
         $where = array('id_pencari' => $id_pencari);
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-        $data['kos'] = $this->M_All->view_where_join($id)->row();
+        $data['kos'] = $this->M_All->view_where_join(urldecode($id))->row();
         $data['result'] = $this->M_All->view_where('kamar', $where_kosan)->result();
 
         $this->load->view('pencari/sidebar_pencari');
@@ -169,7 +169,6 @@ class Pencari extends CI_Controller
         $getCountBooking = $this->M_All->getCountBooking($id_pencari);
 
         if ($getCountBooking['ct'] >= 2) {
-
             redirect('pencari');
         } else {
 
@@ -177,7 +176,8 @@ class Pencari extends CI_Controller
             $harga = 0;
             $kode_kamar = $this->input->post('kode_kamar');
             $id_pencari = $this->input->post('id_pencari');
-            $id_pemilik = $this->M_All->getIdUser($this->input->post('id_pemilik'), $this->input->post('kode_kos'))->result();
+            $kode_kos = $this->input->post('kode_kos');
+            $id_pemilik = $this->M_All->getIdUser($this->input->post('id_pemilik'), urldecode($this->input->post('kode_kos')))->result();
             $idUserPencari = $this->M_All->getIdUserPencari($this->input->post('id_pencari'))->result();
             $tgl_masuk = date('Y-m-d', strtotime($this->input->post('tgl_masuk')));
 
@@ -228,8 +228,9 @@ class Pencari extends CI_Controller
             );
             // return print_r($idUserPencari[0]->id_user);
 
-            $this->kirim_notif("Segera Bayar DP untuk kosanmu!", 'pembayaran', $id_pemilik[0]->id_user, $id_pencari);
-            // $this->kirim_notif("Segera Bayar DP untuk kosanmu!", $idUserPencari[0]->id_user, $id_pencari);
+            $this->kirim_notif("Segera Bayar DP untuk kosanmu!", "pembayaran", $id_pemilik[0]->id_user, $id_pencari);
+            $this->kirim_notif("Ada Pesanan Baru", 'pemesanan', $id_pencari, $id_pemilik[0]->id_user, $kode_kos);
+            // $this->kirim_notif("Segera Bayar DP untuk kosanmu!", $id_pencari, $id_pemilik, 'pembayaran');
             // print_r($data);
 
             $this->M_All->insert('pemesanan', $data);
@@ -348,6 +349,7 @@ class Pencari extends CI_Controller
         $this->db->update('pemesanan', $data);
 
         $kode_kamar = $this->input->post('kode_kamar');
+        $kode_kos = $this->input->post('kode_kos');
 
         $id_pencari = $this->session->userdata('id_pencari');
         $data_pemilik = $this->M_All->getPemilikByKamar($kode_kamar)->row_array();
@@ -380,7 +382,7 @@ class Pencari extends CI_Controller
 
         $id_pemilik1 = $data_pemilik2['id_user'];
 
-        $this->kirim_notif("Ada pesanan baru nih!", 'pemesanan', $id_pencari, $id_pemilik1);
+        $this->kirim_notif("Ada pesanan baru nih!", 'pemesanan', $id_pencari, $id_pemilik1, $kode_kos);
 
         // $notif_update = [
         //     'status_baca' => 1
@@ -396,15 +398,27 @@ class Pencari extends CI_Controller
         redirect('pencari/pembayaran');
     }
 
-    public function kirim_notif($pesan, $dari, $untuk, $jenis)
+    public function kirim_notif($pesan, $jenis, $dari, $untuk, $kode_kos = null)
     {
-        $data_notif = [
-            'isi_pesan' => $pesan,
-            'dari' => $dari,
-            'untuk' => $untuk,
-            'status_baca' => 0,
-            'jenis' => $jenis,
-        ];
+        if (is_null($kode_kos)) {
+            $data_notif = [
+                'isi_pesan' => $pesan,
+                'dari' => $dari,
+                'untuk' => $untuk,
+                'status_baca' => 0,
+                'jenis' => $jenis,
+            ];
+        }else{
+            $data_notif = [
+                'isi_pesan' => $pesan,
+                'dari' => $dari,
+                'untuk' => $untuk,
+                'status_baca' => 0,
+                'jenis' => $jenis,
+                'kode_kos' => $kode_kos
+            ];
+        }
+        
 
         $this->M_All->insert('notifikasi', $data_notif);
     }
@@ -456,6 +470,7 @@ class Pencari extends CI_Controller
         // $id_pencari = $this->input->post('id_pencari');
         $id_pencari = $this->session->userdata('id_pencari');
         $id_pemilik = $this->input->post('id_pemilik');
+        $kode_kos = $this->input->post('kode_kos');
         $bukti_pelunasan = $this->_uploadFile();
         // var_dump($id_pencari);
         // die;
@@ -476,7 +491,7 @@ class Pencari extends CI_Controller
         $this->db->where('id_pesan', $id_pesan);
         $this->db->update('pemesanan', $data_update);
 
-        $this->kirim_notif("Pembayaran Lunas", $id_pemilik, $id_pencari, 'pembayaran');
+        $this->kirim_notif("Ada pembayaran lunas", 'pembayaran', $id_pencari, $id_pemilik, $kode_kos);
 
         redirect('pencari/pembayaran');
     }
@@ -509,9 +524,10 @@ class Pencari extends CI_Controller
             );
             if ($this->M_All->update('pemesanan', $where, $data) != true) {
                 $transaksi = $this->M_All->view_where('pemesanan', $where)->row();
-                $where_kamar = array('kode_kos' => $transaksi->kode_kamar);
+                // $where_kamar = array('kode_kos' => $transaksi->kode_kamar);
+                $where_kamar = array('id_kamar' => $transaksi->id_kamar);
                 $kode_kos = $this->M_All->view_where('kamar', $where_kamar)->row();
-                $where_updatesal = array('kode_kos' => $kode_kos->kode_kos);
+                $where_updatesal = array('kode_kos' => urldecode($kode_kos->kode_kos));
                 $saldo = $this->M_All->view_where('kosan', $where_updatesal)->row();
                 print_r($saldo);
                 $saldo_akhir = ($saldo->saldo_kos + $transaksi->total_bayar);

@@ -1,8 +1,9 @@
 <div class="container-fluid">
-
+    <?= $this->session->flashdata('berhasil_kos') ?>
     <!-- DataTales Example -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Data Kost</h1>
+
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" type="button" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah Kamar</a>
     </div>
     <!-- Content Row -->
@@ -68,7 +69,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url() ?>pemilik/update_kos" method="post" enctype="multipart/form-data">
+                <form action="" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Kode Kos</label>
@@ -83,6 +84,8 @@
                             <label for="exampleFormControlInput1">Alamat</label>
                             <input type="text" value="<?= $kos->alamat ?>" class="form-control bg-light border-1 small" placeholder="Alamat" name="alamat" aria-describedby="basic-addon2">
                         </div>
+
+
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Deskripsi</label>
                             <input type="text" value="<?= $kos->deskripsi ?>" class="form-control bg-light border-1 small" placeholder="Deskrips" name="deskripsi" aria-describedby="basic-addon2">
@@ -90,6 +93,32 @@
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Saldo Kos</label>
                             <input type="text" value="<?= $kos->saldo_kos ?>" class="form-control bg-light border-1 small" placeholder="Saldo" name="saldo_kos" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Foto</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="foto">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Jenis Kosan</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Options</label>
+                                </div>
+                                <select class="custom-select" id="inputGroupSelect01" name="jenis_kosan">
+                                    <option value="Putra">Kosan Putra</option>
+                                    <option value="Putri">Kosan Putri</option>
+                                    <option value="Campur">Kosan Campur</option>
+                                </select>
+                                <?= form_error('jenis_kosan', '<small class="text-danger ">', '</small>'); ?>
+                            </div>
                         </div>
 
                     </div>
@@ -102,6 +131,11 @@
         </div>
     </div>
     <div class="card shadow mb-4">
+        <?php if (validation_errors()) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?= validation_errors(); ?>
+            </div>
+        <?php endif; ?>
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Keterangan Kos</h6>
         </div>
@@ -189,6 +223,6 @@
 
 </div>
 <!-- End of Content Wrapper -->
-
+<?= $this->session->flashdata('alert') ?>
 </div>
 <!-- End of Page Wrapper -->
