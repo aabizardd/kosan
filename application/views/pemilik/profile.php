@@ -10,24 +10,25 @@
              <div class="card-body">
                  <div class="col-lg-6" style="float:right;">
                      <h3>Ganti password</h3>
+                     <h1><?= $nama->id_user; ?></h1>
                      <form method="post">
-
                          <div class="wrap-input100 validate-input">
+                             <input type="hidden" name="id_user" id="" value="<?= $nama->id_user; ?>">
                              <span class="label-input100">Password lama</span>
-                             <input class="form-control" class="input100" name="password_lama" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" name="password_lama" placeholder="Kosongkan jika tidak ingin diubah" type="password">
                              <span class="focus-input100"></span>
                              <?= form_error('password_lama', '<small class="text-danger ">', '</small>'); ?>
                          </div>
 
                          <div class="wrap-input100 validate-input">
                              <span class="label-input100">Password baru</span>
-                             <input class="form-control" class="input100" type="password_baru" name="password_baru" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password" name="password_baru" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
                              <?= form_error('password_baru', '<small class="text-danger ">', '</small>'); ?>
                          </div>
                          <div class="wrap-input100 validate-input">
                              <span class="label-input100">Password baru ulangi</span>
-                             <input class="form-control" class="input100" type="konfirmasi" name="konfirmasi" placeholder="Kosongkan jika tidak ingin diubah">
+                             <input class="form-control" class="input100" type="password" name="konfirmasi" placeholder="Kosongkan jika tidak ingin diubah">
                              <span class="focus-input100"></span>
                              <?= form_error('konfirmasi', '<small class="text-danger ">', '</small>'); ?>
                          </div>

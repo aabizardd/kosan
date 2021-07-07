@@ -1,6 +1,6 @@
  <?php error_reporting(0); ?>
  <div class="container-fluid">
-
+ 	<?= $this->session->flashdata('berhasil') ?>
  	<div class="card shadow mb-4">
  		<!-- DataTales Example -->
  		<div class="card shadow mb-4">
@@ -10,23 +10,27 @@
  			<div class="card-body">
  				<div class="col-lg-6" style="float:right;">
  					<h3>Ganti password</h3>
+ 					<?= $nama->id_user; ?>
  					<form method="post">
-
- 						<div class="wrap-input100 validate-input" data-validate="Password is required">
+ 						<div class="wrap-input100 validate-input">
+ 							<input type="hidden" name="id_user" id="" value="<?= $nama->id_user; ?>">
  							<span class="label-input100">Password lama</span>
- 							<input class="form-control" class="input100" type="password" name="password1" placeholder="Kosongkan jika tidak ingin diubah">
+ 							<input class="form-control" class="input100" name="password_lama" placeholder="Kosongkan jika tidak ingin diubah" type="password">
  							<span class="focus-input100"></span>
+ 							<?= form_error('password_lama', '<small class="text-danger ">', '</small>'); ?>
  						</div>
 
- 						<div class="wrap-input100 validate-input" data-validate="Password is required">
+ 						<div class="wrap-input100 validate-input">
  							<span class="label-input100">Password baru</span>
- 							<input class="form-control" class="input100" type="password" name="password2" placeholder="Kosongkan jika tidak ingin diubah">
+ 							<input class="form-control" class="input100" type="password" name="password_baru" placeholder="Kosongkan jika tidak ingin diubah">
  							<span class="focus-input100"></span>
+ 							<?= form_error('password_baru', '<small class="text-danger ">', '</small>'); ?>
  						</div>
- 						<div class="wrap-input100 validate-input" data-validate="Password is required">
+ 						<div class="wrap-input100 validate-input">
  							<span class="label-input100">Password baru ulangi</span>
- 							<input class="form-control" class="input100" type="password" name="password3" placeholder="Kosongkan jika tidak ingin diubah">
+ 							<input class="form-control" class="input100" type="password" name="konfirmasi" placeholder="Kosongkan jika tidak ingin diubah">
  							<span class="focus-input100"></span>
+ 							<?= form_error('konfirmasi', '<small class="text-danger ">', '</small>'); ?>
  						</div>
  						<br>
  						<button name="cpass" value="1" class="btn btn-primary btn-lg">Save</button>
@@ -78,21 +82,21 @@
  <!-- End of Main Content -->
 
 
- <?php
-	$conn = mysqli_connect("localhost", "root", "", "kost");
+ <!-- <?php
+		$conn = mysqli_connect("localhost", "root", "", "kost");
 
-	if ($_POST[cpass] != '') {
-		$idpen 	= $nama->username;
-		$pass1	= md5($_POST[password1]);
-		$pass2	= md5($_POST[password2]);
-		$pass3	= md5($_POST[password3]);
-		$qcek = mysqli_query($conn, "select * from admin where username='$idpen'");
-		$rcek = mysqli_fetch_array($qcek);
-		if ($pass1 == $rcek[password]) {
-			if ($pass2 == $pass3) {
-				mysqli_query($conn, "update admin set password='$pass2' where username='$idpen'");
+		if ($_POST[cpass] != '') {
+			$idpen 	= $nama->username;
+			$pass1	= md5($_POST[password1]);
+			$pass2	= md5($_POST[password2]);
+			$pass3	= md5($_POST[password3]);
+			$qcek = mysqli_query($conn, "select * from admin where username='$idpen'");
+			$rcek = mysqli_fetch_array($qcek);
+			if ($pass1 == $rcek[password]) {
+				if ($pass2 == $pass3) {
+					mysqli_query($conn, "update admin set password='$pass2' where username='$idpen'");
 
-	?><script>
+		?><script>
  				alert('Password berhasil diubah, silahkan login kembali');
  				window.location.href = "<?= base_url('pencari/logout'); ?>";
  			</script><?php
@@ -129,4 +133,4 @@
  		window.location.href = "?";
  	</script><?php
 			}
-				?>
+				?> -->

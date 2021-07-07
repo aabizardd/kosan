@@ -80,14 +80,78 @@ class Pencari extends CI_Controller
 
     public function profile()
     {
-        $id_pencari = $this->session->userdata('id_pencari');
-        $where = array('id_pencari' => $id_pencari);
-        $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-        $data['result'] = $this->M_All->get('kosan')->result();
-        $this->load->view('pencari/sidebar_pencari');
-        $this->load->view('pencari/header_pencari', $data);
-        $this->load->view('pencari/profile', $data);
-        $this->load->view('pencari/foot_pencari');
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('password_lama', 'Password', 'required', [
+            'required' => 'Password tidak boleh kosong',
+        ]);
+        $this->form_validation->set_rules('password_baru', '', 'min_length[6]|required|matches[konfirmasi]', [
+            'required' => 'Password tidak boleh kosong',
+            'min_length' => 'Password terlalu pendek',
+            'matches' => 'Password tidak cocok'
+        ]);
+        $this->form_validation->set_rules('konfirmasi', '', 'min_length[6]|required|matches[password_baru]', [
+            'required' => 'Confirm Password tidak boleh kosong',
+            'min_length' => ' Password terlalu pendek',
+            'matches' => ' Password tidak cocok',
+        ]);
+        if ($this->form_validation->run() == false) {
+            $total_transaksi = $this->M_All->count('pemesanan');
+            $where_ = array('id_pesan' => 0, 'pemilik_kos.id_pemilik' => $this->session->userdata('id_pemilik'));
+            $yang_belum = $this->M_All->join_get_bayar_($where_);
+            $f = 0;
+            if ($total_transaksi > 0) {
+                $f = $yang_belum / $total_transaksi;
+            }
+            $persen = number_format($f * 100, 0);
+            $data['per'] = array(
+                'total_transaksi' => $total_transaksi,
+                'persen' => $persen,
+                'yang_belum' => $yang_belum,
+            );
+            $id_pencari = $this->session->userdata('id_pencari');
+            $where = array('id_pencari' => $id_pencari);
+            // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
+            $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
+
+            $this->load->view('pemilik/sidebar_pemilik');
+            $this->load->view('pemilik/header_pemilik', $data);
+            $this->load->view('pemilik/profile');
+            $this->load->view('pemilik/foot_pemilik');
+        } else {
+            $where_update = array('id_user' => $this->input->post('id_user'));
+            $data = [
+                'password' => md5($this->input->post('password_baru'))
+            ];
+
+            $this->M_All->update('user', $where_update, $data);
+            $this->session->set_flashdata('alert', '
+
+			<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
+			style="position: fixed; top: 0; right: 0;">
+			<div class="toast-header">
+				<span style="font-size: 1.5em; color: #7AEA09; margin-right: 10px;">
+					<i class="fas fa-check-circle"></i>
+				</span>
+				<strong class="mr-auto text-success">Perhatian!</strong>
+
+				<small>Baru saja</small>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+			<div class="toast-body">
+				Profile updated <span style="font-size: 1em; color: #7AEA09;">
+					<i class="fas fa-smile"></i>
+				</span>
+			</div>
+		</div>
+
+
+			');
+
+            redirect('pencari/profile/');
+        }
     }
     public function view_data_kos($id, $waktu = null)
     {
@@ -120,7 +184,7 @@ class Pencari extends CI_Controller
             'status_transaksi <>' => 0,
             'status_transaksi <>' => 1,
         );
-		
+
 
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where_nama)->row();
 
@@ -408,7 +472,7 @@ class Pencari extends CI_Controller
                 'status_baca' => 0,
                 'jenis' => $jenis,
             ];
-        }else{
+        } else {
             $data_notif = [
                 'isi_pesan' => $pesan,
                 'dari' => $dari,
@@ -418,7 +482,7 @@ class Pencari extends CI_Controller
                 'kode_kos' => $kode_kos
             ];
         }
-        
+
 
         $this->M_All->insert('notifikasi', $data_notif);
     }
