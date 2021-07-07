@@ -180,6 +180,7 @@ foreach ($result as $r): ?>
                                                     id="datepicker"> -->
                                                 <input type="text" class="form-control datepicker"
                                                     placeholder="yy/mm/dd" name="tgl_masuk" autocomplete="off">
+
                                             </div>
                                             <input type="hidden" name="kode_kamar" value="<?=$r->id_kamar;?>">
                                             <input type="hidden" name="id_pencari" value="<?=$nama->id_pencari;?>">

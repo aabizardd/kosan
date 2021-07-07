@@ -4,7 +4,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,69 +42,70 @@
 <script src="<?php echo base_url() ?>asset_admin/js/demo/chart-area-demo.js"></script>
 <script src="<?php echo base_url() ?>asset_admin/js/demo/chart-pie-demo.js"></script>
 
-<script src="<?= base_url('asset_bootstrap/'); ?>datatables/js/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('asset_bootstrap/'); ?>datatables/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?=base_url('asset_bootstrap/');?>datatables/js/jquery.dataTables.min.js"></script>
+<script src="<?=base_url('asset_bootstrap/');?>datatables/js/dataTables.bootstrap4.min.js"></script>
 
 
 
 <script>
-    $(document).ready(function() {
-        $('#dataTable').DataTable();
-    });
+$(document).ready(function() {
+    $('#dataTable').DataTable();
+});
 
-    function notifDibaca(idnotif) {
-        var redirect = $('.notif'+idnotif).data('url');
-        // alert(url);
-        $.ajax({
-            url: 'pencari/getNotif',
-            type: 'post',
-            data: {
-                'id': idnotif
-            },
-            dataType: 'json',
-            success: function(response) {
-                let {
-                    id_notifikasi,
-                    jenis,
-                    untuk,
-                    status_baca
-                } = response
-                $.ajax({
-                    url: 'pencari/notifDibaca',
-                    type: 'post',
-                    data: {
-                        'id': id_notifikasi,
-                        'status_baca': 1
-                    },
-                    dataType: 'json',
-                    complete: function() {
-                        if (jenis == 'pembayaran' && status_baca == 0) {
-                            window.location = redirect;
-                        }else if(jenis == 'pembayaran' && status_baca == 1){
-                            window.location = "<?= base_url('pencari/pembayaran')?>";
-                        }else{
-                            window.location = redirect;
-                        }
-                        // alert(jenis);
+function notifDibaca(idnotif) {
+    var redirect = $('.notif' + idnotif).data('url');
+    // alert(url);
+    $.ajax({
+        url: 'pencari/getNotif',
+        type: 'post',
+        data: {
+            'id': idnotif
+        },
+        dataType: 'json',
+        success: function(response) {
+            let {
+                id_notifikasi,
+                jenis,
+                untuk,
+                status_baca
+            } = response
+            $.ajax({
+                url: 'pencari/notifDibaca',
+                type: 'post',
+                data: {
+                    'id': id_notifikasi,
+                    'status_baca': 1
+                },
+                dataType: 'json',
+                complete: function() {
+                    if (jenis == 'pembayaran' && status_baca == 0) {
+                        window.location = redirect;
+                    } else if (jenis == 'pembayaran' && status_baca == 1) {
+                        window.location = "<?=base_url('pencari/pembayaran')?>";
+                    } else {
+                        window.location = redirect;
                     }
-                });
-                // console.log(jenis);
-            }
-        });
-    }
+                    // alert(jenis);
+                }
+            });
+            // console.log(jenis);
+        }
+    });
+}
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('.toast').toast('show');
-    });
+$(document).ready(function() {
+    $('.toast').toast('show');
+});
 </script>
 
-<script src="//code.tidio.co/cw0nlksrln8emzcclf7knirkj8t4j5ip.js" async></script>
+<!-- <script src="//code.tidio.co/cw0nlksrln8emzcclf7knirkj8t4j5ip.js" async></script> -->
 
 
 
 </body>
+
 
 
 
