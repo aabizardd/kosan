@@ -184,10 +184,6 @@ class Pencari extends CI_Controller
             'status_transaksi <>' => 0,
             'status_transaksi <>' => 1,
         );
-<<<<<<< HEAD
-
-=======
->>>>>>> b10e8ed91ba7067d889f61d0dce8a52344d7fa97
 
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where_nama)->row();
 
@@ -485,10 +481,6 @@ class Pencari extends CI_Controller
                 'kode_kos' => $kode_kos,
             ];
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> b10e8ed91ba7067d889f61d0dce8a52344d7fa97
 
         $this->M_All->insert('notifikasi', $data_notif);
     }
