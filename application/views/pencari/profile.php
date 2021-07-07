@@ -1,6 +1,6 @@
  <?php error_reporting(0); ?>
  <div class="container-fluid">
-
+     <?= $this->session->flashdata('berhasil') ?>
      <div class="card shadow mb-4">
          <!-- DataTales Example -->
          <div class="card shadow mb-4">

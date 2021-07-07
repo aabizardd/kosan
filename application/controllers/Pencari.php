@@ -113,10 +113,10 @@ class Pencari extends CI_Controller
             // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
             $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
 
-            $this->load->view('pemilik/sidebar_pemilik');
-            $this->load->view('pemilik/header_pemilik', $data);
-            $this->load->view('pemilik/profile');
-            $this->load->view('pemilik/foot_pemilik');
+            $this->load->view('pencari/sidebar_pencari');
+            $this->load->view('pencari/header_pencari', $data);
+            $this->load->view('pencari/profile');
+            $this->load->view('pencari/foot_pencari');
         } else {
             $where_update = array('id_user' => $this->input->post('id_user'));
             $data = [
@@ -149,6 +149,13 @@ class Pencari extends CI_Controller
 
 
 			');
+            $this->session->set_flashdata('berhasil', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil Ganti Password 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>');
+            redirect('pencari/profile/');
 
             redirect('pencari/profile/');
         }
