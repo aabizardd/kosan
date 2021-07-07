@@ -13,6 +13,8 @@ class Pemilik extends CI_Controller
         if ($this->session->userdata('pemilik') != "pemilik") {
             redirect(base_url(''));
         }
+
+        // var_dump($this->session->userdata('id_pemilik'));die();
     }
 
     public function getNotif()
@@ -121,9 +123,9 @@ class Pemilik extends CI_Controller
         $data['jml_notif'] = $this->M_All->count_where('notifikasi', $where_notif);
 
         $data['notif'] =
-            $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
-                'untuk' => $id_pemilik1,
-            ])->result();
+        $this->db->order_by('id_notifikasi', 'DESC')->limit(5)->get_where('notifikasi', [
+            'untuk' => $id_pemilik1,
+        ])->result();
         // sampe sini
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
@@ -145,7 +147,7 @@ class Pemilik extends CI_Controller
         $this->form_validation->set_rules('password_baru', '', 'min_length[6]|required|matches[konfirmasi]', [
             'required' => 'Password tidak boleh kosong',
             'min_length' => 'Password terlalu pendek',
-            'matches' => 'Password tidak cocok'
+            'matches' => 'Password tidak cocok',
         ]);
         $this->form_validation->set_rules('konfirmasi', '', 'min_length[6]|required|matches[password_baru]', [
             'required' => 'Confirm Password tidak boleh kosong',
@@ -153,29 +155,33 @@ class Pemilik extends CI_Controller
             'matches' => ' Password tidak cocok',
         ]);
         if ($this->form_validation->run() == false) {
-            $total_transaksi = $this->M_All->count('pemesanan');
-            $where_ = array('id_pesan' => 0, 'pemilik_kos.id_pemilik' => $this->session->userdata('id_pemilik'));
-            $yang_belum = $this->M_All->join_get_bayar_($where_);
-            $f = 0;
-            if ($total_transaksi > 0) {
-                $f = $yang_belum / $total_transaksi;
-            }
-            $persen = number_format($f * 100, 0);
-            $data['per'] = array(
-                'total_transaksi' => $total_transaksi,
-                'persen' => $persen,
-                'yang_belum' => $yang_belum,
-            );
+
+            $this->updatePw();
+            // $this->db->update('users',)
+
+            // $total_transaksi = $this->M_All->count('pemesanan');
+            // $where_ = array('id_pesan' => 0, 'pemilik_kos.id_pemilik' => $this->session->userdata('id_pemilik'));
+            // $yang_belum = $this->M_All->join_get_bayar_($where_);
+            // $f = 0;
+            // if ($total_transaksi > 0) {
+            //     $f = $yang_belum / $total_transaksi;
+            // }
+            // $persen = number_format($f * 100, 0);
+            // $data['per'] = array(
+            //     'total_transaksi' => $total_transaksi,
+            //     'persen' => $persen,
+            //     'yang_belum' => $yang_belum,
+            // );
             $id_pemilik = $this->session->userdata('id_pemilik');
             $where = array('id_pemilik' => $id_pemilik);
-            // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
-            $data['jumlah_orang'] = 0;
-            $data['jumlah_kamar'] = $this->M_All->count_('kamar', $where);
+            // // $data['jumlah_orang'] = $this->M_All->count('pencari_kos');
+            // $data['jumlah_orang'] = 0;
+            // $data['jumlah_kamar'] = $this->M_All->count_('kamar', $where);
             $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
 
             $this->load->view('pemilik/sidebar_pemilik');
-            $this->load->view('pemilik/header_pemilik', $data);
-            $this->load->view('pemilik/profile');
+            $this->load->view('pemilik/header_pemilik');
+            $this->load->view('pemilik/profile', $data);
             $this->load->view('pemilik/foot_pemilik');
         } else {
             $where_update = array('id_user' => $this->input->post('id_user'));
@@ -213,6 +219,34 @@ class Pemilik extends CI_Controller
             redirect('pemilik/profile/');
         }
     }
+
+    public function updatePw()
+    {
+
+        $id_user = $this->db->get_where('pemilik_kos', ['id_pemilik' => $this->session->userdata('id_pemilik')])->row_array();
+        $password_baru = md5($this->input->post('password'));
+
+        $data = [
+            'password' => $password_baru,
+        ];
+
+        $where = [
+            'id_user' => $id_user['id_user'],
+        ];
+
+        $this->db->update('user', $data, $where);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>Holy guacamole!</strong> You should check in on some of those fields below.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		</div>');
+
+        // redirect('pemilik/profile');
+
+    }
+
     public function booking($param1 = null)
     {
         $id_pemilik = $this->session->userdata('id_pemilik');
@@ -475,22 +509,22 @@ class Pemilik extends CI_Controller
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nama_kos', 'Nama Kos', 'required', [
-            'required' => 'Nama Kos tidak boleh kosong'
+            'required' => 'Nama Kos tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('luas_kamar', 'Luas Kamar', 'required', [
-            'required' => 'Luas Kamar tidak boleh kosong'
+            'required' => 'Luas Kamar tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('alamat', 'Alamat', 'required', [
-            'required' => 'Alamat tidak boleh kosong'
+            'required' => 'Alamat tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('listrik', 'Listrik', 'required', [
-            'required' => 'Keterangan tidak boleh kosong'
+            'required' => 'Keterangan tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required', [
-            'required' => 'Deskripsi tidak boleh kosong'
+            'required' => 'Deskripsi tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('jenis_kosan', 'jenis_kosan', 'required', [
-            'required' => 'Jenis Kosan tidak boleh kosong'
+            'required' => 'Jenis Kosan tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $id_pemilik = $this->session->userdata('id_pemilik');
@@ -594,18 +628,18 @@ class Pemilik extends CI_Controller
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nama_kos', 'Nama Kos', 'required', [
-            'required' => 'Nama Kos tidak boleh kosong'
+            'required' => 'Nama Kos tidak boleh kosong',
         ]);
 
         $this->form_validation->set_rules('alamat', 'Alamat', 'required', [
-            'required' => 'Alamat tidak boleh kosong'
+            'required' => 'Alamat tidak boleh kosong',
         ]);
 
         $this->form_validation->set_rules('deskripsi', 'deskripsi', 'required', [
-            'required' => 'Deskripsi tidak boleh kosong'
+            'required' => 'Deskripsi tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('jenis_kosan', 'jenis_kosan', 'required', [
-            'required' => 'Jenis Kosan tidak boleh kosong'
+            'required' => 'Jenis Kosan tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->load->view('pemilik/sidebar_pemilik');
@@ -646,7 +680,7 @@ class Pemilik extends CI_Controller
                     'alamat' => $this->input->post('alamat'),
                     'deskripsi' => $this->input->post('deskripsi'),
                     'saldo_kos' => $this->input->post('saldo_kos'),
-                    'foto' => $foto
+                    'foto' => $foto,
                 );
                 $this->M_All->update('kosan', $where, $data);
                 $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -666,7 +700,6 @@ class Pemilik extends CI_Controller
         // if ($upload_image) {
 
         // }
-
 
         // $where = array('kode_kos' => urldecode($this->input->post('kode_kos')));
         // $data = array(
@@ -692,22 +725,22 @@ class Pemilik extends CI_Controller
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('kode_kamar', 'Kode Kamar', 'required', [
-            'required' => 'Kode Kamar tidak boleh kosong'
+            'required' => 'Kode Kamar tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('harga_smesteran', '', 'required', [
-            'required' => 'Harga 6 Bulan tidak boleh kosong'
+            'required' => 'Harga 6 Bulan tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('harga', '', 'required', [
-            'required' => 'Harga 1 Tahun tidak boleh kosong'
+            'required' => 'Harga 1 Tahun tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('deskripsi', '', 'required', [
-            'required' => 'Deskripsi tidak boleh kosong'
+            'required' => 'Deskripsi tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('status', '', 'required', [
-            'required' => 'status tidak boleh kosong'
+            'required' => 'status tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('tgl_tersedia', '', 'required', [
-            'required' => 'Tanggal tersedia tidak boleh kosong'
+            'required' => 'Tanggal tersedia tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->view_data_kos();
@@ -1056,28 +1089,28 @@ class Pemilik extends CI_Controller
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nama_pemilik', '', 'required', [
-            'required' => 'Nama Lengkap tidak boleh kosong'
+            'required' => 'Nama Lengkap tidak boleh kosong',
         ]);
 
         $this->form_validation->set_rules('no_ktp', 'No KTP', 'required', [
-            'required' => 'No KTP tidak boleh kosong'
+            'required' => 'No KTP tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('no_telp', 'No Telephone', 'required', [
-            'required' => 'No Telephone tidak boleh kosong'
+            'required' => 'No Telephone tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email', [
             'required' => 'Email tidak boleh kosong',
             'valid_email' => 'Email tidak valid',
-            'is_unique' => 'Email sudah terdaftar'
+            'is_unique' => 'Email sudah terdaftar',
         ]);
         $this->form_validation->set_rules('no_rek', 'Nomor Rekening', 'required', [
-            'required' => 'Nomor Rekening tidak boleh kosong'
+            'required' => 'Nomor Rekening tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('atas_nama_rek', 'Nama Pemilik Rekening', 'required', [
-            'required' => 'Nama Pemilik Rekening tidak boleh kosong'
+            'required' => 'Nama Pemilik Rekening tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('bank', 'Nama bank', 'required', [
-            'required' => 'Nama bank tidak boleh kosong'
+            'required' => 'Nama bank tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->profile();
@@ -1087,7 +1120,7 @@ class Pemilik extends CI_Controller
                 // echo 'upload nih';
                 // die;
                 $config['allowed_types'] = 'gif|jpg|png';
-                $config['max_size']      = '2048';
+                $config['max_size'] = '2048';
                 $config['upload_path'] = './asset_registrasi/upload_pemilik/';
 
                 $this->load->library('upload', $config);

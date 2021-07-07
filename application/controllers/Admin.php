@@ -446,13 +446,13 @@ class Admin extends CI_Controller
         $data['kos'] = $this->M_All->view_where('kosan', $where_)->row();
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nama_kos', '', 'required', [
-            'required' => 'Nama Kos tidak boleh kosong'
+            'required' => 'Nama Kos tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('alamat', '', 'required', [
-            'required' => 'Alamat tidak boleh kosong'
+            'required' => 'Alamat tidak boleh kosong',
         ]);
         $this->form_validation->set_rules('deskripsi', '', 'required', [
-            'required' => 'Deskripsi tidak boleh kosong'
+            'required' => 'Deskripsi tidak boleh kosong',
         ]);
         if ($this->form_validation->run() == false) {
             $this->load->view('admin/sidebar_admin');
@@ -588,8 +588,8 @@ class Admin extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'unregistered30@gmail.com',
-            'smtp_pass' => 'Medellincartel13!',
+            'smtp_user' => 'nurdalifahasr@gmail.com',
+            'smtp_pass' => 'gmailifay09',
             'smtp_port' => 465,
             'mailtype' => 'html',
             'charset' => 'utf-8',
@@ -597,7 +597,7 @@ class Admin extends CI_Controller
         ];
 
         $this->email->initialize($config);
-        $this->email->from('adminkoalakos@gmail.com', 'Admin Koala Kos');
+        $this->email->from('asdas@gmail.com', 'Admin Koala Kos');
         $this->email->to($email);
 
         if ($type == 'diterima') {

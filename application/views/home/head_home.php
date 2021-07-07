@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <h>
+    <head>
         <title>Ngekos</title>
         <meta charset="UTF-8">
         <meta name="description" content="Food Blog Web Template">
@@ -26,5 +26,4 @@
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-    </h 
-ead>
+    </head>
