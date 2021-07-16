@@ -86,11 +86,16 @@ class M_All extends CI_Model
         return $this->db->get_where($table, $where);
     }
 
-    public function join($from, $at)
+    public function join($from, $at, $nama_kos = null)
     {
         $this->db->select('*');
         $this->db->from($from);
         $this->db->join($at, 'pemilik_kos.id_pemilik = kosan.id_pemilik');
+
+        if (!is_null($nama_kos)) {
+            $this->db->like('nama_kos', $nama_kos);
+        }
+
         return $this->db->get();
     }
 
@@ -114,7 +119,7 @@ class M_All extends CI_Model
         $this->db->join($at1, 'kamar.kode_kos = kosan.kode_kos');
         $this->db->join($at2, 'kosan.id_pemilik = pemilik_kos.id_pemilik');
         $this->db->join($at3, 'pemesanan.id_pencari = pencari_kos.id_pencari');
-        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
 
         $this->db->where('pemilik_kos.id_pemilik', $id_pemilik);
         $this->db->where('kosan.kode_kos = ', $kode_kos);

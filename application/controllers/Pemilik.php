@@ -369,7 +369,7 @@ class Pemilik extends CI_Controller
         $this->load->view('pemilik/foot_pemilik');
     }
 
-    public function pemasukan($id_kos = null, $bulan = 0)
+    public function pemasukan($id_kos = null, $bulan = 0, $year_pmsk = 0)
     {
         $id_pemilik = $this->session->userdata('id_pemilik');
         $where = array('id_pemilik' => $id_pemilik);
@@ -386,6 +386,9 @@ class Pemilik extends CI_Controller
 
         $kode_kos = "";
         $cek = $this->M_All->getPemesanan()->result();
+
+        // var_dump($cek);die();
+
         if (!$cek) {
             $data['nama_kosan'] = " ";
         } else {
@@ -412,13 +415,27 @@ class Pemilik extends CI_Controller
             $bulan_angka = $bulan;
         }
 
-        $where_ = array(
-            'pemilik_kos.id_pemilik' => $id_pemilik,
-            // 'status_transaksi' => 2,
-            'kamar.kode_kos' => $kode_kos,
-            // 'MONTH(pelunasan.tanggal)' => $bulan_angka,
-            'MONTH(tanggal_pesan)' => $bulan_angka,
-        );
+        $tahun = [2020, 2021, 2022, 2023];
+
+        $data['thn'] = $tahun;
+
+        if ($year_pmsk == 0) {
+            $where_ = array(
+                'pemilik_kos.id_pemilik' => $id_pemilik,
+                // 'status_transaksi' => 2,
+                'kamar.kode_kos' => $kode_kos,
+                // 'MONTH(pelunasan.tanggal)' => $bulan_angka,
+                'MONTH(tanggal_pesan)' => $bulan_angka,
+            );
+        } else {
+            $where_ = array(
+                'pemilik_kos.id_pemilik' => $id_pemilik,
+                // 'status_transaksi' => 2,
+                'kamar.kode_kos' => $kode_kos,
+                // 'MONTH(pelunasan.tanggal)' => $bulan_angka,
+                'YEAR(tanggal_pesan)' => $year_pmsk,
+            );
+        }
 
         // $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
         $data['result'] = $this->M_All->join_pelunasan('pemesanan', 'kamar', 'kosan', 'pemilik_kos', $where_)->result();
@@ -501,71 +518,134 @@ class Pemilik extends CI_Controller
             $this->load->view('pemilik/input_data_kos');
             $this->load->view('pemilik/foot_pemilik');
         } else {
-            # code...
 
-            $config['upload_path'] = './asset_admin/upload_kos/';
-            $config['overwrite'] = true;
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size'] = 1024;
-            // $config['max_width']            = 1024;
-            // $config['max_height']           = 768;
+            // $this->load->view('upload_success', $data);
+            $nama_kos = $this->input->post('nama_kos');
+            $karakter = '123456789';
+            $string = '';
+            for ($i = 0; $i < 4; $i++) {
+                $pos = rand(0, strlen($karakter) - 1);
+                $string .= $karakter[$pos];
+            }
+            $kode_kos = substr($nama_kos, 1, 4) . $string;
+            $alamat = $this->input->post('alamat');
 
-            $this->load->library('upload', $config);
+            $luas_kamar = $this->input->post('luas_kamar');
+            $listrik = $this->input->post('listrik');
 
-            if (!$this->upload->do_upload('foto')) {
-                $error = array('error' => $this->upload->display_errors());
-                // $this->load->view('upload_form', $error);
-                $this->session->set_flashdata('foto', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Foto tidak boleh kosong
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>');
-                redirect('pemilik/input_data_kos');
-            } else {
-                $data = array('upload_data' => $this->upload->data());
-                // $this->load->view('upload_success', $data);
-                $nama_kos = $this->input->post('nama_kos');
-                $karakter = '123456789';
-                $string = '';
-                for ($i = 0; $i < 4; $i++) {
-                    $pos = rand(0, strlen($karakter) - 1);
-                    $string .= $karakter[$pos];
-                }
-                $kode_kos = substr($nama_kos, 1, 4) . $string;
-                $alamat = $this->input->post('alamat');
+            $deskripsi = $this->input->post('deskripsi');
+            $jenis_kosan = $this->input->post('jenis_kosan');
 
-                $luas_kamar = $this->input->post('luas_kamar');
-                $listrik = $this->input->post('listrik');
+            $data = array(
+                'kode_kos' => urldecode($kode_kos),
+                'nama_kos' => $nama_kos,
+                'alamat' => $alamat,
+                'deskripsi' => "Luas kamar ini adalah " . $luas_kamar . ". Untuk tegangan listrik yaitu " . $listrik . ". Deskrip lainnya berupa, " . $deskripsi,
+                'jenis_kosan' => $jenis_kosan,
+                'saldo_kos' => 0,
+                'id_pemilik' => $this->session->userdata('id_pemilik'),
+            );
 
-                $deskripsi = $this->input->post('deskripsi');
-                $jenis_kosan = $this->input->post('jenis_kosan');
-                $foto = $this->upload->data('file_name');
+            $this->uploadFotoKos($data['kode_kos']);
 
-                $data = array(
-                    'kode_kos' => urldecode($kode_kos),
-                    'nama_kos' => $nama_kos,
-                    'alamat' => $alamat,
-                    'deskripsi' => "Luas kamar ini adalah " . $luas_kamar . ". Untuk tegangan listrik yaitu " . $listrik . ". Deskrip lainnya berupa, " . $deskripsi,
-                    'foto' => $foto,
-                    'jenis_kosan' => $jenis_kosan,
-                    'saldo_kos' => 0,
-                    'id_pemilik' => $this->session->userdata('id_pemilik'),
-                );
-                if ($this->M_All->insert('kosan', $data) != true) {
-                    $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            if ($this->M_All->insert('kosan', $data) != true) {
+                $this->session->set_flashdata('berhasil_kos', '<div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Data berhasil ditambahkan
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>');
-                    redirect('pemilik/view_data_kos');
-                } else {
-                    redirect('pemilik/input_data_kos');
-                    echo "<script> alert('Data Kos gagal ditambah');</script>";
-                }
+                redirect('pemilik/view_data_kos');
+            } else {
+                redirect('pemilik/input_data_kos');
+                echo "<script> alert('Data Kos gagal ditambah');</script>";
             }
         }
+
+    }
+
+    public function uploadFotoKos($kode_kos)
+    {
+        $tempat = $this->input->post('tempat');
+
+        foreach ($tempat as $key => $value) {
+
+            $data = [
+                'tempat' => $value,
+                'nama_file' => $this->_uploadFile($key),
+                'id_kosan' => $kode_kos,
+            ];
+
+            $this->db->insert('gambar_kosan', $data);
+        }
+
+    }
+
+    private function _uploadFile($key)
+    {
+        $namaFiles = $_FILES['foto']['name'][$key];
+        $ukuranFile = $_FILES['foto']['size'][$key];
+        $type = $_FILES['foto']['type'][$key];
+        $eror = $_FILES['foto']['error'][$key];
+
+        // $nama_file = str_replace(" ", "_", $namaFiles);
+        $tmpName = $_FILES['foto']['tmp_name'][$key];
+        // $nama_folder = "assets_user/file_upload/";
+        // $file_baru = $nama_folder . basename($nama_file);
+
+        // if ((($type == "video/mp4") || ($type == "video/3gpp")) && ($ukuranFile < 8000000)) {
+
+        //   move_uploaded_file($tmpName, $file_baru);
+        //   return $file_baru;
+        // }
+
+        // var_dump($namaFiles);die();
+
+        if ($eror === 4) {
+            $flahdata = $this->alert('Maaf', 'danger', 'Gagal Mengunggah Gambar!');
+
+            $this->session->set_flashdata('alert', $flahdata);
+
+            // redirect('admin_home/tambah_modul');
+            return false;
+        }
+
+        $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+
+        $ekstensiGambar = explode('.', $namaFiles);
+        // var_dump($namaFiles);die();
+
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+        if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+            $flahdata = $this->alert('Maaf', 'danger', 'Ada File yang Kamu Upload Bukan Gambar!');
+
+            $this->session->set_flashdata('alert', $flahdata);
+
+            // redirect('admin_home/tambah_modul');
+            return false;
+        }
+
+        $namaFilesBaru = "foto-";
+        $namaFilesBaru .= uniqid();
+        $namaFilesBaru .= '.';
+        $namaFilesBaru .= $ekstensiGambar;
+
+        move_uploaded_file($tmpName, 'asset_admin/assets_kosan/foto_kosan/' . $namaFilesBaru);
+
+        return $namaFilesBaru;
+    }
+
+    public function alert($kata_depan = "", $warna, $isi)
+    {
+
+        $alert = '<div class="alert alert-' . $warna . ' alert-dismissible fade show" role="alert">
+		<strong>' . $kata_depan . '</strong> ' . $isi . '
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		  <span aria-hidden="true">&times;</span>
+		</button>
+	  	</div>';
+
+        return $alert;
     }
 
     public function data_kamar()
@@ -1230,5 +1310,43 @@ class Pemilik extends CI_Controller
         ];
 
         $this->M_All->insert('notifikasi', $data_notif);
+    }
+
+    public function aktivasi_kamar($tipe, $id_kamar = null, $kode_kos = null)
+    {
+
+        if ($tipe == 0 && is_null($id_kamar)) {
+
+            $id_kamar = $this->input->post('kode_kamar');
+            $alasan = $this->input->post('alasan');
+            $kode_kos = $this->input->post('kode_kos');
+
+            $data = [
+                'is_aktif' => $tipe,
+                'status' => $alasan,
+            ];
+
+            $where = ['kode_kamar' => $id_kamar];
+
+            $this->db->update('kamar', $data, $where);
+
+            redirect('pemilik/edit_kos/' . $kode_kos);
+
+        } else {
+
+            $data = [
+                'is_aktif' => $tipe,
+                'status' => 'Tersedia',
+            ];
+
+            $where = ['kode_kamar' => $id_kamar];
+
+            $this->db->update('kamar', $data, $where);
+
+            redirect('pemilik/edit_kos/' . $kode_kos);
+        }
+
+        // redirect('')
+
     }
 }

@@ -45,8 +45,14 @@ session_start();?>
             <div class="col-4 mb-2">
                 <div class="card">
                     <a target=" _blank" href="<?=base_url('Welcome/view_data_kos/' . $r['kode_kos'])?>">
-                        <img class="card-img-top" src="<?=base_url('asset_admin/upload_kos/' . $r['foto'])?>"
-                            alt="Card image cap">
+
+                        <?php $data_img = $this->db->get_where('gambar_kosan', ['id_kosan' => $r['kode_kos']])->result()?>
+
+
+
+                        <img class="card-img-top"
+                            src="<?=base_url('asset_admin/assets_kosan/foto_kosan/' . $data_img[0]->nama_file)?>"
+                            alt="Card image cap" style="height: 250px;">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title"><?=$r['nama_kos']?></h5>
@@ -57,6 +63,7 @@ session_start();?>
                     </div>
                 </div>
             </div>
+
 
 
 
@@ -93,4 +100,5 @@ session_start();?>
 
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
     <!-- <link rel="stylesheet" href="<?=base_url('style.css');?>"> -->

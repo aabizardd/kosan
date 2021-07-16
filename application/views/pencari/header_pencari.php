@@ -18,15 +18,17 @@
             <!-- Topbar Search -->
 
             <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+
                 <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                        aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Cari kos..."
+                        aria-label="Search" aria-describedby="basic-addon2" id="nama_kos" name="nama_kos">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" style="background-color: #5F9EA0;">
+                        <button class="btn btn-primary" type="button" style="background-color: #5F9EA0;" id="cari">
                             <i class="fas fa-search fa-sm"></i>
                         </button>
                     </div>
                 </div>
+
             </form>
 
 
@@ -222,6 +224,14 @@ if ($n->status_baca == 0) {
                 </li>
 
             </ul>
+
+            <script>
+            $('#cari').on('click', function() {
+                var nama_kos = $('#nama_kos').val();
+
+                window.location.href = "<?=base_url('pencari/index/')?>" + nama_kos;
+            })
+            </script>
 
 
 

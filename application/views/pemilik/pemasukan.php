@@ -39,6 +39,33 @@
 
             <!-- Example split danger button -->
             <div class="btn-group float-right" style="margin-top: -20px;">
+                <button type="button" class="btn btn-info">Pilih Tahun</button>
+                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Pilih Tahun</span>
+                </button>
+                <div class="dropdown-menu">
+                    <?php
+$no = 1;
+foreach ($thn as $t): ?>
+                    <a class="dropdown-item"
+                        href="<?=base_url('pemilik/pemasukan/') . $kode_kosss . '/' . 0 . '/' . $t?>"><?=$t?></a>
+                    <?php endforeach;?>
+                    <!--
+                    <h1><?=$bulan[3 - 1]?></h1> -->
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <!-- Example split danger button -->
+            <div class="btn-group float-right mr-2" style="margin-top: -20px;">
                 <button type="button" class="btn btn-info">Pilih Bulan</button>
                 <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -99,7 +126,7 @@ if ($r->jangka_waktu = "6 Bulan") {
                         <?php if ($r->sisa_pembayaran == 0): ?>
 
                         <td>Lunas</td>
-                        <td> <?="Rp " . number_format($r->jumlah_dp + $sisa, 2, ',', '.');?></td>
+                        <td> <?="Rp " . number_format($r->harga, 2, ',', '.');?></td>
                         <?php else: ?>
                         <td>DP</td>
                         <td> <?="Rp " . number_format($r->jumlah_dp, 2, ',', '.');?></td>

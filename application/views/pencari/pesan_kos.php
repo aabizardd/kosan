@@ -5,28 +5,29 @@
     </a>
 
     <center>
-        <div id="carouselExampleIndicators" class="carousel slide mt-2 h-50" data-ride="carousel" style="width: 900px;">
-            <ol class="carousel-indicators">
-                <?php $i = 1;?>
-                <?php foreach ($result as $r): ?>
-                <li data-target="#carouselExampleIndicators" data-slide-to="<?=$i++;?>" class=""></li>
-                <!-- <li data-target="#carouselExampleIndicators" data-slide-to="1"></li> -->
-                <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> -->
-            </ol>
+        <div id="carouselExampleControls" class="carousel slide mt-2" data-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="<?=base_url('asset_admin/upload_kos/')?><?=$r->foto;?>"
-                        alt="First slide">
+
+                <?php $i = 1;?>
+                <?php foreach ($foto_kos as $item): ?>
+
+                <div class="carousel-item <?=($i == 1) ? "active" : ""?>">
+                    <label for="" class="btn btn-primary"><?=$item->tempat?></label>
+                    <img class="d-block w-100"
+                        src="<?=base_url('asset_admin/assets_kosan/foto_kosan/') . $item->nama_file?>" alt="Mantap"
+                        style="height: 500px;">
                 </div>
 
-                <?php endforeach;?>
-                <?php $i;?>
+                <?php $i++?>
+                <?php endforeach?>
+
+
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
@@ -398,6 +399,9 @@ foreach ($result as $r): ?>
 -->
 
 </div>
+
+
+
 
 
 

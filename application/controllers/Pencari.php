@@ -32,13 +32,19 @@ class Pencari extends CI_Controller
         $this->db->update('notifikasi');
     }
 
-    public function index()
+    public function index($nama_kos = null)
     {
         // $data['artikel'] = $this->M_All->get('artikel')->result();
         $id_pencari = $this->session->userdata('id_pencari');
         $where = array('id_pencari' => $id_pencari);
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
-        $data['result'] = $this->M_All->join('pemilik_kos', 'kosan')->result();
+
+        $data['result'] = "";
+        if (is_null($nama_kos)) {
+            $data['result'] = $this->M_All->join('pemilik_kos', 'kosan')->result();
+        } else {
+            $data['result'] = $this->M_All->join('pemilik_kos', 'kosan', $nama_kos)->result();
+        }
 
         $where_notif = array(
             'untuk' => $id_pencari,
@@ -104,6 +110,10 @@ class Pencari extends CI_Controller
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
         $data['kos'] = $this->M_All->view_where_join(urldecode($id))->row();
         $data['result'] = $this->M_All->view_where('kamar', $where_kosan)->result();
+
+        $data['foto_kos'] = $this->db->get_where('gambar_kosan', ['id_kosan' => urldecode($id)])->result();
+
+        // var_dump($data['foto_kos']);die();
 
         $this->load->view('pencari/sidebar_pencari');
         $this->load->view('pencari/header_pencari', $data);
@@ -470,6 +480,7 @@ class Pencari extends CI_Controller
         $id_pemilik = $this->input->post('id_pemilik');
         $kode_kos = $this->input->post('kode_kos');
         $bukti_pelunasan = $this->_uploadFile();
+        $mou = $this->_uploadFileMou();
         // var_dump($id_pencari);
         // die;
         $data = [
@@ -477,6 +488,7 @@ class Pencari extends CI_Controller
             'jam_pelunasan' => date('H:i:s'),
             'jumlah_pelunasan' => $sisa_bayar,
             'bukti_pelunasan' => $bukti_pelunasan,
+            'mou' => $mou,
             'id_pesan' => $id_pesan,
         ];
 
@@ -601,11 +613,11 @@ class Pencari extends CI_Controller
         $ekstensiGambar = strtolower(end($ekstensiGambar));
         if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
             $this->session->set_flashdata('mm', '<div class="alert alert-danger alert-dismissible show" role="alert">
-      Your uploaded file is not image/video
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-      </button>
-  </div>');
+			Your uploaded file is not image/video
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>');
 
             redirect('pencari/view_daaata_kos');
             return false;
@@ -616,6 +628,63 @@ class Pencari extends CI_Controller
         $namaFilesBaru .= $ekstensiGambar;
 
         move_uploaded_file($tmpName, 'asset_admin/bukti_bayar/' . $namaFilesBaru);
+
+        return $namaFilesBaru;
+    }
+
+    private function _uploadFileMou()
+    {
+
+        $namaFiles = $_FILES['mou']['name'];
+        $ukuranFile = $_FILES['mou']['size'];
+        $type = $_FILES['mou']['type'];
+        $eror = $_FILES['mou']['error'];
+
+        // $nama_file = str_replace(" ", "_", $namaFiles);
+        $tmpName = $_FILES['mou']['tmp_name'];
+        // $nama_folder = "assets_user/file_upload/";
+        // $file_baru = $nama_folder . basename($nama_file);
+
+        // if ((($type == "video/mp4") || ($type == "video/3gpp")) && ($ukuranFile < 8000000)) {
+
+        //   move_uploaded_file($tmpName, $file_baru);
+        //   return $file_baru;
+        // }
+
+        if ($eror === 4) {
+
+            $this->session->set_flashdata('mm', '<div class="alert alert-danger alert-dismissible show" role="alert">
+		      Chose an image or video first!
+		      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		      </button>
+		  	</div>');
+
+            redirect('pencari/view_data_kos');
+
+            return false;
+        }
+
+        $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'pdf', 'docx'];
+        $ekstensiGambar = explode('.', $namaFiles);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+        if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+            $this->session->set_flashdata('mm', '<div class="alert alert-danger alert-dismissible show" role="alert">
+			Your uploaded file is not image/video
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>');
+
+            redirect('pencari/view_daaata_kos');
+            return false;
+        }
+
+        $namaFilesBaru = uniqid();
+        $namaFilesBaru .= '.';
+        $namaFilesBaru .= $ekstensiGambar;
+
+        move_uploaded_file($tmpName, 'MOU/mou_pencari/' . $namaFilesBaru);
 
         return $namaFilesBaru;
     }

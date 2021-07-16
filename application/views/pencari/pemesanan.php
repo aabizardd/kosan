@@ -175,7 +175,7 @@ foreach ($result as $r): ?>
             <div class="modal-body">
 
                 <div class="card  text-black  mt-2">
-                    <img src="<?=base_url('asset_admin/upload_kos/') . $r->ksFoto?>" alt="" height="500">
+                    <img src="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" alt="" height="500">
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold">Detail Kosan</h5>
                         <p class="card-text font-weight-bold">
