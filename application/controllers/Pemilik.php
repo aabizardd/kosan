@@ -183,6 +183,40 @@ class Pemilik extends CI_Controller
             $this->load->view('pemilik/header_pemilik');
             $this->load->view('pemilik/profile', $data);
             $this->load->view('pemilik/foot_pemilik');
+        } else {
+            $where_update = array('id_user' => $this->input->post('id_user'));
+            $data = [
+                'password' => md5($this->input->post('password_baru'))
+            ];
+
+            $this->M_All->update('user', $where_update, $data);
+            $this->session->set_flashdata('alert', '
+
+			<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
+			style="position: fixed; top: 0; right: 0;">
+			<div class="toast-header">
+				<span style="font-size: 1.5em; color: #7AEA09; margin-right: 10px;">
+					<i class="fas fa-check-circle"></i>
+				</span>
+				<strong class="mr-auto text-success">Perhatian!</strong>
+
+				<small>Baru saja</small>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+			<div class="toast-body">
+				Berhasil ganti password  <span style="font-size: 1em; color: #7AEA09;">
+					<i class="fas fa-smile"></i>
+				</span>
+			</div>
+		</div>
+
+
+			');
+
+            redirect('pemilik/profile/');
         }
     }
 
