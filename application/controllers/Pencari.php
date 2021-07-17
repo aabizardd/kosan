@@ -93,7 +93,7 @@ class Pencari extends CI_Controller
         $this->form_validation->set_rules('password_baru', '', 'min_length[6]|required|matches[konfirmasi]', [
             'required' => 'Password tidak boleh kosong',
             'min_length' => 'Password terlalu pendek',
-            'matches' => 'Password tidak cocok'
+            'matches' => 'Password tidak cocok',
         ]);
         $this->form_validation->set_rules('konfirmasi', '', 'min_length[6]|required|matches[password_baru]', [
             'required' => 'Confirm Password tidak boleh kosong',
@@ -126,7 +126,7 @@ class Pencari extends CI_Controller
         } else {
             $where_update = array('id_user' => $this->input->post('id_user'));
             $data = [
-                'password' => md5($this->input->post('password_baru'))
+                'password' => md5($this->input->post('password_baru')),
             ];
 
             $this->M_All->update('user', $where_update, $data);
@@ -156,7 +156,7 @@ class Pencari extends CI_Controller
 
 			');
             $this->session->set_flashdata('berhasil', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Berhasil Ganti Password 
+            <strong>Berhasil Ganti Password
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -190,6 +190,46 @@ class Pencari extends CI_Controller
         $this->load->view('pencari/header_pencari', $data);
         $this->load->view('pencari/pesan_kos', $data);
         $this->load->view('pencari/foot_pencari');
+    }
+
+    public function keranjang()
+    {
+
+        $data['keranjangs'] = $this->M_All->get_keranjang();
+
+        $this->load->view('pencari/sidebar_pencari');
+        $this->load->view('pencari/header_pencari');
+        $this->load->view('pencari/keranjang', $data);
+        $this->load->view('pencari/foot_pencari');
+    }
+
+    public function add_keranjang($id_kamar)
+    {
+
+        // var_dump($this->session->userdata('id_user'));die();
+
+        $data = [
+            'id_kamar' => $id_kamar,
+            'id_pencari' => $this->session->userdata('id_pencari'),
+        ];
+
+        $this->db->insert('keranjang', $data);
+
+        $this->session->set_flashdata('alert', " Berhasil memasukkan kosan ke dalam keranjang");
+
+        redirect('pencari');
+
+    }
+
+    public function hapus_keranjang($id)
+    {
+
+        $this->db->delete('keranjang', ['id_keranjang' => $id]);
+
+        $this->session->set_flashdata('alert', 'Item berhasil dihapus');
+
+        redirect('pencari/keranjang');
+
     }
 
     public function pemesanan()
@@ -345,7 +385,7 @@ class Pencari extends CI_Controller
 
             // $this->M_All->insert('notifikasi', $data_notif);
 
-            $this->session->set_flashdata('alert', true);
+            $this->session->set_flashdata('alert', " Berhasil Memesan, data akan diproses oleh pemilik kosan dan mohon ditungu");
 
             redirect('pencari');
         }

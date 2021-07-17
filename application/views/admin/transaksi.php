@@ -16,10 +16,9 @@
                             <th>Alamat Kos</th>
                             <th>Kamar</th>
                             <th>Nama Penghuni</th>
-                            <!--<th>Sisa Pembayaran</th>-->
+                            <th>Total DP</th>
                             <th>Total Bayar</th>
                             <th>Sisa Bayar</th>
-
                             <th>Status</th>
                             <th>Action</th>
                             <!-- <th>Sisa Pembayaran</th> -->
@@ -37,7 +36,9 @@
 
                             <?php $total_bayar = "Rp " . number_format($r->harga, 2, ',', '.');?>
                             <?php $sisa_bayar = "Rp " . number_format($r->sisa_pembayaran, 2, ',', '.');?>
+                            <?php $jumlah_dp = "Rp " . number_format($r->jumlah_dp, 2, ',', '.');?>
 
+                            <td><?=$jumlah_dp?></td>
                             <td><?=$total_bayar?></td>
                             <td><?=$sisa_bayar?></td>
                             <td>

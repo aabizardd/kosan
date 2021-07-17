@@ -60,7 +60,7 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('password_baru', '', 'min_length[6]|required|matches[konfirmasi]', [
             'required' => 'Password tidak boleh kosong',
             'min_length' => 'Password terlalu pendek',
-            'matches' => 'Password tidak cocok'
+            'matches' => 'Password tidak cocok',
         ]);
         $this->form_validation->set_rules('konfirmasi', '', 'min_length[6]|required|matches[password_baru]', [
             'required' => 'Confirm Password tidak boleh kosong',
@@ -93,9 +93,8 @@ class Admin extends CI_Controller
         } else {
             $where_update = array('id_user' => $this->input->post('id_user'));
             $data = [
-                'password' => md5($this->input->post('password_baru'))
+                'password' => md5($this->input->post('password_baru')),
             ];
-
 
             $this->M_All->update('user', $where_update, $data);
             $this->session->set_flashdata('alert', '
@@ -124,7 +123,7 @@ class Admin extends CI_Controller
 
 			');
             $this->session->set_flashdata('berhasil', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Berhasil Ganti Password 
+            <strong>Berhasil Ganti Password
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -269,6 +268,20 @@ class Admin extends CI_Controller
 
             $this->load->view('admin/data_pemilik', $data);
         }
+    }
+
+    public function data_pencari()
+    {
+        $idadmin = $this->session->userdata('id_admin');
+        $where = array('id_admin' => $idadmin);
+        $data['nama'] = $this->M_All->view_where('admin', $where)->row();
+
+        $data['result'] = $this->M_All->join_pencari_user()->result();
+
+        $this->load->view('admin/sidebar_admin');
+        $this->load->view('admin/header_admin', $data);
+        $this->load->view('admin/data_pencari', $data);
+        $this->load->view('admin/foot_admin');
     }
 
     public function list_kosan_pemilik($id_pemilik)
@@ -553,23 +566,33 @@ class Admin extends CI_Controller
         redirect('admin/data_penghuni');
     }
 
-    public function terima_pendaftaran($id_pemilik)
+    public function terima_pendaftaran($id_user, $tipe = "pemilik")
     {
 
         $data = [
             'status_aktif_pemilik' => 1,
         ];
 
-        $this->M_All->update('user', array('id_user' => $id_pemilik), $data);
+        $this->M_All->update('user', array('id_user' => $id_user), $data);
 
-        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_user' => $id_pemilik])->row_array();
+        if ($tipe == "pemilik") {
 
-        $email_pemilik = $data_pemilik['email'];
+            $data_pemilik = $this->db->get_where('pemilik_kos', ['id_user' => $id_user])->row_array();
 
-        // var_dump($email_pemilik);die();
-        $this->_sendEmail($email_pemilik, 'diterima');
+            $email_pemilik = $data_pemilik['email'];
 
-        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun Pemilik, Email Berhasil Dikirim ke Email Pendaftar!', 'fas fa-check-circle');
+            // var_dump($email_pemilik);die();
+            $this->_sendEmail($email_pemilik, 'diterima');
+        } else {
+            $data_pencari = $this->db->get_where('pencari_kos', ['id_user' => $id_user])->row_array();
+
+            $email_pencari = $data_pencari['email'];
+
+            // var_dump($email_pemilik);die();
+            $this->_sendEmail($email_pencari, 'diterima');
+        }
+
+        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun, Email Berhasil Dikirim ke Email Pendaftar!', 'fas fa-check-circle');
 
         $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Akun pemilik berhasil diaktifkan
@@ -578,7 +601,12 @@ class Admin extends CI_Controller
                     </button>
                     </div>');
 
-        redirect('admin/data_pemilik');
+        if ($tipe == "pemilik") {
+
+            redirect('admin/data_pemilik');
+        } else {
+            redirect('admin/data_pencari');
+        }
     }
 
     private function _sendEmail($email, $type, $alasan = "")
@@ -648,12 +676,40 @@ class Admin extends CI_Controller
         redirect('admin/data_pemilik');
     }
 
+    public function tolak_pendaftaran_pencari()
+    {
+        $id_user = $this->input->post('id_user');
+        $alasan = $this->input->post('alasan');
+
+        $data = [
+            'status_aktif_pemilik' => 2,
+        ];
+
+        $data_pencari = $this->db->get_where('pencari_kos', ['id_user' => $id_user])->row_array();
+
+        $this->M_All->update('user', array('id_user' => $id_user), $data);
+
+        $email_pencari = $data_pencari['email'];
+
+        // var_dump($email_pencari);die();
+        $this->_sendEmail($email_pencari, 'ditolak', $alasan);
+
+        $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik, Info Telah Dikirim ke Email Pendaftar', 'fas fa-check-circle');
+
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Akun pemilik ditolak dengan memberikan alasan penolakan
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>');
+
+        redirect('admin/data_pencari');
+    }
+
     public function toast($tipe_warna_judul, $warna_icon, $pesan, $icon)
     {
 
-        $alert = '
-
-		<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
+        $alert = '<div role="alert" aria-live="assertive" aria-atomic="true" class="toast position-fixed mt-5 mr-5" data-autohide="false"
 			style="position: fixed; top: 0; right: 0;">
 			<div class="toast-header">
 				<span style="font-size: 1.5em; color: #' . $warna_icon . '; margin-right: 10px;">

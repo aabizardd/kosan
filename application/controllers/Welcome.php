@@ -380,22 +380,30 @@ class Welcome extends CI_Controller
 
             if ($user['is_pemilik'] == 0 && $user['is_admin'] == 0) {
 
-                if (md5($password) == $user['password']) {
+                if ($user['status_aktif_pemilik'] == 1) {
 
-                    //kalau berhasil
-                    $where = array('id_user' => $user['id_user']);
-                    $pencari = $this->M_All->view_where('pencari_kos', $where)->result();
-                    $data_session = array(
-                        'id_pencari' => $pencari[0]->id_pencari,
-                        'pencari' => 'pencari',
-                    );
-                    // print_r($pencari);
-                    $this->session->set_userdata($data_session);
-                    redirect(base_url('pencari'));
-                } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    if (md5($password) == $user['password']) {
+
+                        //kalau berhasil
+                        $where = array('id_user' => $user['id_user']);
+                        $pencari = $this->M_All->view_where('pencari_kos', $where)->result();
+                        $data_session = array(
+                            'id_pencari' => $pencari[0]->id_pencari,
+                            'pencari' => 'pencari',
+                        );
+                        // print_r($pencari);
+                        $this->session->set_userdata($data_session);
+                        redirect(base_url('pencari'));
+                    } else {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
 						<strong>Maaf</strong> Password salah.
 						  </div>');
+                        redirect('welcome/login_pencari');
+                    }
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+					<strong>Maaf</strong> Akun anda belum aktif.
+					  </div>');
                     redirect('welcome/login_pencari');
                 }
             } else {

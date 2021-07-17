@@ -94,6 +94,7 @@ class M_All extends CI_Model
 
         if (!is_null($nama_kos)) {
             $this->db->like('nama_kos', $nama_kos);
+            $this->db->or_like('alamat', $nama_kos);
         }
 
         return $this->db->get();
@@ -230,7 +231,7 @@ class M_All extends CI_Model
 
     public function get_all_transaksi()
     {
-        $this->db->select('*,kamar.foto as kFoto, kamar.deskripsi as kDesc, kosan.foto as ksFoto, kosan.deskripsi as ksDesc');
+        $this->db->select('*,kamar.foto as kFoto, kamar.deskripsi as kDesc, kosan.foto as ksFoto, kosan.deskripsi as ksDesc, jumlah_dp');
         $this->db->from('pemesanan');
         $this->db->join('kamar', 'kamar.id_kamar = pemesanan.id_kamar');
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
@@ -248,6 +249,15 @@ class M_All extends CI_Model
         $this->db->join('kosan', 'kosan.kode_kos = kamar.kode_kos');
         $this->db->join('pemilik_kos', 'pemilik_kos.id_pemilik = kosan.id_pemilik');
         $this->db->where($id);
+        return $this->db->count_all_results();
+    }
+
+    public function get_count_keranjang()
+    {
+        $this->db->select('*');
+        $this->db->from('keranjang');
+        $this->db->where('id_pencari', $this->session->userdata('id_pencari'));
+
         return $this->db->count_all_results();
     }
 
@@ -382,6 +392,15 @@ class M_All extends CI_Model
         return $this->db->get();
     }
 
+    public function join_pencari_user()
+    {
+        $this->db->select('*');
+        $this->db->from('pencari_kos p');
+        $this->db->join('user u', 'p.id_user = u.id_user');
+        // $this->db->join('kosan k', 'p.id_pemilik = k.id_pemilik');
+        return $this->db->get();
+    }
+
     public function getCountBooking($id_pencari)
     {
         $query = "SELECT COUNT(id_pesan) as ct FROM `pemesanan` WHERE id_pencari = $id_pencari AND jumlah_dp = 0 AND status_transaksi <> 3 GROUP BY id_pencari";
@@ -402,5 +421,18 @@ class M_All extends CI_Model
         }
         // $this->db->join('kosan k', 'p.id_pemilik = k.id_pemilik');
         return $this->db->get();
+    }
+
+    public function get_keranjang()
+    {
+
+        $this->db->select('*, km.deskripsi dk_kamar');
+        $this->db->from('keranjang kr');
+        $this->db->join('kamar km', 'id_kamar');
+        $this->db->join('kosan ks', 'kode_kos');
+        $this->db->where('kr.id_pencari', $this->session->userdata('id_pencari'));
+
+        return $this->db->get()->result();
+
     }
 }

@@ -130,6 +130,19 @@ foreach ($result as $r): ?>
                         <p class="card-text">Tersedia Dari Tanggal : <?=$r->tgl_tersedia;?></p>
                         <a href="" class="btn btn-primary" data-toggle="modal"
                             data-target="#exampleModalCenter<?=$r->kode_kamar?>">Booking Sekarang</a>
+
+                        <?php $where = [
+    'id_pencari' => $this->session->userdata('id_pencari'),
+    'id_kamar' => $r->id_kamar,
+];?>
+                        <?php $in_keranjang = $this->db->get_where('keranjang', $where)->result()?>
+
+
+                        <?php if (!$in_keranjang): ?>
+                        <a href="<?=base_url('pencari/add_keranjang/' . $r->id_kamar)?>" class="btn btn-info">Masukkan
+                            Keranjang</a>
+                        <?php endif?>
+
                     </div>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter<?=$r->kode_kamar?>" tabindex="-1" role="dialog"

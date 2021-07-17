@@ -184,11 +184,8 @@
          </button>
      </div>
      <div class="toast-body">
-         Berhasi
-         l Memes
-         an, dat
-         a akan
-         diproses oleh pemilik kosan dan mohon ditungu <span style="font-size: 1em; color: #06db00;">
+         <?=$this->session->flashdata('alert')?>
+         <span style="font-size: 1em; color: #06db00;">
              <i class="fas fa-smile"></i>
          </span>
      </div>

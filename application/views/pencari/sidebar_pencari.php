@@ -99,6 +99,19 @@
                     </a>
                 </li>
 
+                <?php $countt = $this->M_All->get_count_keranjang();?>
+
+                <li class="nav-item active">
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="<?php echo base_url('pencari/keranjang') ?>">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Keranjang Kos</span>
+                        <font style="background-color: red;border-radius: 100%;padding-left: 5px;padding-right: 5px;">
+                            <?=$countt?>
+                        </font>
+                    </a>
+                </li>
+
                 <!-- <li class="nav-item active">
         <li class="nav-item">
         <a class="nav-link collapsed" href="<?php echo base_url('pencari/pesan') ?>">

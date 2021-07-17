@@ -82,6 +82,14 @@
 
                 <li class="nav-item active">
                 <li class="nav-item">
+                    <a class="nav-link collapsed" href="<?php echo base_url('admin/data_pencari') ?>">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Data Pencari Kos</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link collapsed" href="<?php echo base_url('admin/transaksi') ?>">
                         <i class="fas fa-fw fa-folder"></i>
                         <span>Transaksi</span>
