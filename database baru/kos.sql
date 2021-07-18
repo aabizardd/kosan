@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2021 at 02:42 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- Generation Time: Jul 18, 2021 at 08:28 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -61,6 +60,28 @@ CREATE TABLE `bayar_di_muka` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gambar_kosan`
+--
+
+CREATE TABLE `gambar_kosan` (
+  `id_gambar` int(11) NOT NULL,
+  `nama_file` varchar(250) NOT NULL,
+  `tempat` varchar(250) NOT NULL,
+  `id_kosan` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `gambar_kosan`
+--
+
+INSERT INTO `gambar_kosan` (`id_gambar`, `nama_file`, `tempat`, `id_kosan`) VALUES
+(13, 'foto-60f14d8da4670.jpg', 'depan', 'osan4967'),
+(14, 'foto-60f14d8da5289.jpg', 'belakang', 'osan4967'),
+(15, 'foto-60f14d8da5289.jpg', 'belakang', 'OSAB6456');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `kamar`
 --
 
@@ -73,20 +94,30 @@ CREATE TABLE `kamar` (
   `deskripsi` varchar(255) NOT NULL,
   `foto` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
-  `tgl_tersedia` date NOT NULL
+  `tgl_tersedia` date NOT NULL,
+  `is_aktif` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `kamar`
 --
 
-INSERT INTO `kamar` (`id_kamar`, `kode_kamar`, `kode_kos`, `harga`, `harga_smesteran`, `deskripsi`, `foto`, `status`, `tgl_tersedia`) VALUES
-(8, '1', 'OSAB6456', 12000000, 6000000, 'asdsa', 'BACKGROUND_MUBES_HMDSI.png', 'Booked', '2021-04-08'),
-(10, '2', 'OSAB6456', 5000000, 2500000, '3x2', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-51-25.jpg', 'Booked', '2021-05-20'),
-(12, '007', 'OSAB6456', 4000000, 2000000, 'kamar james bond', 'Tom_Clancys_Rainbow_Six®_Siege2021-4-19-1-37-52.jpg', 'Booked', '2021-03-01'),
-(13, '1', 'osta5568', 2000000, 0, 'asdsa', 'aa.jpg', 'Tersedia', '2021-06-21'),
-(14, 'coba harga', 'OSAB6456', 2131, 0, 'sada', 'Screenshot_(17).png', 'Tersedia', '2021-06-25'),
-(15, '444', 'dasd2569', 30000000, 2000000, 'coba dulu', 'australia.png', 'Booked', '2021-07-03');
+INSERT INTO `kamar` (`id_kamar`, `kode_kamar`, `kode_kos`, `harga`, `harga_smesteran`, `deskripsi`, `foto`, `status`, `tgl_tersedia`, `is_aktif`) VALUES
+(8, '1', 'OSAB6456', 12000000, 6000000, 'asdsa', 'BACKGROUND_MUBES_HMDSI.png', 'Booked', '2021-04-08', 1),
+(10, '2', 'OSAB6456', 5000000, 2500000, '3x2', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-51-25.jpg', 'Tersedia', '2021-05-20', 1),
+(12, '007', 'OSAB6456', 4000000, 2000000, 'kamar james bond', 'Tom_Clancys_Rainbow_Six®_Siege2021-4-19-1-37-52.jpg', 'Tersedia', '2021-03-01', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `keranjang`
+--
+
+CREATE TABLE `keranjang` (
+  `id_keranjang` int(11) NOT NULL,
+  `id_kamar` int(11) NOT NULL,
+  `id_pencari` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -99,22 +130,20 @@ CREATE TABLE `kosan` (
   `nama_kos` varchar(255) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `deskripsi` text NOT NULL,
-  `foto` varchar(255) NOT NULL,
   `jenis_kosan` varchar(255) NOT NULL,
   `saldo_kos` int(255) NOT NULL,
   `tanggal_daftar` date NOT NULL DEFAULT current_timestamp(),
-  `id_pemilik` int(255) NOT NULL
+  `id_pemilik` int(255) NOT NULL,
+  `foto` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `kosan`
 --
 
-INSERT INTO `kosan` (`kode_kos`, `nama_kos`, `alamat`, `deskripsi`, `foto`, `jenis_kosan`, `saldo_kos`, `tanggal_daftar`, `id_pemilik`) VALUES
-('dasd2569', 'Bener Kos', 'asdas', 'Luas kamar ini adalah 213. Untuk tegangan listrik yaitu asdas. Deskrip lainnya berupa, asdas', 'external-content_duckduckgo_com.jpg', 'Putra', 0, '2021-06-22', 9),
-('OSAB6456', 'KOSABC', 'Bandung', 'Luas kamar ini adalah 12. Untuk tegangan listrik yaitu 12. Deskrip lainnya berupa, 12', 'thumb-1920-1125041.png', 'Putra', 0, '2021-04-08', 9),
-('osta5568', 'kostada', 'asdsa', 'Luas kamar ini adalah 1231. Untuk tegangan listrik yaitu 12. Deskrip lainnya berupa, adsa', 'external-content_duckduckgo_com.jpg', 'Putri', 0, '2021-06-21', 9),
-('sdas4764', 'asdas', 'asdas', 'Luas kamar ini adalah 12. Untuk tegangan listrik yaitu 123. Deskrip lainnya berupa, asds', 'sadasd.jpg', 'Putra', 0, '2021-06-22', 9);
+INSERT INTO `kosan` (`kode_kos`, `nama_kos`, `alamat`, `deskripsi`, `jenis_kosan`, `saldo_kos`, `tanggal_daftar`, `id_pemilik`, `foto`) VALUES
+('OSAB6456', 'KOSABC', 'Bandung', 'Luas kamar ini adalah 12. Untuk tegangan listrik yaitu 12. Deskrip lainnya berupa, 12', 'Putra', 0, '2021-04-08', 9, ''),
+('osan4967', 'Kosan Murah', 'Menteng', 'Luas kamar ini adalah 5 x 5. Untuk tegangan listrik yaitu 100 V. Deskrip lainnya berupa, Aman, Bebas Banjir, Deket Telkom Fakultas Ilmu Terapan', 'Putra', 0, '2021-07-16', 9, '');
 
 -- --------------------------------------------------------
 
@@ -160,13 +189,40 @@ INSERT INTO `notifikasi` (`id_notifikasi`, `isi_pesan`, `dari`, `untuk`, `status
 (28, 'Pesanan Ditolak', '26', '4', 1, 'info', '2021-06-21 23:37:18', NULL),
 (29, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-06-21 23:37:52', NULL),
 (30, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-06-21 23:38:10', NULL),
-(31, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-06-24 16:44:48', NULL),
-(32, 'Segera Bayar DP untuk kosanmu!', 'pembayaran', '26', 0, '4', '2021-06-24 16:48:37', NULL),
-(33, 'Ada pesanan baru nih!', 'pemesanan', '27', 0, '26', '2021-06-24 16:53:13', NULL),
-(34, 'Pembayaran Lunas', '26', '4', 0, 'pembayaran', '2021-06-24 17:07:19', NULL),
-(35, 'Segera Bayar DP untuk kosanmu!', 'pembayaran', '26', 0, '4', '2021-06-24 17:51:18', NULL),
-(36, 'Segera Bayar DP untuk kosanmu!', 'pembayaran', '26', 0, '4', '2021-06-24 19:33:44', NULL),
-(37, 'Ada pesanan baru nih!', 'pemesanan', '27', 0, '26', '2021-06-24 19:34:00', NULL);
+(31, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-07 23:33:31', NULL),
+(32, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-07 23:33:49', 'OSAB6456'),
+(33, 'Pesanan Diterima', '9', '4', 0, 'info', '2021-07-07 23:33:59', NULL),
+(34, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 21:40:14', NULL),
+(35, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 21:40:14', 'OSAB6456'),
+(36, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 21:40:40', 'OSAB6456'),
+(37, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 21:41:51', NULL),
+(38, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 21:45:05', 'OSAB6456'),
+(39, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 21:46:38', NULL),
+(40, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 21:46:38', 'OSAB6456'),
+(41, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 21:47:31', 'OSAB6456'),
+(42, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 21:47:37', NULL),
+(43, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 23:20:43', 'OSAB6456'),
+(44, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 23:39:35', NULL),
+(45, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 23:42:05', NULL),
+(46, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 23:42:05', 'OSAB6456'),
+(47, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 23:42:55', NULL),
+(48, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 23:42:55', 'OSAB6456'),
+(49, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 23:43:49', 'OSAB6456'),
+(50, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 23:45:35', NULL),
+(51, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 23:45:49', 'OSAB6456'),
+(52, 'Pesanan Diterima', '9', '4', 0, 'info', '2021-07-16 23:46:03', NULL),
+(53, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 23:51:17', NULL),
+(54, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 23:51:17', 'OSAB6456'),
+(55, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 23:51:36', 'OSAB6456'),
+(56, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 23:51:48', NULL),
+(57, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 23:52:03', 'OSAB6456'),
+(58, 'Pesanan Diterima', '9', '4', 0, 'info', '2021-07-16 23:52:28', NULL),
+(59, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-16 23:54:01', NULL),
+(60, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-16 23:54:01', 'OSAB6456'),
+(61, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 23:54:11', 'OSAB6456'),
+(62, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 23:54:18', NULL),
+(63, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 23:54:32', 'OSAB6456'),
+(64, 'Pesanan Diterima', '9', '4', 1, 'info', '2021-07-17 00:00:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -180,6 +236,7 @@ CREATE TABLE `pelunasan` (
   `jam_pelunasan` varchar(250) COLLATE utf8_bin NOT NULL,
   `jumlah_pelunasan` int(255) NOT NULL,
   `bukti_pelunasan` varchar(250) COLLATE utf8_bin NOT NULL,
+  `mou` varchar(250) COLLATE utf8_bin NOT NULL,
   `id_pesan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -187,13 +244,9 @@ CREATE TABLE `pelunasan` (
 -- Dumping data for table `pelunasan`
 --
 
-INSERT INTO `pelunasan` (`id_lunas`, `tanggal`, `jam_pelunasan`, `jumlah_pelunasan`, `bukti_pelunasan`, `id_pesan`) VALUES
-(13, '2021-04-26', '19:43:27', 4800000, '6086fbbf01bc6.png', 30),
-(14, '2021-05-18', '17:55:04', 8000000, '60a3e358f1f01.jpg', 31),
-(15, '2021-05-30', '17:59:22', 1200000, '60b3b65a409f4.png', 41),
-(16, '2021-05-30', '18:04:47', 0, '60b3b79f545d5.jpg', 41),
-(17, '2021-06-24', '11:53:51', 3200000, '60d4562f031fc.png', 43),
-(18, '2021-06-24', '12:07:19', 4000000, '60d45957b9deb.png', 44);
+INSERT INTO `pelunasan` (`id_lunas`, `tanggal`, `jam_pelunasan`, `jumlah_pelunasan`, `bukti_pelunasan`, `mou`, `id_pesan`) VALUES
+(21, '2021-07-16', '18:52:03', 4000000, '60f1b933552aa.png', '60f1b933554a9.png', 50),
+(22, '2021-07-16', '18:54:32', 9600000, '60f1b9c8421da.png', '60f1b9c8423d4.docx', 51);
 
 -- --------------------------------------------------------
 
@@ -226,13 +279,8 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pesan`, `nama_penghuni`, `nomor_ktp`, `nomor_hp`, `tanggal_pesan`, `tanggal_masuk`, `tanggal_keluar`, `jam`, `jangka_waktu`, `jumlah_dp`, `bukti_bayar`, `sisa_pembayaran`, `status_transaksi`, `keterangan_pembatalan`, `id_pencari`, `id_penghuni`, `id_kamar`) VALUES
-(30, 'asdsa', '12312321', '213213', '2021-04-26', '2021-04-26', '2021-10-26', '', '6 Bulan', '1200000', '6086a8669ea4f.png', 0, 2, NULL, 4, NULL, 8),
-(32, 'Yanto', NULL, NULL, '2021-05-18', '2021-05-21', '2021-11-21', '', '6 Bulan', '0', '', 2500000, 3, NULL, 6, NULL, 10),
-(42, 'adsada', '123123', '123123', '2021-06-21', '2021-06-21', '2021-12-21', '', '6 Bulan', '400000', '60d0bfe88211c.jpg', 1600000, 4, 'adsad', 4, NULL, 12),
-(43, 'asdas', '12312', '12321', '2021-06-21', '2021-06-21', '2022-06-21', '', '1 Tahun', '800000', '60d0c0729f502.jpg', 0, 0, NULL, 4, NULL, 12),
-(44, 'ff', '231', '1231', '2021-06-24', '2021-06-25', '2022-06-25', '', '1 Tahun', '1000000', '60d456095b892.png', 0, 0, NULL, 4, NULL, 10),
-(45, 'sda', NULL, NULL, '2021-06-24', '2021-06-30', '2021-12-30', '', '6 Bulan', '0', '', 0, 3, NULL, 4, NULL, 13),
-(46, 'sdaas', '2131', '1231', '2021-06-24', '2021-06-25', '2021-12-25', '', '6 Bulan', '400000', '60d47bb89dd6f.jpg', 1600000, 0, NULL, 4, NULL, 15);
+(50, 'suci', '12312312', '1312312', '2021-07-16', '2021-07-16', '2022-07-16', '', '1 Tahun', '1000000', '60f1b918b3787.png', 0, 2, NULL, 4, NULL, 10),
+(51, 'rara', '123123123', '1212312312', '2021-07-16', '2021-07-16', '2022-07-16', '', '1 Tahun', '2400000', '60f1b9b3981f9.png', 0, 2, NULL, 4, NULL, 8);
 
 -- --------------------------------------------------------
 
@@ -260,8 +308,9 @@ CREATE TABLE `pemilik_kos` (
 --
 
 INSERT INTO `pemilik_kos` (`id_pemilik`, `nama_pemilik`, `no_telp`, `email`, `jenis_kelamin`, `foto`, `id_user`, `no_ktp`, `no_rek`, `bank`, `atas_nama_rek`, `tgl_daftar`) VALUES
-(9, 'Dadang Eko', '13231232', 'ani@gmail.com', 'Laki-laki', 'artworks-000233389383-ndff7j-t500x500.jpg', 26, '1232131232', '12321321321', 'Mandiri', 'Dadang Konelo', '2021-04-08'),
-(11, 'Pencari CInta Sejati', '123123213', 'm.abizard1123@gmail.com', 'Laki-laki', 'Capture.PNG', 28, '123123123', '112321321', 'BCA', 'Jeks', '2021-04-21');
+(9, 'Dadang Konelo', '081382716172', 'ani@gmail.com', 'Laki-laki', 'thumb-1920-1125041.png', 26, '1232131232', '12321321321', 'Mandiri', 'Dadang Konelo', '2021-04-08'),
+(11, 'Pencari CInta Sejati', '123123213', 'asdas@gmail.com', 'Laki-laki', 'Capture.PNG', 28, '123123123', '112321321', 'BCA', 'Jeks', '2021-04-21'),
+(14, 'asdas', '123123123', 'dianpekok@gmail.com', 'Laki-laki', 'download.jpg', 33, '12312312', '12312312304', 'adas', 'asdasas', '2021-07-11');
 
 -- --------------------------------------------------------
 
@@ -290,8 +339,8 @@ CREATE TABLE `pencari_kos` (
 --
 
 INSERT INTO `pencari_kos` (`id_pencari`, `nama_pencari`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `email`, `no_telp`, `no_ktp`, `status`, `no_telp_wali`, `foto`, `tgl_daftar`, `id_user`) VALUES
-(4, 'Pencari Kos Abi', 'Bandung', '2021-04-09', 'Laki-laki', 'ani@gmail.com', '1232132321', '12321321', '123232', '12312321321', 'pic03.jpg', '2021-04-08', 27),
-(6, 'fad', 'das', '0000-00-00', '', '', '', NULL, NULL, NULL, '', '0000-00-00', NULL);
+(4, 'Pencari Kos abadai', 'Bandung', '2021-04-09', 'Laki-laki', 'ani@gmail.com', '1232132321', '12321321', '123232', '12312321321', 'thumb-1920-1125041.png', '2021-04-08', 27),
+(8, 'ewrwe', 'asdas', '2021-07-27', 'Laki-laki', 'asdas@gmail.com', '1231312', '12312312', 'asdas', '123122', 'unnamed.jpg', '2021-07-07', 31);
 
 -- --------------------------------------------------------
 
@@ -355,8 +404,10 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `username`, `password`, `is_pemilik`, `is_admin`, `status_aktif_pemilik`) VALUES
 (17, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', 0, 1, 0),
 (26, 'pemilik', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 1),
-(27, 'pencari', '827ccb0eea8a706c4c34a16891f84e7b', 0, 0, 0),
-(28, 'pemilik2', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 1);
+(27, 'pencari', '827ccb0eea8a706c4c34a16891f84e7b', 0, 0, 1),
+(28, 'pemilik2', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 1),
+(31, 'werw', '827ccb0eea8a706c4c34a16891f84e7b', 0, 0, 1),
+(33, 'pemilik3', '25d55ad283aa400af464c76d713c07ad', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -370,6 +421,14 @@ CREATE TABLE `user_token` (
   `token` varchar(250) NOT NULL,
   `date_created` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_token`
+--
+
+INSERT INTO `user_token` (`id_token`, `email`, `token`, `date_created`) VALUES
+(4, 'm.abizard1123@gmail.com', 'gMQFjUv6Vw3HVKALUPHmVI7n66w94y/9fZrdxEU396M=', '1625677965'),
+(5, 'm.abizard1123@gmail.com', 'JPC5bLfHTod+nQeS1TMzU3i+DPcnDJWLcfKHg83ea5A=', '1625677995');
 
 --
 -- Indexes for dumped tables
@@ -390,12 +449,24 @@ ALTER TABLE `bayar_di_muka`
   ADD KEY `id_lunas_foreign_key` (`id_lunas`);
 
 --
+-- Indexes for table `gambar_kosan`
+--
+ALTER TABLE `gambar_kosan`
+  ADD PRIMARY KEY (`id_gambar`);
+
+--
 -- Indexes for table `kamar`
 --
 ALTER TABLE `kamar`
   ADD PRIMARY KEY (`id_kamar`) USING BTREE,
   ADD UNIQUE KEY `kode_kamar` (`id_kamar`),
   ADD KEY `kode_kos` (`kode_kos`);
+
+--
+-- Indexes for table `keranjang`
+--
+ALTER TABLE `keranjang`
+  ADD PRIMARY KEY (`id_keranjang`);
 
 --
 -- Indexes for table `kosan`
@@ -488,40 +559,52 @@ ALTER TABLE `bayar_di_muka`
   MODIFY `kode_dp` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `gambar_kosan`
+--
+ALTER TABLE `gambar_kosan`
+  MODIFY `id_gambar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `kamar`
 --
 ALTER TABLE `kamar`
-  MODIFY `id_kamar` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_kamar` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `keranjang`
+--
+ALTER TABLE `keranjang`
+  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `pemilik_kos`
 --
 ALTER TABLE `pemilik_kos`
-  MODIFY `id_pemilik` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_pemilik` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `pencari_kos`
 --
 ALTER TABLE `pencari_kos`
-  MODIFY `id_pencari` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_pencari` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tmp_forget_pass`
@@ -533,13 +616,13 @@ ALTER TABLE `tmp_forget_pass`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_user` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `id_token` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_token` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
