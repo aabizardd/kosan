@@ -120,19 +120,21 @@ class M_All extends CI_Model
         $this->db->join($at1, 'kamar.kode_kos = kosan.kode_kos');
         $this->db->join($at2, 'kosan.id_pemilik = pemilik_kos.id_pemilik');
         $this->db->join($at3, 'pemesanan.id_pencari = pencari_kos.id_pencari');
-        $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+
+        if ($this->uri->segment(2) == "booking") {
+            $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        }
 
         $this->db->where('pemilik_kos.id_pemilik', $id_pemilik);
         $this->db->where('kosan.kode_kos = ', $kode_kos);
 
         if ($tipe == 'riwayat') {
 
-            $this->db->where('status_transaksi', 2);
-            $this->db->or_where('status_transaksi', 3);
-            $this->db->or_where('status_transaksi', 4);
+            $this->db->where_in('status_transaksi', [2, 3, 4]);
+
         } else {
-            $this->db->where('status_transaksi', 0);
-            $this->db->or_where('status_transaksi', 1);
+            $this->db->where_in('status_transaksi', [0, 1]);
+
         }
 
         $this->db->where('kosan.kode_kos = ', $kode_kos);
@@ -148,7 +150,7 @@ class M_All extends CI_Model
         $this->db->join($at1, 'kamar.kode_kos = kosan.kode_kos');
         $this->db->join($at2, 'kosan.id_pemilik = pemilik_kos.id_pemilik');
         $this->db->join($at3, 'pemesanan.id_pencari = pencari_kos.id_pencari');
-        // $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
+        $this->db->join('pelunasan', 'pemesanan.id_pesan = pelunasan.id_pesan');
 
         $this->db->where('pemilik_kos.id_pemilik', $id_pemilik);
 
