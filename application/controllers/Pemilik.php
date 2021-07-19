@@ -10,8 +10,41 @@ class Pemilik extends CI_Controller
     {
         parent::__construct();
         $this->load->model('M_All');
-        if ($this->session->userdata('pemilik') != "pemilik") {
-            redirect(base_url(''));
+
+        // var_dump($this->session->userdata('id_pemilik'));die();
+
+        if ($this->session->userdata('pemilik') != "pemilik" || is_null($this->session->userdata('id_pemilik'))) {
+
+            $this->session->unset_userdata('pemilik');
+            $this->session->unset_userdata('id_pemilik');
+
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+			<strong>Maaf</strong> Akun anda telah expired.
+			  </div>');
+
+            redirect('welcome/login_pemilik');
+
+        }
+
+        $data_pemilik = $this->db->get_where('pemilik_kos', ['id_pemilik' => $this->session->id_pemilik])->row_array();
+
+        $tgl1 = $data_pemilik['tgl_daftar']; // pendefinisian tanggal awal
+        $tgl2 = date('Y-m-d', strtotime('+3 days', strtotime($tgl1))); //operasi penjumlahan tanggal sebanyak 6 hari
+
+        if (date('Y-m-d') > $tgl2) {
+
+            $data_upd = [
+                'status_aktif_pemilik' => 0,
+            ];
+
+            $where_upd = [
+                'id_user' => $data_pemilik['id_user'],
+            ];
+
+            $this->db->update('user', $data_upd, $where_upd);
+
+            redirect('pemilik/logout');
+
         }
 
         // var_dump($this->session->userdata('id_pemilik'));die();
@@ -130,6 +163,23 @@ class Pemilik extends CI_Controller
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
 
+        // $tgl1 = $data['nama']->tgl_daftar; // pendefinisian tanggal awal
+        // $tgl2 = date('Y-m-d', strtotime('+3 days', strtotime($tgl1))); //operasi penjumlahan tanggal sebanyak 6 hari
+
+        // if (date('Y-m-d') > $tgl2) {
+
+        //     $data_upd = [
+        //         'status_aktif_pemilik' => 1,
+        //     ];
+
+        //     $where_upd = [
+        //         'id_user' => $data['nama']->id_user,
+        //     ];
+
+        //     $this->db->update('user', $data_upd, $where_upd);
+
+        // }
+
         $this->load->view('pemilik/sidebar_pemilik');
         $this->load->view('pemilik/header_pemilik', $data);
         $this->load->view('pemilik/dashboard', $data);
@@ -140,6 +190,7 @@ class Pemilik extends CI_Controller
 
     public function profile()
     {
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('password_lama', 'Password', 'required', [
             'required' => 'Password tidak boleh kosong',
@@ -179,8 +230,10 @@ class Pemilik extends CI_Controller
             // $data['jumlah_kamar'] = $this->M_All->count_('kamar', $where);
             $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
 
+            // var_dump($data['nama']);die();
+
             $this->load->view('pemilik/sidebar_pemilik');
-            $this->load->view('pemilik/header_pemilik');
+            $this->load->view('pemilik/header_pemilik', $data);
             $this->load->view('pemilik/profile', $data);
             $this->load->view('pemilik/foot_pemilik');
         } else {
@@ -1384,5 +1437,86 @@ class Pemilik extends CI_Controller
 
         // redirect('')
 
+    }
+
+    public function upload_mou()
+    {
+
+        $id_pemilik = $this->session->userdata('id_pemilik');
+
+        // var_dump($id_pemilik);die();
+
+        $data = [
+            'file_mou' => $this->_uploadFileMoU(),
+            'tanggal_upload_mou' => date('Y-m-d'),
+        ];
+
+        $where = [
+            'id_pemilik' => $id_pemilik,
+        ];
+
+        $this->db->update('pemilik_kos', $data, $where);
+
+        $flahdata = $this->alert('Selamat', 'success', 'MoU Berhasil diunggah');
+
+        $this->session->set_flashdata('form_error', $flahdata);
+
+        redirect('pemilik/profile');
+
+    }
+
+    private function _uploadFileMoU()
+    {
+        $namaFiles = $_FILES['file_mou']['name'];
+        $ukuranFile = $_FILES['file_mou']['size'];
+        $type = $_FILES['file_mou']['type'];
+        $eror = $_FILES['file_mou']['error'];
+
+        // $nama_file = str_replace(" ", "_", $namaFiles);
+        $tmpName = $_FILES['file_mou']['tmp_name'];
+        // $nama_folder = "assets_user/file_upload/";
+        // $file_baru = $nama_folder . basename($nama_file);
+
+        // if ((($type == "video/mp4") || ($type == "video/3gpp")) && ($ukuranFile < 8000000)) {
+
+        //   move_uploaded_file($tmpName, $file_baru);
+        //   return $file_baru;
+        // }
+
+        // var_dump($namaFiles);die();
+
+        if ($eror === 4) {
+            $flahdata = $this->alert('Maaf', 'danger', 'Gagal Mengunggah Gambar!');
+
+            $this->session->set_flashdata('form_error', $flahdata);
+
+            redirect('pemilik/profile');
+            return false;
+        }
+
+        $ekstensiGambarValid = ['pdf'];
+
+        $ekstensiGambar = explode('.', $namaFiles);
+        // var_dump($namaFiles);die();
+
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+        if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+            $flahdata = $this->alert('Maaf', 'danger', 'Ada File yang Kamu Upload Bukan PDF!');
+
+            $this->session->set_flashdata('form_error', $flahdata);
+
+            redirect('pemilik/profile');
+
+            return false;
+        }
+
+        $namaFilesBaru = "mou-";
+        $namaFilesBaru .= uniqid();
+        $namaFilesBaru .= '.';
+        $namaFilesBaru .= $ekstensiGambar;
+
+        move_uploaded_file($tmpName, 'asset_admin/all_mou_pemilik/' . $namaFilesBaru);
+
+        return $namaFilesBaru;
     }
 }

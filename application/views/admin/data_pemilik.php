@@ -34,6 +34,7 @@
                              <th>Jenis Kelamin</th>
                              <th>Foto</th>
                              <th>Status</th>
+                             <th>MoU</th>
                              <th>Aksi</th>
 
                          </tr>
@@ -73,6 +74,24 @@ foreach ($result as $r): ?>
                                  <?php endif;?>
 
                              </td>
+
+                             <td>
+
+                                 <?php if (is_null($r->file_mou) || $r->file_mou == ""): ?>
+
+                                 <button class="btn btn-danger btn-sm"><i class="fas fa-times-circle"></i> Belum upload
+                                     MoU</button>
+
+                                 <?php else: ?>
+                                 <a class="btn btn-success btn-sm text-white" target="_blank"
+                                     href="<?=base_url('asset_admin/all_mou_pemilik/' . $r->file_mou)?>"><i
+                                         class="fas fa-check-circle"></i> Lihat
+                                     MoU</a>
+
+
+                                 <?php endif?>
+                             </td>
+
                              <td>
 
                                  <!-- <button class="btn btn-primary mt-1"></button> -->

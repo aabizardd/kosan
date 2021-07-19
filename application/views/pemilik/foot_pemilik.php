@@ -58,44 +58,52 @@ $(document).ready(function() {
 });
 
 function notifDibaca(idnotif) {
-        var redirect = $('.notif'+idnotif).data('url');
-        // alert(url);
-        $.ajax({
-            url: '<?= base_url('pemilik/getNotif') ?>',
-            type: 'post',
-            data: {
-                'id': idnotif
-            },
-            dataType: 'json',
-            success: function(response) {
-                let {
-                    id_notifikasi,
-                    jenis,
-                    untuk,
-                    status_baca
-                } = response
-                $.ajax({
-                    url: '<?= base_url('pemilik/notifDibaca') ?>',
-                    type: 'post',
-                    data: {
-                        'id': id_notifikasi,
-                        'status_baca': 1
-                    },
-                    dataType: 'json',
-                    complete: function() {
-                        if (jenis == 'pemesanan' && status_baca == 0) {
-                            window.location = redirect;
-                        }else{
-                            window.location = redirect;
-                        }
-                        // alert(jenis);
+    var redirect = $('.notif' + idnotif).data('url');
+    // alert(url);
+    $.ajax({
+        url: '<?=base_url('pemilik/getNotif')?>',
+        type: 'post',
+        data: {
+            'id': idnotif
+        },
+        dataType: 'json',
+        success: function(response) {
+            let {
+                id_notifikasi,
+                jenis,
+                untuk,
+                status_baca
+            } = response
+            $.ajax({
+                url: '<?=base_url('pemilik/notifDibaca')?>',
+                type: 'post',
+                data: {
+                    'id': id_notifikasi,
+                    'status_baca': 1
+                },
+                dataType: 'json',
+                complete: function() {
+                    if (jenis == 'pemesanan' && status_baca == 0) {
+                        window.location = redirect;
+                    } else {
+                        window.location = redirect;
                     }
-                });
-                // console.log(jenis);
-            }
-        });
-    }
+                    // alert(jenis);
+                }
+            });
+            // console.log(jenis);
+        }
+    });
+}
 </script>
+
+<?php if ($nama->file_mou == "" || is_null($nama->file_mou)): ?>
+
+<script>
+$('#modal-mou').modal('show');
+</script>
+
+<?php endif?>
 
 </body>
 

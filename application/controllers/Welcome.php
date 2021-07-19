@@ -344,6 +344,11 @@ class Welcome extends CI_Controller
                               </div>');
                             redirect('welcome/login_pemilik');
                         }
+                    } elseif ($user['status_aktif_pemilik'] == 99) {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                        <strong>Maaf</strong> Akun telah expired.
+                          </div>');
+                        redirect('welcome/login_pemilik');
                     } else {
                         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                         <strong>Maaf</strong> Akun anda belum aktif.
