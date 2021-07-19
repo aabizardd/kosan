@@ -29,6 +29,7 @@
                             <th>No</th>
                             <th>Username</th>
                             <th>Nama Pencari</th>
+                            <th>Nomor Pencari</th>
                             <th>Email</th>
                             <th>Jenis Kelamin</th>
                             <th>Foto</th>
@@ -51,6 +52,7 @@ foreach ($result as $r): ?>
                             <td><?=$no++?></td>
                             <td><?=$r->username?></td>
                             <td><?=$r->nama_pencari?></td>
+                            <td><?=$r->no_telp?></td>
                             <td><?=$r->email?></td>
                             <td><?=$r->jenis_kelamin?></td>
                             <td>
