@@ -203,7 +203,8 @@
 
                                 <?php if ($r->harga == $r->harga - $r->sisa_pembayaran): ?>
 
-                                <a class="btn btn-info" href="<?=base_url('MOU/mou_pencari/' . $r->mou)?>">
+                                <a class="btn btn-info" target="_blank"
+                                    href="<?=base_url('MOU/mou_pencari/' . $r->mou)?>">
                                     <i class=" fas fa-info-circle"></i> Lihat MOU
                                 </a>
 
