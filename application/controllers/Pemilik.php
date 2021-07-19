@@ -186,7 +186,7 @@ class Pemilik extends CI_Controller
         } else {
             $where_update = array('id_user' => $this->input->post('id_user'));
             $data = [
-                'password' => md5($this->input->post('password_baru'))
+                'password' => md5($this->input->post('password_baru')),
             ];
 
             $this->M_All->update('user', $where_update, $data);
@@ -326,6 +326,8 @@ class Pemilik extends CI_Controller
         $where_ = array('pemilik_kos.id_pemilik' => $id_pemilik);
         $data['nama'] = $this->M_All->view_where('pemilik_kos', $where)->row();
         $data_['result'] = $this->M_All->riwayat_transaksi('pemesanan', 'kamar', 'kosan', 'pemilik_kos', 'pencari_kos', $id_pemilik, 'info', $kode_kos)->result();
+
+        // var_dump($data_['result']);die();
 
         $data['list_kosan'] = $this->M_All->get_where('kosan', array('id_pemilik' => $id_pemilik))->result();
 
