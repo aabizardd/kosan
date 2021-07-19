@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2021 at 08:28 AM
+-- Generation Time: Jul 19, 2021 at 08:48 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -104,7 +104,7 @@ CREATE TABLE `kamar` (
 
 INSERT INTO `kamar` (`id_kamar`, `kode_kamar`, `kode_kos`, `harga`, `harga_smesteran`, `deskripsi`, `foto`, `status`, `tgl_tersedia`, `is_aktif`) VALUES
 (8, '1', 'OSAB6456', 12000000, 6000000, 'asdsa', 'BACKGROUND_MUBES_HMDSI.png', 'Booked', '2021-04-08', 1),
-(10, '2', 'OSAB6456', 5000000, 2500000, '3x2', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-51-25.jpg', 'Tersedia', '2021-05-20', 1),
+(10, '2', 'OSAB6456', 5000000, 2500000, '3x2', 'Tom_Clancys_Rainbow_Six®_Siege2021-3-26-22-51-25.jpg', 'Booked', '2021-05-20', 1),
 (12, '007', 'OSAB6456', 4000000, 2000000, 'kamar james bond', 'Tom_Clancys_Rainbow_Six®_Siege2021-4-19-1-37-52.jpg', 'Tersedia', '2021-03-01', 1);
 
 -- --------------------------------------------------------
@@ -222,7 +222,16 @@ INSERT INTO `notifikasi` (`id_notifikasi`, `isi_pesan`, `dari`, `untuk`, `status
 (61, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-16 23:54:11', 'OSAB6456'),
 (62, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-16 23:54:18', NULL),
 (63, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-16 23:54:32', 'OSAB6456'),
-(64, 'Pesanan Diterima', '9', '4', 1, 'info', '2021-07-17 00:00:39', NULL);
+(64, 'Pesanan Diterima', '9', '4', 1, 'info', '2021-07-17 00:00:39', NULL),
+(65, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-19 09:47:23', NULL),
+(66, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-19 09:47:23', 'OSAB6456'),
+(67, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-19 09:47:49', 'OSAB6456'),
+(68, 'Silahkan Melakukan Pelunasan', '9', '4', 0, 'pelunasan', '2021-07-19 09:53:22', NULL),
+(69, 'Ada pembayaran lunas', '4', '26', 0, 'pembayaran', '2021-07-19 09:53:45', 'OSAB6456'),
+(70, 'Pesanan Diterima', '9', '4', 0, 'info', '2021-07-19 09:53:54', NULL),
+(71, 'Segera Bayar DP untuk kosanmu!', '26', '4', 0, 'pembayaran', '2021-07-19 09:56:47', NULL),
+(72, 'Ada Pesanan Baru', '4', '26', 0, 'pemesanan', '2021-07-19 09:56:47', 'OSAB6456'),
+(73, 'Ada pesanan baru nih!', '27', '26', 0, 'pemesanan', '2021-07-19 09:57:03', 'OSAB6456');
 
 -- --------------------------------------------------------
 
@@ -245,8 +254,7 @@ CREATE TABLE `pelunasan` (
 --
 
 INSERT INTO `pelunasan` (`id_lunas`, `tanggal`, `jam_pelunasan`, `jumlah_pelunasan`, `bukti_pelunasan`, `mou`, `id_pesan`) VALUES
-(21, '2021-07-16', '18:52:03', 4000000, '60f1b933552aa.png', '60f1b933554a9.png', 50),
-(22, '2021-07-16', '18:54:32', 9600000, '60f1b9c8421da.png', '60f1b9c8423d4.docx', 51);
+(23, '2021-07-19', '04:53:45', 9600000, '60f4e939efc20.png', '60f4e939efe59.png', 52);
 
 -- --------------------------------------------------------
 
@@ -279,8 +287,8 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pesan`, `nama_penghuni`, `nomor_ktp`, `nomor_hp`, `tanggal_pesan`, `tanggal_masuk`, `tanggal_keluar`, `jam`, `jangka_waktu`, `jumlah_dp`, `bukti_bayar`, `sisa_pembayaran`, `status_transaksi`, `keterangan_pembatalan`, `id_pencari`, `id_penghuni`, `id_kamar`) VALUES
-(50, 'suci', '12312312', '1312312', '2021-07-16', '2021-07-16', '2022-07-16', '', '1 Tahun', '1000000', '60f1b918b3787.png', 0, 2, NULL, 4, NULL, 10),
-(51, 'rara', '123123123', '1212312312', '2021-07-16', '2021-07-16', '2022-07-16', '', '1 Tahun', '2400000', '60f1b9b3981f9.png', 0, 2, NULL, 4, NULL, 8);
+(52, 'suci', '12312123123', '12312312312', '2021-07-19', '2021-07-19', '2022-07-19', '', '1 Tahun', '2400000', '60f4e7d5d5eae.png', 0, 2, NULL, 4, NULL, 8),
+(53, 'rara', '12312312312', '12312312', '2021-07-19', '2021-07-19', '2022-07-19', '', '1 Tahun', '1000000', '60f4e9ff66370.jpg', 4000000, 0, NULL, 4, NULL, 10);
 
 -- --------------------------------------------------------
 
@@ -300,17 +308,18 @@ CREATE TABLE `pemilik_kos` (
   `no_rek` varchar(255) DEFAULT NULL,
   `bank` varchar(250) NOT NULL,
   `atas_nama_rek` varchar(255) DEFAULT NULL,
-  `tgl_daftar` date NOT NULL
+  `tgl_daftar` date NOT NULL,
+  `file_mou` varchar(250) DEFAULT NULL,
+  `tanggal_upload_mou` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pemilik_kos`
 --
 
-INSERT INTO `pemilik_kos` (`id_pemilik`, `nama_pemilik`, `no_telp`, `email`, `jenis_kelamin`, `foto`, `id_user`, `no_ktp`, `no_rek`, `bank`, `atas_nama_rek`, `tgl_daftar`) VALUES
-(9, 'Dadang Konelo', '081382716172', 'ani@gmail.com', 'Laki-laki', 'thumb-1920-1125041.png', 26, '1232131232', '12321321321', 'Mandiri', 'Dadang Konelo', '2021-04-08'),
-(11, 'Pencari CInta Sejati', '123123213', 'asdas@gmail.com', 'Laki-laki', 'Capture.PNG', 28, '123123123', '112321321', 'BCA', 'Jeks', '2021-04-21'),
-(14, 'asdas', '123123123', 'dianpekok@gmail.com', 'Laki-laki', 'download.jpg', 33, '12312312', '12312312304', 'adas', 'asdasas', '2021-07-11');
+INSERT INTO `pemilik_kos` (`id_pemilik`, `nama_pemilik`, `no_telp`, `email`, `jenis_kelamin`, `foto`, `id_user`, `no_ktp`, `no_rek`, `bank`, `atas_nama_rek`, `tgl_daftar`, `file_mou`, `tanggal_upload_mou`) VALUES
+(9, 'Dadang Konelo', '081382716172', 'ani@gmail.com', 'Laki-laki', 'thumb-1920-1125041.png', 26, '1232131232', '12321321321', 'Mandiri', 'Dadang Konelo', '2021-07-19', 'mou-60f513f53cf0e.pdf', '2021-07-19'),
+(14, 'asdas', '123123123', 'dianpekok@gmail.com', 'Laki-laki', 'download.jpg', 33, '12312312', '12312312304', 'adas', 'asdasas', '2021-07-19', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -405,7 +414,7 @@ INSERT INTO `user` (`id_user`, `username`, `password`, `is_pemilik`, `is_admin`,
 (17, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', 0, 1, 0),
 (26, 'pemilik', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 1),
 (27, 'pencari', '827ccb0eea8a706c4c34a16891f84e7b', 0, 0, 1),
-(28, 'pemilik2', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 1),
+(28, 'pemilik2', '827ccb0eea8a706c4c34a16891f84e7b', 1, 0, 99),
 (31, 'werw', '827ccb0eea8a706c4c34a16891f84e7b', 0, 0, 1),
 (33, 'pemilik3', '25d55ad283aa400af464c76d713c07ad', 1, 0, 0);
 
@@ -580,25 +589,25 @@ ALTER TABLE `keranjang`
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_lunas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_pesan` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `pemilik_kos`
 --
 ALTER TABLE `pemilik_kos`
-  MODIFY `id_pemilik` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_pemilik` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pencari_kos`
@@ -616,7 +625,7 @@ ALTER TABLE `tmp_forget_pass`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_user` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `user_token`
@@ -679,6 +688,8 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` EVENT `update_pemesanan_status` ON SCHEDULE EVERY 1 MINUTE STARTS '2021-03-30 13:41:12' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE pemesanan set status_transaksi = 3 WHERE datediff(current_date(), tanggal_pesan) > 0$$
 
 CREATE DEFINER=`root`@`localhost` EVENT `cancle_pesanan` ON SCHEDULE EVERY 10 HOUR STARTS '2021-04-22 01:03:21' ON COMPLETION NOT PRESERVE ENABLE DO DELETE FROM pemesanan WHERE DATEDIFF(NOW(),tanggal_pesan) >=2$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `expired_pemilik` ON SCHEDULE EVERY 7 DAY STARTS '2021-07-19 13:44:40' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE user set status_aktif_pemilik = 99 WHERE is_pemilik = 1 AND status_aktif_pemilik = 0$$
 
 DELIMITER ;
 COMMIT;
