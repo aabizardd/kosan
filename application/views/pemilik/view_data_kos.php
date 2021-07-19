@@ -1,3 +1,13 @@
+<?php
+function rupiah($angka)
+{
+
+    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    return $hasil_rupiah;
+
+}
+
+?>
 <div class="container-fluid">
     <?=$this->session->flashdata('berhasil_kos')?>
     <!-- DataTales Example -->
@@ -189,67 +199,69 @@
             <hr>
         </div>
 
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Kamar</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Kode Kamar</th>
-                                <th>Harga Tahunan</th>
-                                <th>Harga 6 Bulan</th>
-                                <th>Deskripsi</th>
 
-                                <th>Status</th>
-                                <th>Tanggal Tersedia</th>
-                                <th>Status Aktif</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($result as $r): ?>
-                            <tr>
-                                <td><?=$r->kode_kamar;?></td>
-                                <td><?=$r->harga;?></td>
-                                <td><?=$r->harga_smesteran;?></td>
-                                <td><?=$r->deskripsi;?></td>
-                                <td><?=$r->status;?></td>
-                                <td><?=$r->tgl_tersedia;?></td>
-                                <td><?=($r->is_aktif == 1) ? "Aktif" : "Tidak Aktif";?></td>
-                                <td>
-                                    <a href="<?php echo base_url("pemilik/hapus_kamar/$r->kode_kamar") ?>"
-                                        class="btn btn-danger btn-sm">Hapus</a>
-                                    <a href="<?php echo base_url("pemilik/edit_kamar/$r->id_kamar") ?>"
-                                        class="btn btn-info btn-sm">Edit</a>
-                                    <?php if ($r->is_aktif == 1 && $r->status == "Tersedia"): ?>
 
-                                    <button data-toggle="modal" data-target="#exampleModal"
-                                        class="btn btn-warning btn-sm non-aktif" data-idkamar="<?=$r->kode_kamar?>">
-                                        <i class="fas fa-times-circle"></i>
-                                        Non-Aktifkan</button>
 
-                                    <?php elseif ($r->is_aktif == 0 && $r->status != "Tersedia"): ?>
+    </div>
 
-                                    <a href="<?=base_url('pemilik/aktivasi_kamar/1/' . $r->kode_kamar . '/' . $this->uri->segment(3))?>"
-                                        class="btn btn-warning btn-sm"><i class="fas fa-check"></i>
-                                        Aktifkan</a>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Kamar</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Kode Kamar</th>
+                            <th>Harga Tahunan</th>
+                            <th>Harga 6 Bulan</th>
+                            <th>Deskripsi</th>
+                            <th>Status</th>
+                            <th>Tanggal Tersedia</th>
+                            <th>Status Aktif</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($result as $r): ?>
+                        <tr>
+                            <td><?=$r->kode_kamar;?></td>
+                            <td><?=rupiah($r->harga);?></td>
+                            <td><?=rupiah($r->harga_smesteran);?></td>
+                            <td><?=$r->deskripsi;?></td>
+                            <td><?=$r->status;?></td>
+                            <td><?=$r->tgl_tersedia;?></td>
+                            <td><?=($r->is_aktif == 1) ? "Aktif" : "Tidak Aktif";?></td>
+                            <td>
+                                <a href="<?php echo base_url("pemilik/hapus_kamar/$r->kode_kamar") ?>"
+                                    class="btn btn-danger btn-sm">Hapus</a>
+                                <a href="<?php echo base_url("pemilik/edit_kamar/$r->id_kamar") ?>"
+                                    class="btn btn-info btn-sm">Edit</a>
+                                <?php if ($r->is_aktif == 1 && $r->status == "Tersedia"): ?>
 
-                                    <?php endif?>
+                                <button data-toggle="modal" data-target="#exampleModal"
+                                    class="btn btn-warning btn-sm non-aktif" data-idkamar="<?=$r->kode_kamar?>">
+                                    <i class="fas fa-times-circle"></i>
+                                    Non-Aktifkan</button>
 
-                                </td>
-                            </tr>
+                                <?php elseif ($r->is_aktif == 0 && $r->status != "Tersedia"): ?>
 
-                            <?php endforeach;?>
-                        </tbody>
+                                <a href="<?=base_url('pemilik/aktivasi_kamar/1/' . $r->kode_kamar . '/' . $this->uri->segment(3))?>"
+                                    class="btn btn-warning btn-sm"><i class="fas fa-check"></i>
+                                    Aktifkan</a>
 
-                    </table>
-                </div>
+                                <?php endif?>
+
+                            </td>
+                        </tr>
+
+                        <?php endforeach;?>
+                    </tbody>
+
+                </table>
             </div>
         </div>
-
     </div>
     <!-- /.container-fluid -->
 
