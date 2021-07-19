@@ -101,18 +101,21 @@ foreach ($bulan as $b): ?>
                             <th>Pendapatan</th>
                         </tr>
                     </thead>
-                    <?php
-$no = 1;
-foreach ($result as $r): ?>
+
                     <tbody>
 
-
-                        <td><?=$no++?></td>
-                        <td><?=$r->kode_kamar?></td>
-                        <td><?=$r->jangka_waktu?></td>
-                        <td><?=date("d-F-Y", strtotime($r->tanggal_keluar))?></td>
-                        <td><?=date("d-F-Y", strtotime($r->tanggal_pesan))?></td>
                         <?php
+$no = 1;
+$total_dapat = 0;
+foreach ($result as $r): ?>
+
+                        <tr>
+                            <td><?=$no++?></td>
+                            <td><?=$r->kode_kamar?></td>
+                            <td><?=$r->jangka_waktu?></td>
+                            <td><?=date("d-F-Y", strtotime($r->tanggal_keluar))?></td>
+                            <td><?=date("d-F-Y", strtotime($r->tanggal_pesan))?></td>
+                            <?php
 if ($r->jangka_waktu = "6 Bulan") {
     $sisa_pembayaran = $r->harga_smesteran * 20 / 100;
     $sisa = $r->harga_smesteran - $sisa_pembayaran;
@@ -123,22 +126,34 @@ if ($r->jangka_waktu = "6 Bulan") {
 }
 
 ?>
-                        <?php if ($r->sisa_pembayaran == 0): ?>
+                            <?php if ($r->sisa_pembayaran == 0): ?>
+                            <?php $total_dapat += $r->harga?>
+                            <td>Lunas</td>
+                            <td> <?="Rp " . number_format($r->harga, 2, ',', '.');?></td>
+                            <?php else: ?>
+                            <?php $total_dapat += $r->jumlah_dp?>
+                            <td>DP</td>
+                            <td> <?="Rp " . number_format($r->jumlah_dp, 2, ',', '.');?></td>
 
-                        <td>Lunas</td>
-                        <td> <?="Rp " . number_format($r->harga, 2, ',', '.');?></td>
-                        <?php else: ?>
-                        <td>DP</td>
-                        <td> <?="Rp " . number_format($r->jumlah_dp, 2, ',', '.');?></td>
+                            <?php endif;?>
+                        </tr>
 
-                        <?php endif;?>
+                        <?php endforeach;?>
+
 
 
 
                     </tbody>
-                    <?php endforeach;?>
+
 
                 </table>
+
+                <button class="btn btn-primary">Total Pendapatan Tahun
+                    <?=$this->uri->segment(5) . " = " . "Rp " . number_format($total_dapat, 2, ',', '.')?></button>
+
+
+
+
             </div>
         </div>
     </div>
