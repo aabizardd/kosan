@@ -312,7 +312,9 @@ class Welcome extends CI_Controller
             $this->load->view('login/foot_login');
         } else {
             $username = $this->input->post('username');
-            $password = $this->input->post('password');
+            $password = md5($this->input->post('password'));
+
+            // var_dump($password);die();
 
             $where = array(
                 'username' => $username,
@@ -320,13 +322,15 @@ class Welcome extends CI_Controller
 
             $user = $this->M_All->view_where('user', $where)->row_array();
 
+            // var_dump($user['password']);die();
+
             if ($user) {
 
                 if ($user['is_pemilik'] == 1) {
 
                     if ($user['status_aktif_pemilik'] == 1) {
 
-                        if (md5($password) == $user['password']) {
+                        if ($password == $user['password']) {
 
                             //kalau berhasil
                             $where = array('id_user' => $user['id_user']);
