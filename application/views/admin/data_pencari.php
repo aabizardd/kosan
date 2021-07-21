@@ -45,9 +45,8 @@
                              Launch demo modal
                          </button> -->
 
-                        <?php
-$no = 1;
-foreach ($result as $r): ?>
+                        <?php $no = 1;?>
+                        <?php foreach ($result as $r): ?>
                         <tr>
                             <td><?=$no++?></td>
                             <td><?=$r->username?></td>
@@ -129,9 +128,7 @@ foreach ($result as $r): ?>
 </div>
 
 <!-- End of Page Wrapper -->
-<?php
-$no = 1;
-foreach ($result as $r): ?>
+<?php foreach ($result as $r): ?>
 <!-- Modal -->
 <div class="modal fade" id="detail<?=$r->id_user?>" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">

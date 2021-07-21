@@ -97,16 +97,20 @@ foreach ($bulan as $b): ?>
                      </thead>
                      <tbody>
                          <?php foreach ($result as $r): ?>
+                         <?php $images = $this->db->get_where('gambar_kosan', ['id_kosan' => $r->kode_kos])->result()?>
                          <tr>
                              <td><?php echo $r->kode_kos ?></td>
                              <td><?php echo $r->nama_kos ?></td>
                              <td><?php echo $r->alamat ?></td>
                              <td><?php echo $r->deskripsi ?></td>
                              <td>
-                                 <a href="" data-toggle="modal" data-target="#exampleModal" data-foto="<?=$r->foto?>"
-                                     class="foto_kos">
-                                     <img src="<?=base_url('asset_admin/upload_kos/') . $r->foto?>" alt="" width="250">
+
+                                 <a href="" data-toggle="modal" data-target="#exampleModal"
+                                     data-foto="<?=$images[0]->nama_file?>" class="foto_kos">
+                                     <img src="<?=base_url('asset_admin/assets_kosan/foto_kosan/') . $images[0]->nama_file?>"
+                                         alt="" width="200" height="200">
                                  </a>
+
                              </td>
                              <td><?php echo $r->jenis_kosan ?></td>
                              <td><?php echo $r->saldo_kos ?></td>

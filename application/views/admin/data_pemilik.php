@@ -60,7 +60,7 @@ foreach ($result as $r): ?>
                                  <a href="" data-toggle="modal" data-target="#detailFoto" class="foto_pemilik"
                                      data-foto="<?=$r->foto?>">
                                      <img src="<?=base_url('asset_registrasi/upload_pemilik/') . $r->foto?>" alt=""
-                                         width="80%" height="180">
+                                         width="300" height="180">
                                  </a>
 
                              </td>

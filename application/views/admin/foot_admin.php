@@ -72,7 +72,7 @@ $('.foto_kos').on('click', function(e) {
     // $("#modal-view #keterangan").val(keterangan_bahan);
     // $("#modal-view #id_bahan").val(id_bahan);
     // $("#modal-view #gambar").val(foto);
-    $("#modal-view #gambar").attr('src', '<?=base_url('asset_admin/upload_kos/')?>' + foto);
+    $("#modal-view #gambar").attr('src', '<?=base_url('asset_admin/assets_kosan/foto_kosan/')?>' + foto);
 
 
 });
