@@ -62,11 +62,7 @@ echo $id_pencari = $this->session->userdata('id_pencari');
                             <td><?=$sisa_bayar?></td>
 
                             <td>
-                                <?php if ($r->sisa_pembayaran > 0): ?>
-                                <a class="badge badge-info text-white">Ya, Bayar DP</a>
-                                <?php else: ?>
-                                <a class="badge badge-info text-white">Tidak, Bayar Pelunasan</a>
-                                <?php endif?>
+                                <?="Rp " . number_format($r->harga * 20 / 100, 2, ',', '.')?>
                             </td>
 
                             <td>
@@ -377,7 +373,10 @@ foreach ($result as $r): ?>
             <div class="modal-body">
 
                 <div class="card   mt-2">
-                    <img src="<?=base_url('asset_admin/upload_kos/') . $r->ksFoto?>" alt="" height="500">
+                    <?php $img_kos = $this->db->get('gambar_kosan')->result()?>
+
+                    <img src="<?=base_url('asset_admin/assets_kosan/foto_kosan/') . $img_kos[0]->nama_file?>" alt=""
+                        height="500">
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold">Detail Kosan</h5>
                         <p class="card-text font-weight-bold">
@@ -388,6 +387,9 @@ foreach ($result as $r): ?>
                 </div>
 
                 <div class="card  text-black  mt-5">
+
+                    <?php $img_kos = $this->db->get_where('gambar_kosan')?>
+
                     <img src="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" alt="" height="500">
                     <!-- <img src="<?=base_url('asset_admin/upload_kos/') . $r->kFoto?>" class="card-img" alt="..." height="100%"> -->
                     <div class="card-body">

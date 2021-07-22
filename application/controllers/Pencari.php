@@ -192,9 +192,7 @@ class Pencari extends CI_Controller
 
         $this->load->view('pencari/sidebar_pencari');
         $this->load->view('pencari/header_pencari', $data);
-        $this->load->view('pencari/pesa
-
-		n_kos', $data);
+        $this->load->view('pencari/pesan_kos', $data);
         $this->load->view('pencari/foot_pencari');
     }
 
