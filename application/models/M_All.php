@@ -93,8 +93,10 @@ class M_All extends CI_Model
         $this->db->join($at, 'pemilik_kos.id_pemilik = kosan.id_pemilik');
 
         if (!is_null($nama_kos)) {
-            $this->db->like('nama_kos', $nama_kos);
-            $this->db->or_like('alamat', $nama_kos);
+            $this->db->like('nama_kos', "$nama_kos");
+            $this->db->or_like('alamat', "$nama_kos"
+
+            );
         }
 
         return $this->db->get();

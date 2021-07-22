@@ -77,7 +77,16 @@
                                 <td>Nomor HP Pemilik</td>
                                 <td><?=$kos->no_telp?></td>
                             </tr>
+
                         </table>
+
+                        <p?>Bagikan ke :</p>
+                            <?php $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>
+
+                            <a href="whatsapp://send?text=nih ada kosan bagus, cek disini : <?=$url?>"><img
+                                    src="<?=base_url('assets_bagikan/whatsapp.png')?>" alt="" width="20"></a>
+
+
                     </div>
                 </div>
             </div>
