@@ -595,7 +595,7 @@ class Admin extends CI_Controller
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Aktivasi Akun, Email Berhasil Dikirim ke Email Pendaftar!', 'fas fa-check-circle');
 
         $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Akun pemilik berhasil diaktifkan
+                    <strong>Akun ' . $tipe . ' berhasil diaktifkan
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -697,7 +697,7 @@ class Admin extends CI_Controller
         $alert = $this->toast('success', '4bf542', 'Berhasil Melakukan Penolakan Akun Pemilik, Info Telah Dikirim ke Email Pendaftar', 'fas fa-check-circle');
 
         $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Akun pemilik ditolak dengan memberikan alasan penolakan
+        <strong>Akun pencari ditolak dengan memberikan alasan penolakan
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

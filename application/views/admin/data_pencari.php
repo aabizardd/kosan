@@ -292,5 +292,5 @@ $('.tolak').on('click', function() {
 
     // alert(id_user)
     $('.modal-body #id_user').val(id_user);
-})
+});
 </script>
