@@ -62,7 +62,15 @@ echo $id_pencari = $this->session->userdata('id_pencari');
                             <td><?=$sisa_bayar?></td>
 
                             <td>
-                                <?="Rp " . number_format($r->harga * 20 / 100, 2, ',', '.')?>
+                                <?php
+$keterangan_dp = 0;
+if ($r->jangka_waktu == "1 Tahun") {
+    $keterangan_dp = 20 / 100 * $r->harga;
+} else {
+    $keterangan_dp = 20 / 100 * $r->harga_smesteran;
+}?>
+
+                                <?="Rp " . number_format($keterangan_dp, 2, ',', '.')?>
                             </td>
 
                             <td>
