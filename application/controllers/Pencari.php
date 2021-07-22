@@ -39,10 +39,14 @@ class Pencari extends CI_Controller
         $where = array('id_pencari' => $id_pencari);
         $data['nama'] = $this->M_All->view_where('pencari_kos', $where)->row();
 
+        // var_dump($nama_kos);die();
+
         $data['result'] = "";
         if (is_null($nama_kos)) {
             $data['result'] = $this->M_All->join('pemilik_kos', 'kosan')->result();
         } else {
+            $nama_kos = str_replace("%20", " ", $nama_kos);
+            // var_dump($nama_kos);die();
             $data['result'] = $this->M_All->join('pemilik_kos', 'kosan', $nama_kos)->result();
         }
 
@@ -188,7 +192,9 @@ class Pencari extends CI_Controller
 
         $this->load->view('pencari/sidebar_pencari');
         $this->load->view('pencari/header_pencari', $data);
-        $this->load->view('pencari/pesan_kos', $data);
+        $this->load->view('pencari/pesa
+
+		n_kos', $data);
         $this->load->view('pencari/foot_pencari');
     }
 
